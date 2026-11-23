@@ -1,0 +1,275 @@
+from request_budget import bounded, FileSlots
+import hashlib
+import difflib
+import json
+import threading
+import time
+from pathlib import Path
+from .client import request, TransportError
+from .coordinate_precision import normalize_prompt, VERSION as COORDINATE_CONTRACT
+from .common import read_json, write_json, sha256
+from .prompts import SYSTEM
+from .format_repair import SYSTEM as FORMAT_SYSTEM, prompt_for, preservation_audit
+
+
+def next_call_path(folder):
+    existing=[int(p.name[5:]) for p in Path(folder).glob('call_*') if p.name[5:].isdigit()]
+    return Path(folder)/f'call_{max(existing,default=-1)+1:03d}'
+
+
+def close_object_before_array(text):
+    """Repair only a missing object closer immediately before its enclosing ].
+
+    No values, coordinates, names, quotes or commas are inferred or changed.
+    All other malformed JSON remains an error and goes to format retry.
+    """
+    stack, output, inserted = [], [], []
+    quoted = escaped = False
+    for index, char in enumerate(text):
+        if quoted:
+            output.append(char)
+            if escaped: escaped = False
+            elif char == '\\': escaped = True
+            elif char == '"': quoted = False
+            continue
+        if char == '"':
+            quoted = True
+        elif char in '{[':
+            stack.append(char)
+        elif char in '}]':
+            if char == ']' and len(stack) >= 2 and stack[-2:] == ['[', '{']:
+                output.append('}'); stack.pop(); inserted.append(index)
+            expected = '{' if char == '}' else '['
+            if not stack or stack.pop() != expected:
+                return text, []
+        output.append(char)
+    if quoted or stack:
+        return text, []
+    return ''.join(output), inserted
+
+
+def parse(content, repair_log=None):
+    content = content.strip()
+    if content.startswith('```') and content.endswith('```'):
+        content = content.split('\n', 1)[1].rsplit('```', 1)[0]
+    try:
+        raw = json.loads(content)
+    except json.JSONDecodeError:
+        # A provider may echo the complete request before the answer. Consume
+        # complete top-level JSON documents, never a nested example inside one.
+        decoder=json.JSONDecoder();cursor=0;answers=[]
+        while cursor<len(content):
+            start=content.find('{',cursor)
+            if start<0:break
+            try:
+                document,end=decoder.raw_decode(content,start)
+            except json.JSONDecodeError:
+                break
+            cursor=end
+            if isinstance(document,dict) and not {'task','instructions','response_format'}.intersection(document) and {'arrows','edits','duplicates','joins','crops','routes','groups','targets','regions','line_styles','heads','candidates','decisions','ok','objects'}.intersection(document):
+                answers.append(document)
+        if len(answers)==1:
+            if repair_log is not None:write_json(repair_log,{'repair':'Ignore complete request echo and Markdown fence; use the unique answer object','values_and_coordinates_unchanged':True})
+            return answers[0]
+        repaired, inserted = close_object_before_array(content)
+        if not inserted:
+            raise
+        raw = json.loads(repaired)
+        if repair_log is not None:
+            write_json(repair_log, {'repair': 'insert missing } immediately before enclosing ]',
+                                   'insertions_at_original_offsets': inserted, 'values_and_coordinates_unchanged': True})
+    # A wrapped answer is allowed. An echoed request containing its example
+    # response_format is NOT an answer and must reach validation as-is.
+    if isinstance(raw, dict) and len(raw)==1 and not {'arrows', 'regions', 'accept'}.intersection(raw):
+        for key in ('output', 'response_format'):
+            if isinstance(raw.get(key), dict):
+                return raw[key]
+    return raw
+
+
+def reusable_identity(previous, current, allow_lower_limit=False):
+    """Only a larger output ceiling may differ, when explicitly enabled.
+
+    This permits reusing complete, validated answers. It never makes a truncated
+    stream reusable, and never ignores changed prompts, images or other settings.
+    """
+    if previous == current:return True
+    if not allow_lower_limit:return False
+    old=previous.get('inference',{});new=current.get('inference',{})
+    a=old.get('max_tokens');b=new.get('max_tokens')
+    if type(a) is not int or type(b) is not int or not 0<a<b:return False
+    normalized={**previous,'inference':{**old,'max_tokens':b}}
+    return normalized==current
+
+
+class Model:
+    def __init__(self, config, run_dir=None, reuse_from=None, system=None):
+        self.config = config
+        self.system = SYSTEM if system is None else system
+        self.run_dir = Path(run_dir) if run_dir else None
+        self.reuse_from = Path(reuse_from) if reuse_from else None
+        self.slots = (FileSlots(config['request_slot_dir'], config['api_concurrency']) if config.get('request_slot_dir')
+                      else threading.BoundedSemaphore(config['api_concurrency']))
+        self.blocked = threading.Event()
+        self.reason = None
+
+    def format_only(self, folder, prompt, original, error, validator):
+        """A separate text task, under the same shared API concurrency cap."""
+        folder=Path(folder);folder.mkdir(parents=True,exist_ok=True)
+        q=normalize_prompt(prompt_for(original,prompt,error))
+        write_json(folder/'prompt.json',{'system':FORMAT_SYSTEM,'prompt':q})
+        write_json(folder/'source.json',{'original_sha256':hashlib.sha256(original.encode()).hexdigest(),
+                   'validation_error':str(error),'images_sent':0,'max_attempts':1})
+        try:
+            for retry in range(self.config.get('transport_retries',0)+1):
+                try:
+                    with self.slots:
+                        if self.blocked.is_set():raise TransportError('Provider blocked: '+str(self.reason))
+                        text=request(self.config,FORMAT_SYSTEM,q,[],next_call_path(folder))
+                    break
+                except TransportError as exc:
+                    if retry==self.config.get('transport_retries',0) or not exc.retryable:raise
+                    time.sleep(min(15,2**(retry+1)))
+            raw=getattr(validator, 'parse', parse)(text,folder/'syntax_repair.json')
+            audit=getattr(validator, 'repair_audit', preservation_audit)(original,raw)
+            result=validator(raw)
+            write_json(folder/'preservation.json',audit)
+            write_json(folder/'raw_result.json',raw);write_json(folder/'result.json',result)
+            (folder/'format_only.diff').write_text(''.join(difflib.unified_diff(
+                original.splitlines(keepends=True),json.dumps(raw,ensure_ascii=False,indent=2).splitlines(keepends=True),
+                fromfile='original_reply',tofile='text_repaired_reply')))
+            return result
+        except TransportError as exc:
+            if exc.status_code in (401,403,404) or 'model_not_found' in str(exc):
+                self.reason=str(exc);self.blocked.set();raise
+            write_json(folder/'failed.json',{'error_type':type(exc).__name__,'error':str(exc)})
+            # Network failure is not evidence that the reply cannot be repaired.
+            # Keep it pending rather than spending a new visual request.
+            raise
+        except (ValueError,TypeError,KeyError) as exc:
+            write_json(folder/'failed.json',{'error_type':type(exc).__name__,'error':str(exc)})
+        return None
+
+    @bounded
+    def ask(self, folder, prompt, images, validator, *, system=None):
+        decode = getattr(validator, 'parse', parse)
+        def record_protocol(result, where):
+            if isinstance(result, dict) and '_protocol' in result:
+                write_json(where/'protocol_audit.json', result['_protocol'])
+        # Per-request override: keep one semaphore/auth-failure state across stages.
+        system = self.system if system is None else system
+        folder = Path(folder)
+        folder.mkdir(parents=True, exist_ok=True)
+        from semantic_hint_contract import clean_prompt, VERSION as HINT_CONTRACT
+        raw_prompt = prompt
+        prompt, hint_changes = clean_prompt(prompt)
+        coordinate_source = prompt
+        prompt = normalize_prompt(prompt)
+        identity = {'system': system, 'prompt': prompt,
+                    'images': [(label, sha256(path)) for label, path in images],
+                    'inference': {k: self.config[k] for k in ('base_url', 'model', 'temperature', 'max_tokens', 'thinking', 'reasoning_effort')
+                                  if k != 'reasoning_effort' or self.config.get(k) is not None}}
+        # Exact identity is still required for reuse. Changed upstream results
+        # create another request version instead of disabling downstream stages.
+        identity = json.loads(json.dumps(identity))
+        logical_folder = folder
+        digest = hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        if (folder/'identity.json').exists() and read_json(folder/'identity.json') != identity:
+            folder = logical_folder/'revisions'/digest
+            folder.mkdir(parents=True, exist_ok=True)
+        if hint_changes:
+            write_json(folder/'raw_prompt.json', {'system': system, 'prompt': raw_prompt})
+            write_json(folder/'semantic_hint_normalization.json', {
+                'contract': HINT_CONTRACT, 'changes': hint_changes,
+                'structured_coordinates_changed': False})
+        if prompt != coordinate_source:
+            write_json(folder/'coordinate_input_original_prompt.json', {'prompt': coordinate_source})
+            write_json(folder/'coordinate_input_precision.json', {
+                'contract': COORDINATE_CONTRACT, 'decimal_places': 1,
+                'scope': 'model_input_only', 'pipeline_coordinates_unchanged': True})
+        write_json(logical_folder/'active_request.json', {'path': str(folder.resolve()), 'identity_sha256': digest})
+        if (folder/'identity.json').exists():
+            if read_json(folder/'identity.json') != identity:
+                raise RuntimeError('Request version identity mismatch: '+str(folder))
+            if (folder/'result.json').exists():
+                result = getattr(validator, 'validate_saved', validator)(read_json(folder/'result.json'))
+                write_json(folder/'resume.json', {'same_request': True, 'new_api_call': False})
+                return result
+        else:
+            write_json(folder/'identity.json', identity)
+            write_json(folder/'prompt.json', {'system': system, 'prompt': prompt})
+        if self.reuse_from is not None:
+            old = self.reuse_from/folder.relative_to(self.run_dir)
+            previous=read_json(old/'identity.json') if (old/'identity.json').exists() else None
+            if previous is not None and reusable_identity(previous,identity,self.config.get('reuse_completed_lower_output_limit',False)):
+                # Prefer the original complete answer when the current contract can
+                # accept it. Old format retries may have removed legitimate nodes.
+                calls = sorted(old.glob('call_*'))
+                if (old/'reuse.json').exists():
+                    inherited = read_json(old/'reuse.json')
+                    source_call = Path(inherited['source'])
+                    if (source_call/'content.txt').exists() and sha256(source_call/'content.txt') == inherited['content_sha256']:
+                        calls.append(source_call)
+                for call in calls:
+                    if not (call/'status.json').exists() or not (call/'content.txt').exists():
+                        continue
+                    status = read_json(call/'status.json')
+                    if status.get('state') != 'transport_complete' or not status.get('sse_done') or status.get('finish_reason') != 'stop':
+                        continue
+                    try:
+                        result = validator(decode((call/'content.txt').read_text(), folder/'reuse_syntax_repair.json'))
+                    except (ValueError, TypeError, KeyError):
+                        continue
+                    write_json(folder/'reuse.json', {'source': str(call.resolve()), 'content_sha256': sha256(call/'content.txt'),
+                               'same_prompt_images_parameters': previous==identity,
+                               'same_prompt_images_model': True,
+                               'source_max_tokens': previous['inference']['max_tokens'],
+                               'requested_max_tokens': identity['inference']['max_tokens'],
+                               'reuse_policy': 'exact_request' if previous==identity else 'validated_complete_answer_with_lower_output_limit',
+                               'validated_with_current_contract': True, 'new_api_call': False})
+                    record_protocol(result, folder)
+                    write_json(folder/'result.json', result)
+                    return result
+        if self.config.get('missing_cache_only') and getattr(validator, 'stage', None) == 'missing':
+            raise ValueError('No usable completed source reply; cache-only recovery does not repeat visual discovery')
+        actual = prompt
+        format_retries = getattr(validator, 'visual_format_retries', self.config['format_retries'])
+        for fmt in range(format_retries+1):
+            for retry in range(self.config['transport_retries']+1):
+                call = next_call_path(folder)
+                with self.slots:
+                    if self.blocked.is_set():
+                        raise TransportError('Provider blocked: '+str(self.reason))
+                    try:
+                        content = request(self.config, system, actual, images, call)
+                        break
+                    except TransportError as exc:
+                        if exc.status_code in (401, 403, 404) or 'model_not_found' in str(exc):
+                            self.reason = str(exc)
+                            self.blocked.set()
+                            raise
+                        if retry == self.config['transport_retries'] or not exc.retryable:
+                            raise
+                time.sleep(min(15, 2**(retry+1)))
+            try:
+                raw = decode(content, call/'json_syntax_repair.json')
+                write_json(folder/f'parsed_{fmt}.json', raw)
+                result = validator(raw)
+                record_protocol(result, folder)
+                write_json(folder/'result.json', result)
+                return result
+            except (ValueError, TypeError, KeyError) as exc:
+                write_json(folder/f'validation_error_{fmt}.json', {'error': str(exc)})
+                repaired=self.format_only(folder/'format_only'/f'visual_{fmt:03d}',prompt,content,exc,validator)
+                if repaired is not None:
+                    record_protocol(repaired, folder)
+                    write_json(folder/'result.json',repaired)
+                    write_json(folder/'format_repair_resolution.json',{'visual_attempt':fmt,
+                        'repair_folder':str(folder/'format_only'/f'visual_{fmt:03d}'),
+                        'new_visual_request':False,'original_call':str(call)})
+                    return repaired
+                if fmt == format_retries:
+                    raise ValueError(f'Invalid output at {folder}: {exc}') from None
+                retry_note = {'retry_after_text_repair_failed': {'error': str(exc),
+                          'instruction': 'The previous reply could not be safely repaired as text. Reinspect the supplied images and return a complete valid answer.'}}
+                actual = (prompt + '\n\n' + json.dumps(retry_note, ensure_ascii=False)) if isinstance(prompt, str) else {**prompt, **retry_note}

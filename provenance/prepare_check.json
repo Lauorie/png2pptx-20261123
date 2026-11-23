@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "scope": "fresh PNG preparation of shape, text, arrow and composition",
+  "original_source_access_blocked": true,
+  "active_arrow_config_has_no_old_run_paths": true,
+  "sam_health": "local stub only",
+  "real_model_inference": false,
+  "arrow_driver": "frozen_geometry_first"
+}

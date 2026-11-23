@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "hashed_files": 42535,
+  "weight_hashes_checked": false,
+  "errors": [],
+  "summary_metadata_count_refreshed_and_rehashed": true,
+  "subsequent_documentation_update": {
+    "date": "2026-11-19",
+    "files": [
+      "README.md",
+      "GLM_PARAMETERS.zh-CN.md"
+    ],
+    "code_or_weights_changed": false,
+    "changed_metadata_hashes_verified": true
+  }
+}

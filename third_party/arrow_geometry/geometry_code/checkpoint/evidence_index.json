@@ -1,0 +1,844 @@
+{
+  "v036_style_heads24/receiver_v2": [
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/config.json",
+      "sha256": "1e55d0365719010448eb63444347ca7b0f831629d8ceb2bbb36772b5a46cd1d1"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/manifest.json",
+      "sha256": "d309d9f85047eafd19d07a0200d7d2a660e3ec672870f33532ca3696838af44f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/execution.json",
+      "sha256": "8f31098cc488c3949c08b7475e5315f31b1ba34dfb752b670739bde760d1aa90"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/progress.json",
+      "sha256": "5196db62fe0dddb08f74a969e019d1fbcf62c8a17f2edb1269aa548a24e04b0f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0346/clean.png",
+      "sha256": "87c49f7d09291307e6f7dda4bf541945878d0fd4e66c31b23b8e47d4e0212760"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0346/rows.json",
+      "sha256": "cc030b9adae3a4574406b75b889eb8b01cedea455b4c6d0d139af15e70f2bf18"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0346/arrows.pptx",
+      "sha256": "7ccccfc03c39aea38bd13250f9caaf6d9baeeaffd3d34a6005e9c5b33853f97a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0346/native/styled.png",
+      "sha256": "3cfe9dc8a6fe6c5c288b7b25516b719d68246ead52cb6ffd7d0de4f53477f2e0"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0346/completed.json",
+      "sha256": "cbb72de195f0dc42f1977ea10376bba15e1573fa239e4d2560565cc72848a0ca"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0153/clean.png",
+      "sha256": "163f5466379e005079f027b5714cc5c8262e5338bd5803b0d94dbe063b627ab5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0153/rows.json",
+      "sha256": "a42266eda91a6adb80a920d08b6c71be3733df72ecdd17c11a8f4be4605d442e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0153/arrows.pptx",
+      "sha256": "56c156778786322d32c07b568cbecf18fdd9975ed33de0e0595e4583ce4a185a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0153/native/styled.png",
+      "sha256": "94a9b52751aec88e9506e947b2705dd487979d7a770fbdb79a1a6882c5c3226d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0153/completed.json",
+      "sha256": "ba0c9687a7503dbfb3f6a78aeb07e8349767186f4dc53579de3e2488eceb9888"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0104/clean.png",
+      "sha256": "40f8b9651f04a0bc2bd6a6b113072ca86789995f31a63c0c035ab45bb2714913"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0104/rows.json",
+      "sha256": "df408cf2556a7e0e3bb59eeb845d595b9e644226ec34e49c0c4826de67f65720"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0104/arrows.pptx",
+      "sha256": "fda7abd0747d688826bafe734a33110abdc9c36720df084b1fa5d5d2ffb935e4"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0104/native/styled.png",
+      "sha256": "824767ac8dfbb46c13d541ecb8f32fe0abf1b3192abcd17ab3a37b865e51a5d0"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0104/completed.json",
+      "sha256": "2952dfa1d3027cc9717041e6177199250e672fceb28011fbb7c9c9c65af329ec"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0520/clean.png",
+      "sha256": "e1d15e1db5a8845db039fbf53214e8950550497f41bad70e6ecea5dd8060b8da"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0520/rows.json",
+      "sha256": "fe26951c3d3610e2d7d645d7d4ff03e9d2bc6f84be0bf8596dfce203ddb96f7e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0520/arrows.pptx",
+      "sha256": "4b08b107ef66203c0c01aab3ac36eef857102853be417e0211d5d2ff2898e9fe"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0520/native/styled.png",
+      "sha256": "83555975ac6812a7fa84e1d2114a3d8b0893fbef255305271c7adaeccf899ea8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0520/completed.json",
+      "sha256": "297942f2f8f72c4e572f02608e207c9315b050666cd184125775e074699bc9e0"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0077/clean.png",
+      "sha256": "1e419c09c1a9dc72360fa805aeaeb4ada6cd160c8710a880e1d8342f21ec9e6b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0077/rows.json",
+      "sha256": "72938c5a2159cee20ac75b1705a2ab48b241a593d4562bb64e98622c279be70a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0077/arrows.pptx",
+      "sha256": "9d6a21568ca8ebadbe1e7222dd61060377f3e615b60064fc3a1f6b427a9d5496"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0077/native/styled.png",
+      "sha256": "23528f749f38386a151d9fef011e32eba6f70e0eacf963cbec6b26fe3689580f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0077/completed.json",
+      "sha256": "37f2ffb8e39283a921d70d872b5301fcd898c7c154507d1d68514491190a30d4"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0067/clean.png",
+      "sha256": "3f8e2e63d556f5c9ab7d152a083e9a8f3107b45ab5999b6bf357e4eee1c61866"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0067/rows.json",
+      "sha256": "02232fc86e0f76bf0c5ace9f70250e7d4fe03bdaf9b1e242b1dbfb8aac69eb65"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0067/arrows.pptx",
+      "sha256": "735cb5c85070001849e94e9226d9751aab4c6dc00d803240057a13b02c79277c"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0067/native/styled.png",
+      "sha256": "f0fe762db10b1535a40cbd50886d2f707ba8e7b2e7f95cc2ea39471e096e2335"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0067/completed.json",
+      "sha256": "413a72918c4cbbc557c6312440f4393de29626a2e28fccb29195369089998089"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0170/clean.png",
+      "sha256": "549046a60cf27255f2abd0c874d52615db49c977631d381c375cb77b6c6d890d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0170/rows.json",
+      "sha256": "75c6da5f10d032fd5548c52aadfce80011b9c01edbc8b5f276c5fbbfaf12de2f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0170/arrows.pptx",
+      "sha256": "f24ee5e4992e9c8e9e90c3eb9e60d35282a5e4a0d3c9ce54257d8d47cc91a705"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0170/native/styled.png",
+      "sha256": "f4c918b62f7c18b6f548a1d5705a35d3b4d5cd25e60945dfee71f9400353e4be"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0170/completed.json",
+      "sha256": "586fff0b0fc8db34457b5d6a69148e421d156d7209b344e1d8a5f228da42c367"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0672/clean.png",
+      "sha256": "caa2e68bd3586ec774fdae8d9cf5122fd7ec385184390ebdc1f526443375208f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0672/rows.json",
+      "sha256": "8ea5709ee2431cfd618bc15ac7a171a9ec1bac5dd684e420e5790a8a0141b561"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0672/arrows.pptx",
+      "sha256": "fa8f37c66bb24e7d26a2c691a2a8079d6cb849afe26b88a2de6db7ddf192a5d8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0672/native/styled.png",
+      "sha256": "c8c29098871d1430dd8c96389606a39a3cc4a8db97874ff56325d7d1f2427697"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0672/completed.json",
+      "sha256": "f93a7e7f19db35ece5093835e05969024e11e130317873d6b1e58c43709995e8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0639/clean.png",
+      "sha256": "367a238ddaeef05d6d6593a607a1ef9348c8e7d699b22a20783d4021874c7853"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0639/rows.json",
+      "sha256": "4e185a299cbced11a55afccc7e77384a7a1bf83c33d6fd44ea2326884df36957"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0639/arrows.pptx",
+      "sha256": "82dc37bbe2ffe0c197e5f78f6a94f64d2249d504909c095737f00aa0e3263c0e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0639/native/styled.png",
+      "sha256": "6754e860814fc86e8e9e09b7c2b0276aeec914eede9ec4d6ccc3a9fd06241306"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0639/completed.json",
+      "sha256": "4169f0c702d683b1c0ba7fe95de9b4f9a29b3100fab424faba938a255777d25e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0056/clean.png",
+      "sha256": "197b691ad6b4503bb54bd86860d30095ba4ea53dca3107d2d4a3f830d1a12455"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0056/rows.json",
+      "sha256": "3ef9d79817da355a7d618486667a8a75e3fb09e778e7585c49ae836f23de058e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0056/arrows.pptx",
+      "sha256": "3d59e9e1f6ae30b282e623afef51468876fd455ef5b50513f46b0dd9e4a9b48c"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0056/native/styled.png",
+      "sha256": "636aae4afe8400bcb2cdf29f2c0cfa1e86983f818cdceea18e36897509642004"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0056/completed.json",
+      "sha256": "45598305c3b4c714c4f8c36718c377b4ccaf02408e72cf1e446a674539204dfd"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0024/clean.png",
+      "sha256": "1c684ee582375ce65a9cfebc430d58cf42b0afd7cbe97a489428b065143ea0ff"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0024/rows.json",
+      "sha256": "0e86d283a9eedef98f9126ce38ad7da74855ebea8889530ad6c9fd973cbe19f7"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0024/arrows.pptx",
+      "sha256": "f773de4fac59be44009399585a672ac0a21bd84fabd0661441d0e1ddb0c1cde0"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0024/native/styled.png",
+      "sha256": "d3c5ce978a84f67a666311be64a083f82f0c001af37daf587250576aaaf49319"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0024/completed.json",
+      "sha256": "7d436d2173085de36d5f33643e30ee342daa3bc4ca7a9f60940b02d1186e08b2"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0122/clean.png",
+      "sha256": "7a75996ab4185ee6f72d983ca818c824810c08993a55fa3564525aa05db2bce8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0122/rows.json",
+      "sha256": "92d863143130bb1e9bb191f0f0de7dae2ed86997971fcb58f968cdc0628352ad"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0122/arrows.pptx",
+      "sha256": "9dd5c86f1cb21d7f8109d7508b02b39e141344d879cfb7942b11943921a9c435"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0122/native/styled.png",
+      "sha256": "6d831dd23fb6334b10d9a89040f4f06597169bf02e776d97e331c285dc83905f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0122/completed.json",
+      "sha256": "7dec78cefa4a32a8061fc0e823c2d34bb4aeed2fdebe55ec88b60cc8703a202f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0296/clean.png",
+      "sha256": "63b151bf2b7358d5dddb155f82578009ceda9589390ea5b5723693df83b0ad4f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0296/rows.json",
+      "sha256": "4015a4cf10db10ff57607bfd208287beb9bb5f60d3a456deddc9730e82f4d75b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0296/arrows.pptx",
+      "sha256": "3ea58a45087f21a33ae7f7a17f9c89f5440b1acbad041a299b5c4c93611b7f84"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0296/native/styled.png",
+      "sha256": "5368ce589fdcd4958510106038cee37419d35961e66f40d449b555edb548248e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0296/completed.json",
+      "sha256": "8783a8633c22b54ffeea5c72f3c4fb34e7ac88b628ef18484ea94d103af4a00f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0201/clean.png",
+      "sha256": "0b1fba36c5d96c642374a56e8f388de419c8fc74ed8d203a66d6b82d350a7d5a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0201/rows.json",
+      "sha256": "c549c4ddaf78f4a5abd101d05ffd8141d2c670f58212e9b5d777e085b8a9ee6a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0201/arrows.pptx",
+      "sha256": "04f1227d8f93806d1ad1f0c5a255be7e28bc20d1407473351828e2505b6970db"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0201/native/styled.png",
+      "sha256": "12e79ffb99659ecfb0755ff27d9d3bb3599b94eccd14ccbb1e7dbc51a34d961c"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0201/completed.json",
+      "sha256": "e64dc2964b9fcdb3156a9e95c150855c7b1e250a183729a47841fbdc8834a014"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0110/clean.png",
+      "sha256": "9b5c69bce6c09c3b795af51a7f056e13ea5e204dc2d4b9e287fc60d138355668"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0110/rows.json",
+      "sha256": "56b76477ee71f0d07b49f64353d70260c3c942a61d03e256f28ad81b8e622f72"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0110/arrows.pptx",
+      "sha256": "8925cca7077ef15be8fcd9c8ee2a3968bc26963a0f1eeb98c50fb5b06478a101"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0110/native/styled.png",
+      "sha256": "3a7b47ff4eee5bb360eee937c61e2259d50a440c697290c537ca8ad1aa106900"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0110/completed.json",
+      "sha256": "b215b7cf6e0b6c29d5c0f8cb150788e5b82fcbf5a35ed96466cc6d89093948e8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0246/clean.png",
+      "sha256": "45ef8ba85e108450cc37f8aecc6d6f61cff472686e2a6ee72ade9db658680159"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0246/rows.json",
+      "sha256": "a6b88889c46978a1648f920e2d4544f655ffb8ac9bd86346deea1f0e72f4ea24"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0246/arrows.pptx",
+      "sha256": "8f460ce761f78024b603959a8ee692875a92be3b39aa446ba075e49a76bd676e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0246/native/styled.png",
+      "sha256": "94f237ef7c4dad1dc1ef6605eb46de8652ef58eeca6beb622ac93255cd4a367a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0246/completed.json",
+      "sha256": "7839e4a2396cbe76f06fb9da0f0ffd2199cfbc85e6284d90ef875d9f4c3a0b3e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0025/clean.png",
+      "sha256": "fa2d37b85e92ea45625c7521bd3085746c5662e4d2385b52a464cdd0e6619e59"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0025/rows.json",
+      "sha256": "7719372c8375d47a8ce07dffe71d841a9687a5eed4aeeedd038a1ac85349e9ad"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0025/arrows.pptx",
+      "sha256": "3364029ee3c10d2ae6a1cf73825fc8ba91235c0380a8be119868664fc004faf3"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0025/native/styled.png",
+      "sha256": "17aad4106d5227b60f6fd49e27baf97e7eb3551e9c0b50d6c8e0a459973cc80a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0025/completed.json",
+      "sha256": "6bf357c922afbb6d990dc1701644da82d259d53a1f29c8b92cc55a5688822ad8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0320/clean.png",
+      "sha256": "9becf23a94f7cd53d2490d1d81e7d3e602a5330a227a90ac2c6d7a1c5d5b9788"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0320/rows.json",
+      "sha256": "ac23c03514e5016e481be03af6940aed75eeb6cbeeaa2f3adffb83ba89d72a1e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0320/arrows.pptx",
+      "sha256": "a610b7124b50d603b4ac3bfd9770327795000e97a7d56536603bc925c73db980"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0320/native/styled.png",
+      "sha256": "58bb03565796eb6e1cf1a1ccaaeec085facd0c32046a0b858e95bc3712a7ff9f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0320/completed.json",
+      "sha256": "91d1ea5dc0b82d44f985fb4189fb64d1f394f39c8f4343047c7b1deb2bf512bd"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0028/clean.png",
+      "sha256": "132457f9b92ffaab85d36b819853434f5a596a84683247878c40c89edbae8b39"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0028/rows.json",
+      "sha256": "1632e66c26c33c0127aa41ab7100ac7bf9b9298028a9fc968c25bbca19d52837"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0028/arrows.pptx",
+      "sha256": "1ff0fb41ec45093ded918a6aaad3e3e98ea49e37b0b039cb2faf6acf91f5ac94"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0028/native/styled.png",
+      "sha256": "44e06ade3257a60cd53ab9a105d821539eacbddd72a31f7c901e9fa3bbe21239"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0028/completed.json",
+      "sha256": "07f65ef25b7395b279bd7231109a06875fe7371a66fc4c7a72abd215d131db68"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0183/clean.png",
+      "sha256": "3000a064843333faf222c9918cedd71e6cc9ca713b67f81f39bd3e9e01ac6305"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0183/rows.json",
+      "sha256": "03a4fa598677f653e3ed9f1d13901e97f79ad8994a387d5f5e1310d4c15989bd"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0183/arrows.pptx",
+      "sha256": "4d27e086f5ee0497d58a29c5289b9c5a9b23931f8672e7b85e14a71474204d02"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0183/native/styled.png",
+      "sha256": "e0ddd42df2498a8d8ac040314ff4c747351abd9ef2ec2c7135c7baf3569af00d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0183/completed.json",
+      "sha256": "a7d24129ca963d6bbdc605a1d78b660e72a32514126f154a0475f4546b2ec9a3"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0237/clean.png",
+      "sha256": "6d838b182f0a8fc27dd9b89455694864d22f81927e096a8f18f704af63c117e9"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0237/rows.json",
+      "sha256": "0955695614c8f18d30079ff5d461587b5e635c6c91ebb0f33e5b737c5bb27144"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0237/arrows.pptx",
+      "sha256": "9f289edb60f36289ebfb92b530d3b2726592bbf026d8da895739f238ecd34425"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0237/native/styled.png",
+      "sha256": "d920c16153f5620e7deccbb865cdfa029f263c4bf775bfe9541e91e93f6397c6"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0237/completed.json",
+      "sha256": "eee5c7c2bf5ec13075d5658413621553e40ccf0a2d4cbdcfc706c454218f1449"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0027/clean.png",
+      "sha256": "16b13c0de41ec8df8b9f1e0d35f655d6724cd9c1709d6dca6b346d8cc9f8c9c5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0027/rows.json",
+      "sha256": "7d40e421d699eafaee94633a86ea16565b9dc2938d3495bd52433f8a79543cc1"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0027/arrows.pptx",
+      "sha256": "9539b8f272c02896b0c3fa028ace56a3397a897d9eedb97127c73caafc826670"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0027/native/styled.png",
+      "sha256": "da96c8c8118b97e26ee33ba0c7a4810d94a9cfa4d86fe2deda2ff4bec908e69d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0027/completed.json",
+      "sha256": "6fc642a309c26a2bcdc0db039d739b7715256b751d4da3cc5af14393500181d3"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0008/clean.png",
+      "sha256": "29928598c7a08ff31eb5fd4ca46613ddaa8458b07308221d34100072078fa520"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0008/rows.json",
+      "sha256": "cf697a15d2d20534a01ae17ffb71361fd014ff4a3cc7658a8236115c12d89e6a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0008/arrows.pptx",
+      "sha256": "44c71560ec22194a509152b73ebbe3828f2b321c4f2796387cd378f80faa6714"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0008/native/styled.png",
+      "sha256": "4933697dd41283d85c9ab5881c4f664bd99fe681af64049b4e19dce188b8b238"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0008/completed.json",
+      "sha256": "74d0943024dbb1b3253034b38851c90238103f744c4103bf1a002b956fe4479e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0963/clean.png",
+      "sha256": "90ffe1ac7d15b3ed823d84f70de0a62c8321d412451608ed8b55c0573d6728ee"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0963/rows.json",
+      "sha256": "50ea153654ed0aa6d1330a9e2170c45a1492fd69ecb63f219ae4086268d5f4a0"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0963/arrows.pptx",
+      "sha256": "ec22a4b3bcdcd0ce14a10d50b65ad2332046727d6669e1110d8091604499ee3a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0963/native/styled.png",
+      "sha256": "ac698202a9b80af86b7ded0557b8d72fe2b85953407c3ef7b5a2c2baef07e26b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/cases/task_0963/completed.json",
+      "sha256": "1d35e76ab4754b93b0ab1a1a475402ffa9df977e3d4a4efa273ff26d833be557"
+    }
+  ],
+  "v037_localization_type_route4": [
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/config.json",
+      "sha256": "bebc4eae0098d90894e01db0c33d6ea692fbd8f338c2b837e481f964283b28fd"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/manifest.json",
+      "sha256": "f94745fbb493ceb2a6a108f77e94ca507dd9da244383562d0e8c3f007c732072"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/execution.json",
+      "sha256": "3054f992f2144f5ca1690d749c26679b74599f6bdf988be4e3ef036f0daddefa"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/progress.json",
+      "sha256": "6823b0e434776eb78547595fd01188dcf03930518d656e94ff30ce6f53091b72"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/input/target.json",
+      "sha256": "3e5b3a02c2c26b6dcf2523b8dde8e59dc18ca4e286e735c8c74d3fa62b8602c4"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/geometry/result.json",
+      "sha256": "4b5f101b9011dd4b6c314a7c8ffb008831a24eef84b39bcce893961971d87aa6"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/geometry/dispatch.json",
+      "sha256": "0e02ce2952d8b8858b64c06a16a560a15c19141e709a948044417c472182467b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/final_rows.json",
+      "sha256": "c3fe420f98f60e5935a43b7bd019108c6c3cfbe74bd9a02aafb561ea6ceec4c7"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/final/target.pptx",
+      "sha256": "edc63fde97554fda9d3884bc9a3cbc1656c855430f234039e37624f4434b8231"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/final/native/styled.png",
+      "sha256": "553b13bbc9f2a78d0c38cbc1b95f22b4631a9daeb18ecae9ca56b81c85812e68"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0104/completed.json",
+      "sha256": "ef0d1c9b2d425e8a15b794957a7c04e95a891dc3e88f8592b96ee3ba6def127d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/input/target.json",
+      "sha256": "cb39558d52530d7efafb0f749379c6dd648330ad1870e76b11c0ede9b37904d6"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/geometry/result.json",
+      "sha256": "c49b15682d8ca0e9cf6140689141b0f4b604061b93fb38d81aafbbd88779458a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/geometry/dispatch.json",
+      "sha256": "0e02ce2952d8b8858b64c06a16a560a15c19141e709a948044417c472182467b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/final_rows.json",
+      "sha256": "c3866fc0e77109739a34fcbdfb538b690f9b93c992609178b23171cb18d25f5a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/final/target.pptx",
+      "sha256": "f537ead6532269eec901ee174a563bd8954ed84d11da58bd4c18c3d4fb607358"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/final/native/styled.png",
+      "sha256": "5eac4d66d2df4e6c506b8feab2cf3f7af14be300ccc8b42d177c2d7c98e0ba97"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0639/completed.json",
+      "sha256": "723daf959de27493f1130a845bf56c36d3c38423f2c0ba483f2227db0ce11693"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/input/target.json",
+      "sha256": "7bada9069ad949d4e59eb8ee1b1169b538ca2c4010e53c79f2c23d7957fc5fd8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/geometry/result.json",
+      "sha256": "c4ac1446981f7db7985333e8de65a5bd44cc75b2942463116374af0be00cdf7b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/geometry/dispatch.json",
+      "sha256": "0e02ce2952d8b8858b64c06a16a560a15c19141e709a948044417c472182467b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/final_rows.json",
+      "sha256": "2eb275a2d4e874bb5150b5f23ca94ffcd50402f5710043bfadf6ff7539247e8b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/final/target.pptx",
+      "sha256": "8e5d96812cb9872b627d4bcd515adff5f1a6b4f89b2c6b59a8325e38db2e0260"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/final/native/styled.png",
+      "sha256": "e29e04dc1f5d10793befe0bead5d6565005895705cd0d6d2bfd03f3d25d4c326"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0024/completed.json",
+      "sha256": "d8ec515c486d58ef1048576a99178e5ac9496e9468ec4b2beea5dbd6d89440ca"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/input/target.json",
+      "sha256": "8550e33e2f5102605dfa798f837bfdd20c7b4a8f1651cf0ca8feb71add2e3399"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/geometry/result.json",
+      "sha256": "51ec34cbe34c4638671d467a7b727d20315b6a9ba80c9c0cd56d573af0ec3b64"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/geometry/dispatch.json",
+      "sha256": "0e02ce2952d8b8858b64c06a16a560a15c19141e709a948044417c472182467b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/final_rows.json",
+      "sha256": "bc1e460e7cba4b284a74fbaf6898f612a365f8570771bb712d31af626f2bfbc3"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/final/target.pptx",
+      "sha256": "f96e3b6055acb39187672749a6f47758bb2fd74ac9849dde2d130fc98298a8ab"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/final/native/styled.png",
+      "sha256": "e9c68f413f690cc47d7d91e085b1c170466bce83cdb4213f0fa0d06b9ed7ceca"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4/cases/task_0028/completed.json",
+      "sha256": "05e3d8f9f063067e4db4fa17a81ff2d85a5c7ed7fc7472b8fe737bb18e355f1d"
+    }
+  ],
+  "v038_round_terminal_style4": [
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/config.json",
+      "sha256": "139d994bdb0b6778eaff7a4a0fafe06b18b822d5b3b3623624a24c97b5c65183"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/manifest.json",
+      "sha256": "4be9226f7a74cffdd7896e0d18112f620eb7232502862b2a1e4aa2bbbeea179e"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/execution.json",
+      "sha256": "0475a10d8b0c282abd8870f2f11d7b113fd68a6c4e91e8bdf6cf025a29a53d14"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/progress.json",
+      "sha256": "99c08aaac9c616fc5c834327e01316051266d2fb322ca9ec6776930f72ba74e5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/input/clean.png",
+      "sha256": "c280598f37d61adba839f4116b5f7506c97456ba72bb6794b387352d7ce907a3"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/input/rows.json",
+      "sha256": "b4f9ccdaa9237179c059ba1035155e3e7542b5bf16e0019a200d6dc56fe079af"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/head_changes.json",
+      "sha256": "5294248176169920c813eec0acf0b5d5bb253d6cf9ab40560c1ebd736dd23220"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/style/rows.json",
+      "sha256": "2314bfaf3bbc7939c4a48a226cdc98225de651d836bad0ee75b26472d4d9c4e2"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/style/rev_00/render.png",
+      "sha256": "46329fd6bf8004aea66bf89783103d816b3e913f8c79bb6f3c13ef7ba8f73920"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/style/rev_00/styled.pptx",
+      "sha256": "6937381d8e79fdec8ac85429d2b1931503238d1827cd5e86d1fcbb3fd913ecd1"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0028_07aff40611c0/status.json",
+      "sha256": "67cebaac8d606d1a9863cb53c473ee61a7b7e37a48131d0808600e27fd371eed"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/input/clean.png",
+      "sha256": "a1952c33dc183e0a10795d58420139d32d45b22b3bf5fdfa67068057c03590c5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/input/rows.json",
+      "sha256": "7bfb0b0896417ec81d3f82f150ecdd1fccb7ee44a79da96b4e623761bd5eae56"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/head_changes.json",
+      "sha256": "cdad5e583ca04115914ff40369dcdee24b07232439b71d1091b451901cc819de"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/style/rows.json",
+      "sha256": "a4d170620be42c835fc53549c7b306f8ac1420462b8c79fc243c864353a51471"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/style/rev_00/render.png",
+      "sha256": "836692d0fd39c408a8d084c251b19de6447bea4307ef8d8f7d51766c891b44eb"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/style/rev_00/styled.pptx",
+      "sha256": "377159e28731999b80a90ed04fdaf16fd7235f732a74a15f51f0174caf93b66f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_16ae635eeaa8/status.json",
+      "sha256": "05546e0dcc4c1a5f2bd78d7885daa872e0c09672c5f195b8ae9e6bdb78eacc45"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/input/clean.png",
+      "sha256": "b931676dd7a49091abd8136616fffceeeb0350da58cbf91fd6ea0f20addfc348"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/input/rows.json",
+      "sha256": "2d12d4793ab26f14d1d62e408809d9d3e4a91d99bc34d4e06e3c9a4fc646e787"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/head_changes.json",
+      "sha256": "31b24f094e6b6a8b9763acdb233865695b071956c7214b93f193cca14454f975"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/style/rows.json",
+      "sha256": "c8e3c6a74266490d90a889c79539c3d3983321b1d77461d5e10c125927870048"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/style/rev_00/render.png",
+      "sha256": "e320bbb8a05b8a80d4bbde9b6c488793a920c7bef668e66d03ddbd981fd33134"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/style/rev_00/styled.pptx",
+      "sha256": "859b12196aae2ed882ad0346b9b6be32edcbff3b7c33e57ed7238f549c6ef909"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_b2c2cf060b6e/status.json",
+      "sha256": "69e06a305ca136362eef91eee623696e976fadef6b87b76588f58570ba9edad5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/input/clean.png",
+      "sha256": "be98e57d5be94da110561cfe569520905d01ebc2f0df7d1814df1a07a0f56284"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/input/rows.json",
+      "sha256": "8c8a4623ae127a4fae1c686490eb84ab34a8c4a496ba12f27d33c1e90d90885d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/head_changes.json",
+      "sha256": "3d4f9243e7608248c7b90f4ce174dc870d05054de07aac60c67639bf6c0bf6e3"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/style/rows.json",
+      "sha256": "35159e0f90a3df25bef10e7c28a7c343990c6f561a4f88ed727c1bc5f2af83d8"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/style/rev_00/render.png",
+      "sha256": "65530a0380c4aa7413080d8ccfb57e44a499489d9fc44545dc43606924e51966"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/style/rev_00/styled.pptx",
+      "sha256": "cb12ef501a8cc2ebc8035071c305e4d6fbd19026c24bc20c76c08ff34a7ce819"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_134baa8b4c88/status.json",
+      "sha256": "b74122ce7bd48b35f153b5547d4865dc4ad99ee2b625e5c382c245b9ee7eccf2"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/input/clean.png",
+      "sha256": "a1952c33dc183e0a10795d58420139d32d45b22b3bf5fdfa67068057c03590c5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/input/rows.json",
+      "sha256": "0ed55ac19d047c7cf263dae160643cb735ffe8ac06f0c358c7defe791f6d5dbf"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/head_changes.json",
+      "sha256": "dad832236cf911955f241475d4e6eeb36acaecda65c648e6e9697f430567eb9c"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/style/rows.json",
+      "sha256": "c0f95be2b8f8ed2ff368352c3c967cf3d09720a92b738113c8642efee5bdeee5"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/style/rev_01/render.png",
+      "sha256": "e283fefc315861dedfcdbab2db21be0d3a780ac30a46cdf2a5335cb236aa2587"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/style/rev_01/styled.pptx",
+      "sha256": "ebfc1a90fd1a86a0f7824c0bd1714f86462057792653b1154cdae35313912cbf"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0122_ae3db219edb6/status.json",
+      "sha256": "c52df941b74ad0424a448793c8ffbe5de5a90507aa46f40fc1b61cb17b1bb95d"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/input/clean.png",
+      "sha256": "e3c263dc1040c6ce1ca33ca5b9d642cdce1a915422d2b24610c7436ac5dec997"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/input/rows.json",
+      "sha256": "db7e7cd9573df85165628e9f9b0475ea81fe6b84f4e5f9c7fb27e0e1d351778b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/head_changes.json",
+      "sha256": "f6c631180dbe74e53df253fdbb906d9f5911ff9ba17cea5c1a089003a5b2dfdc"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/style/rows.json",
+      "sha256": "b5e3a5a47bca4d7cda15d71f7d06c025743d3cd8e72480b919b8658ff48155e9"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/style/rev_00/render.png",
+      "sha256": "4883e8cfa51be26a067e013fed376060b5aa7f1bce793faf7dcee841f4405e2b"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/style/rev_00/styled.pptx",
+      "sha256": "bf789de20f8e27c98a2d98c41e12a66cf3f280e709ebb6003575c1ea438a67ad"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0077_faec39c21199/status.json",
+      "sha256": "cd09fed7d3665d1cdffb074c5376b825a431ca9d26975c004545a47135341226"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/input/clean.png",
+      "sha256": "6d2ccac40fbbf5aa0c14351034752478d7891374d597e5a7ee69d7ea8bab9d46"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/input/rows.json",
+      "sha256": "fa3199abac940b9591845a59534e659d47469890c44be207c47bf620db89d93c"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/head_changes.json",
+      "sha256": "18126ba808159a70613395fca58cdaa14fa5366f22af930368f1a2977aec991f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/style/rows.json",
+      "sha256": "69b1e8115d941f4aba6ddc0f75d143748e4bd236b56ea0b801beb6baac09d95a"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/style/rev_00/render.png",
+      "sha256": "2956a66bcf62785322bcc53beb4cd8dcda53c9dfee1663815c5b7eb7fe23802f"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/style/rev_00/styled.pptx",
+      "sha256": "23115d25435f2bc31ecb648eac5edc617018f2adbd6308e3f7b42b38bb3e85fe"
+    },
+    {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4/batches/task_0056_0ea710465b61/status.json",
+      "sha256": "94ecc762567107e61755a60ca5a62d843b284bb8726fbd0189f37f1f966029f5"
+    }
+  ]
+}

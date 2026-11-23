@@ -1,0 +1,11 @@
+{
+  "tests_passed": 14,
+  "api_calls": 0,
+  "resolution_interval": [
+    1080,
+    1536
+  ],
+  "fixed_1536": false,
+  "crop_unchanged": true,
+  "request_max_attempts": 3
+}

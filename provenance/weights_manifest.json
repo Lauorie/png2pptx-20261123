@@ -1,0 +1,156 @@
+{
+  "files": [
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/README.md",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/README.md",
+      "bytes": 8622,
+      "sha256": "cf56857f5cca44c45353e015bb0b4da7ebc5449c6473a0af2aaa9f9ed8b345cb",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/README_CN.md",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/README_CN.md",
+      "bytes": 6742,
+      "sha256": "80a90331f0f3406e201905b3588a4b687f8c977e19996a8a81462acadb1efc53",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/added_tokens.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/added_tokens.json",
+      "bytes": 8005,
+      "sha256": "d0ff3acec259fabfafc1ffa67638aeaf58203e5e604648fb44f072e4efe040c4",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/config.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/config.json",
+      "bytes": 2631,
+      "sha256": "6497591f64cb0dd6917fbb10c0cd13024e5817179a9aa3700998eb137a553d6b",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/merges.txt",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/merges.txt",
+      "bytes": 1670344,
+      "sha256": "455e0caaa06abffc663e9282dfe71dde07fd1991eaf24146bf08793c4dba4497",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00001-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00001-of-00008.safetensors",
+      "bytes": 4966078840,
+      "sha256": "2c1c34004cc8af1d8117f77f4ab3898d9ee6709f0c5c6ca67ac89a8cbe3a7556",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00002-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00002-of-00008.safetensors",
+      "bytes": 4932742056,
+      "sha256": "25976ebcae74749ce915dd8b5657fff8d06abfcd92122d6f1155047431caec30",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00003-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00003-of-00008.safetensors",
+      "bytes": 4983075328,
+      "sha256": "b4e9a064c19af0a021fc80505ac9189e55305bd89d6b075796ca2116dc14e7cd",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00004-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00004-of-00008.safetensors",
+      "bytes": 4949521032,
+      "sha256": "04bc2b31e28bb2fad73e21c7e8656ca4e1b846ccdab1991a9221926f67911702",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00005-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00005-of-00008.safetensors",
+      "bytes": 4932725616,
+      "sha256": "531f26640e0810c0eb6eaa6578e0dd09fe67e9a1c4c385a18f091a53d2500ba6",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00006-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00006-of-00008.safetensors",
+      "bytes": 4999870800,
+      "sha256": "e9ddda7a6ab2c7de1840bb9b1c08a9df2aa161ef3c063a744977c4d74dac1d98",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00007-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00007-of-00008.safetensors",
+      "bytes": 4932725608,
+      "sha256": "a9cb58e5c45c8c857fe3462eb4c38f6fa25b19789de56dd95a0abf92175145ed",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model-00008-of-00008.safetensors",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model-00008-of-00008.safetensors",
+      "bytes": 369118856,
+      "sha256": "90862be20f40e667de050ef5dd78bb13393fb1ac23264552b9040be9a2608f35",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/model.safetensors.index.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/model.safetensors.index.json",
+      "bytes": 113453,
+      "sha256": "14bd9eda56dc3d520fe6127bf158b2eed292d3a7ac73667586390eb8e03491b9",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/special_tokens_map.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/special_tokens_map.json",
+      "bytes": 39951,
+      "sha256": "529306ff26be5cf190b4d96781e63c7dccd03ef0a39f87c0f1289d2d5a67a02f",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/tokenizer_config.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/tokenizer_config.json",
+      "bytes": 63546,
+      "sha256": "7433b95cec590c7d687259e81bca1bc4630ff39773dbf7f30f7df27a99748077",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sensenova/SenseNova-U1.5-8B-MoT/vocab.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/models/SenseNova-U1/SenseNova-U1.5-8B-MoT/vocab.json",
+      "bytes": 3383407,
+      "sha256": "87a257b04b17642a0688c98cd1df89c398bda4fee532d6f88b38a659ecb4ac8d",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sam3_best_epoch7/best.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_sam_ckpt_20261015/runs/full40_best_20261016_111338/weights/best.json",
+      "bytes": 109,
+      "sha256": "ba0ad7d62f3954ed69cff636ec92c10331d46ac9aee20e14fe3ee5e095f4e901",
+      "independent_copy": true,
+      "source_destination_equal": true
+    },
+    {
+      "path": "weights/sam3_best_epoch7/best.pt",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_sam_ckpt_20261015/runs/full40_best_20261016_111338/weights/best.pt",
+      "bytes": 10081250502,
+      "sha256": "a9dc4a2a9752165feac412f961c6fa6e017f60fb8f178621d9caba93aa0276ed",
+      "independent_copy": true,
+      "source_destination_equal": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "description": "Five native DrawingML head types rendered with the same connector width. Labels added after actual PPT rendering. Shape legend only, not target size or color estimates.",
+  "types": [
+    "triangle",
+    "stealth",
+    "arrow",
+    "diamond",
+    "oval"
+  ],
+  "files": {
+    "head_types.png": "216aac4782c8b96971ab84811d31fa2af235a51f4cdcfbd19f4c1bd56a1eae40",
+    "head_types.pptx": "06abf465d743063ab621f064cb06c9d772cb4a334547730569e38435faf03fb7"
+  }
+}

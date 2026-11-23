@@ -1,0 +1,45 @@
+{
+  "base": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/runs/bbox_frontend_full125_20261024_v15/code",
+  "imports": [
+    {
+      "file": "post_tile_sam.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/post_tile_sam/post_tile_sam.py",
+      "sha256": "31bdd07bf63286f2789a66858a7790b92b4c7e3aac282d6211227b851345ce54"
+    },
+    {
+      "file": "test_post_tile_sam.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/post_tile_sam/test_post_tile_sam.py",
+      "sha256": "aed5d6f09e46b12b1e481c892c8cf922f0808312ed69124ca7cc437af21f1d9a"
+    },
+    {
+      "file": "region_partition.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/region_partition/region_partition.py",
+      "sha256": "b61a3bca5fdf8023bc4fcbaf3b8f1a265886d2b74dc82cb2886c370676bd76c1"
+    },
+    {
+      "file": "legacy_region_partition_v17.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/region_partition/legacy_region_partition_v17.py",
+      "sha256": "81edbe1b8b8bf9613b9ccaae6dbf4e49cac02f957be9b8431a609e1d2ad6c8d5"
+    },
+    {
+      "file": "export_handoff.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/region_partition/export_handoff.py",
+      "sha256": "7509d6bbd28de0e318e418ff5026651174134063dfb5557726b74ec4a5b9c515"
+    },
+    {
+      "file": "test_region_partition.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/region_partition/test_region_partition.py",
+      "sha256": "c0e06c2ef0f9add471b1cb24bd23a017f69176bee838b3bc5bcb17876f96d8e1"
+    },
+    {
+      "file": "owner_refs.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/owner_refs/owner_refs.py",
+      "sha256": "948a15d771cf704d0aa7d9418308ed8f74c7327398589190cfeb8c81014786bd"
+    },
+    {
+      "file": "test_owner_refs.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/working/owner_refs/test_owner_refs.py",
+      "sha256": "44cd039f5569605b309471c0a0d5cd8b70028712e7f1386ab5e01a4e3d40ddff"
+    }
+  ]
+}

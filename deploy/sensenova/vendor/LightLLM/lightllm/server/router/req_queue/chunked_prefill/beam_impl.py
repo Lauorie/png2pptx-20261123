@@ -1,0 +1,172 @@
+import uuid
+import time
+from typing import List
+from ...batch import Batch, Req
+from lightllm.server.router.req_queue.base_queue import BaseQueue
+from lightllm.utils.log_utils import init_logger
+
+logger = init_logger(__name__)
+
+
+class ChunkedBeamContinuesBatchQueue(BaseQueue):
+    def __init__(self, args, router, dp_index, dp_size_in_node) -> None:
+        super().__init__(args, router, dp_index, dp_size_in_node)
+        return
+
+    def _init_cache_list(self, current_batch: Batch, is_busy):
+        if current_batch is not None:
+            self.cache_len_list = [
+                (req, req.get_tuple_tokens(is_busy, self.router.router_statics.ema_req_out_len))
+                for req in current_batch.reqs
+                if req.sample_params.suggested_dp_index == self.dp_index
+            ]
+        else:
+            self.cache_len_list = []
+        return
+
+    # @calculate_time(show=True, min_cost_ms=0.1)
+    def _can_add_new_group_reqs(self, cur_handle_group_reqs: List[Req], is_busy, new_batch_first_router_need_tokens):
+        for req in cur_handle_group_reqs:
+            self.cache_len_list.append(
+                (req, req.get_tuple_tokens(is_busy, self.router.router_statics.ema_req_out_len))
+            )  # hard to analysis
+
+        self.cache_len_list.sort(key=lambda x: -x[1][1])
+
+        need_max_token_num = 0
+        cumsum_len = 0
+        exist_group_req_set = set()
+        for index, (req, (cur_input_len, cur_ouput_len)) in enumerate(self.cache_len_list, 1):
+            if req.group_req_id not in exist_group_req_set:
+                exist_group_req_set.add(req.group_req_id)
+                cumsum_len += cur_input_len
+                need_max_token_num = max(need_max_token_num, cumsum_len + index * cur_ouput_len)
+            else:
+                # 因为有共享的token，所以
+                assert cur_input_len - req.input_len >= 0
+                cumsum_len += cur_input_len - req.input_len  # 减去共享的部分
+                need_max_token_num = max(need_max_token_num, cumsum_len + index * cur_ouput_len)
+
+        # prefill token 计算, 因为对beam的prefill计算过程是共享的，所以只计算一个请求对应的token数量
+        new_batch_first_router_need_tokens += req.get_first_router_need_tokens()
+        ok_token_num = (
+            need_max_token_num + self.router.shared_token_load.get_frozened_token_count(self.dp_index)
+            < self.max_total_tokens
+        )
+
+        ok_req_num = len(self.cache_len_list) <= self.running_max_req_size
+
+        # prefill ok
+        ok_prefill = new_batch_first_router_need_tokens <= self.batch_max_tokens
+
+        if ok_token_num and ok_req_num and ok_prefill:
+            self.router.shared_token_load.set_estimated_peak_token_count(need_max_token_num, self.dp_index)
+            self.router.shared_token_load.set_dynamic_max_load(
+                (need_max_token_num + self.router.shared_token_load.get_frozened_token_count(self.dp_index))
+                / self.max_total_tokens,
+                self.dp_index,
+            )
+            return True, new_batch_first_router_need_tokens
+        else:
+            return False, new_batch_first_router_need_tokens
+
+    def _filter_aborted_reqs(self):
+        # 先移除在等待队列中已经处于aborted状态的请求, 如果发现存在aborted的请求，
+        # 则休眠10ms，保证httpserver将所有属于一组的请求都置为aborted请求，再将
+        # 请求从队列中移除。
+        exist_aborted_req = len([req for req in self.waiting_req_list if req.is_aborted]) > 0
+        if exist_aborted_req:
+            time.sleep(0.01)
+            aborted_reqs = [req for req in self.waiting_req_list if req.is_aborted]
+            self.waiting_req_list = [req for req in self.waiting_req_list if not req.is_aborted]
+            for req in aborted_reqs:
+                req: Req = req
+                logger.debug(f"router abort req id {req.request_id} shm_index: {req.index_in_shm_mem}")
+                self.free_aborted_req_cpu_cache_pages(req)
+                self.router.shm_req_manager.put_back_req_obj(req)
+        return
+
+    # @calculate_time(show=True, min_cost_ms=10)
+    def generate_new_batch(self, current_batch: Batch):
+        if len(self.waiting_req_list) == 0:
+            return None
+
+        # 如果当前已经被调度的请求数量超过了上限，直接不调度新的请求了。
+        exist_req_num = self.get_batch_dp_req_size(current_batch)
+        req_is_full = exist_req_num >= self.running_max_req_size
+        if req_is_full:
+            return None
+
+        self._filter_aborted_reqs()
+        if len(self.waiting_req_list) == 0:
+            return None
+
+        # 判断服务是否繁忙
+        is_busy = self.is_busy()
+
+        self._init_cache_list(current_batch, is_busy)
+        can_run_list = []
+        new_batch_first_router_need_tokens = 0  # 主要是对 prefill 大块计算时候的token数量限制
+        cur_group_reqs = []
+        for req in self.waiting_req_list:
+
+            if self._add_to_group(cur_group_reqs, req):
+                continue
+
+            ok_insert, new_batch_first_router_need_tokens = self._can_add_new_group_reqs(
+                cur_group_reqs, is_busy, new_batch_first_router_need_tokens
+            )
+            if ok_insert:
+                can_run_list.extend(cur_group_reqs)
+                cur_group_reqs = [req]  # 等待判断的组
+            else:
+                cur_group_reqs = []
+                break
+
+        if len(cur_group_reqs) != 0:
+            ok_insert, new_batch_first_router_need_tokens = self._can_add_new_group_reqs(
+                cur_group_reqs, is_busy, new_batch_first_router_need_tokens
+            )
+            if ok_insert:
+                can_run_list.extend(cur_group_reqs)
+
+        new_batch = None
+        if len(can_run_list) != 0:
+            new_batch = Batch(uuid.uuid4().int, can_run_list, dp_size_in_node=self.dp_size_in_node)
+
+        self.waiting_req_list = self.waiting_req_list[len(can_run_list) :]
+        return new_batch
+
+    def _add_to_group(self, cur_group_reqs, req: Req):
+        if len(cur_group_reqs) == 0:
+            cur_group_reqs.append(req)
+            return True
+        else:
+            if req.group_req_id == cur_group_reqs[-1].group_req_id:
+                cur_group_reqs.append(req)
+                return True
+            else:
+                return False
+
+    def _calcu_batch_token_load_batch_not_none(self, current_batch: Batch):
+        is_busy = self.is_busy()
+        self._init_cache_list(current_batch, is_busy)
+        self.cache_len_list.sort(key=lambda x: -x[1][1])
+        need_max_token_num = 0
+        cumsum_len = 0
+        exist_group_req_set = set()
+        for index, (req, (cur_input_len, cur_ouput_len)) in enumerate(self.cache_len_list, 1):
+            if req.group_req_id not in exist_group_req_set:
+                exist_group_req_set.add(req.group_req_id)
+                cumsum_len += cur_input_len
+                need_max_token_num = max(need_max_token_num, cumsum_len + index * cur_ouput_len)
+            else:
+                # 因为有共享的token
+                assert cur_input_len - req.input_len >= 0
+                cumsum_len += cur_input_len - req.input_len  # 减去共享的部分
+                need_max_token_num = max(need_max_token_num, cumsum_len + index * cur_ouput_len)
+        return (
+            need_max_token_num,
+            (need_max_token_num + self.router.shared_token_load.get_frozened_token_count(self.dp_index))
+            / self.max_total_tokens,
+        )

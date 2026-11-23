@@ -1,0 +1,59 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "line",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 2,
+      "name": "rectangle",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 3,
+      "name": "circle",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 4,
+      "name": "ellipse",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 5,
+      "name": "block_arrow",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 6,
+      "name": "polygon",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 7,
+      "name": "other",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 8,
+      "name": "triangle",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 9,
+      "name": "diamond",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 10,
+      "name": "solid_3d",
+      "supercategory": "anything2fig_semantic"
+    },
+    {
+      "id": 11,
+      "name": "grid",
+      "supercategory": "anything2fig_semantic"
+    }
+  ]
+}

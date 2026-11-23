@@ -1,0 +1,16 @@
+{
+  "tests_passed": 23,
+  "tests": [
+    "tests/test_localization_block_dispatch.py",
+    "tests/test_block_shape_review.py",
+    "tests/test_simple_style_contract.py",
+    "tests/test_style_response_envelope.py"
+  ],
+  "new_model_calls": 0,
+  "combined_full24_rerun": false,
+  "actual_evidence_runs": [
+    "v036_style_heads24/receiver_v2",
+    "v037_localization_type_route4",
+    "v038_round_terminal_style4"
+  ]
+}

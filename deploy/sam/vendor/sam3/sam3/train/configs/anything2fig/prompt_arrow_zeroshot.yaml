@@ -1,0 +1,31 @@
+# @package _global_
+defaults:
+  - /configs/anything2fig/single_class_full_ft
+  - _self_
+
+# Zero-shot baseline: UNfine-tuned SAM3.1 with the text prompt "arrow" on the
+# held-out TEST split.  No checkpoint is placed in the eval dir's checkpoints/
+# folder, so the trainer keeps the weights loaded by the model builder from
+# model.checkpoint_path (= sam3.1_multiplex.pt).  The category name in the
+# annotations is "arrow", which becomes the noun-phrase query.
+paths:
+  dataset_root: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_prompt_arrow_20260918
+  experiment_log_dir: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_runs/prompt_arrow_zeroshot
+
+trainer:
+  mode: val
+  skip_first_val: false
+  data:
+    val:
+      dataset:
+        img_folder: ${paths.dataset_root}/images/test
+        ann_file: ${paths.dataset_root}/annotations/instances_test.json
+  meters:
+    val:
+      roboflow100:
+        detection:
+          pred_file_evaluators:
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_test.json
+              tide: false
+              iou_type: "segm"

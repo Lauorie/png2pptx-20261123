@@ -1,0 +1,29 @@
+# @package _global_
+defaults:
+  - /configs/anything2fig/arrow_line_full_ft
+  - _self_
+
+# Single-class variant: arrow and line are merged into one category
+# ("line graphics").  Only the dataset root, output dir, evaluation GT paths
+# and epoch count differ from the two-class arrow/line fine-tuning config.
+paths:
+  dataset_root: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_single_class_20260918
+  experiment_log_dir: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_runs/single_class_full_ft
+
+roboflow_train:
+  supercategory: anything2fig_single_class
+
+trainer:
+  max_epochs: 20
+  meters:
+    val:
+      roboflow100:
+        detection:
+          dump_dir: ${launcher.experiment_log_dir}/dumps/anything2fig_single_class
+          pred_file_evaluators:
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_val.json
+              tide: false
+              iou_type: "segm"
+  checkpoint:
+    save_freq: 5

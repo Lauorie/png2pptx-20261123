@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-19",
+  "source": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/png2pptx_forward_agent_clean_20261119",
+  "destination": "/mnt/shared-storage-user/intern7shared/yinjinhui/png2pptx_forward_agent_clean_20261119",
+  "method": "same-filesystem atomic directory rename",
+  "source_exists_after_move": false,
+  "all_internal_symlinks_valid": true,
+  "restore_command": [
+    "mv",
+    "/mnt/shared-storage-user/intern7shared/yinjinhui/png2pptx_forward_agent_clean_20261119",
+    "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/png2pptx_forward_agent_clean_20261119"
+  ]
+}

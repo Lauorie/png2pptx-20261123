@@ -1,0 +1,36 @@
+# @package _global_
+defaults:
+  - /configs/anything2fig/semantic_11classes_8gpu
+  - _self_
+
+# Physical microbatch: 4 images/GPU. Effective batch: 4 * 8 GPUs * 8 = 256.
+# 19234 images -> 75 complete optimizer updates per epoch, 1050 in 14 epochs.
+scratch:
+  gradient_accumulation_steps: 8
+  train_batch_size: 4
+  scheduler_warmup: 75
+  scheduler_timescale: 750
+  scheduler_cooldown: 150
+
+trainer:
+  max_epochs: ${oc.decode:${oc.env:SAM3_EPOCHS,14}}
+  skip_first_val: false
+  data:
+    train:
+      _target_: semantic_training.AccumulatingTorchDataset
+      accumulation_steps: ${scratch.gradient_accumulation_steps}
+  checkpoint:
+    save_list: [14]
+  meters:
+    val:
+      roboflow100:
+        detection:
+          pred_file_evaluators:
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_val.json
+              tide: false
+              iou_type: segm
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_val.json
+              tide: false
+              iou_type: bbox

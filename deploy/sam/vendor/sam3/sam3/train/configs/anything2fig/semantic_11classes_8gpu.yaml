@@ -1,0 +1,48 @@
+# @package _global_
+defaults:
+  - /configs/anything2fig/semantic_shapes_lines_full_ft
+  - _self_
+
+paths:
+  dataset_root: ${oc.env:SAM3_DATASET_ROOT}
+  experiment_log_dir: ${oc.env:SAM3_RUN_DIR}
+  bpe_path: ${oc.env:SAM3_REPO_ROOT}/third_party/sam3/sam3/assets/bpe_simple_vocab_16e6.txt.gz
+
+roboflow_train:
+  supercategory: anything2fig_semantic_11classes
+
+scratch:
+  train_batch_size: 4
+  val_batch_size: 1
+  num_train_workers: 4
+  num_val_workers: 2
+  # Roughly one epoch of warmup and two epochs of cooldown at global batch 32.
+  scheduler_warmup: 600
+  scheduler_timescale: 6000
+  scheduler_cooldown: 1200
+  gather_pred_via_filesys: true
+
+trainer:
+  _target_: semantic_training.SemanticTrainer
+  max_epochs: ${oc.decode:${oc.env:SAM3_EPOCHS,30}}
+  val_epoch_freq: 1
+  distributed:
+    timeout_mins: 120
+  checkpoint:
+    save_freq: 5
+    save_best_meters:
+      - val_roboflow100/detection
+  meters:
+    val:
+      roboflow100:
+        detection:
+          _target_: semantic_training.BestMaskAPDumper
+          dump_dir: ${launcher.experiment_log_dir}/dumps/semantic_11classes
+
+launcher:
+  num_nodes: 1
+  gpus_per_node: 8
+
+submitit:
+  use_cluster: false
+  cpus_per_task: 16

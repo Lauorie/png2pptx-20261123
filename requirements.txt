@@ -1,0 +1,15 @@
+# Runtime imports of the copied main pipeline; source project did not pin versions.
+Pillow
+numpy
+scipy
+scikit-image
+shapely
+opencv-python-headless
+python-pptx
+lxml
+CairoSVG
+PyMuPDF
+httpx
+requests
+jsonschema
+pytest

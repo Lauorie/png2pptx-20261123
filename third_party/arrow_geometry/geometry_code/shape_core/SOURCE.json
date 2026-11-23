@@ -1,0 +1,33 @@
+{
+  "purpose": "Reuse existing shape fitting and style contracts unchanged; arrow adapters are separate",
+  "files": {
+    "fitting/contracts.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/fitting/contracts.py",
+      "sha256": "e5768baf45c7c5a95d28642323cfab21978dd15d8cdfb9c7618d3843862c3be0"
+    },
+    "fitting/frames.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/fitting/frames.py",
+      "sha256": "5917caaa20896a009a2ed06c9b885402765f23f4e296c2d9abf04ebc4702b806"
+    },
+    "fitting/paths.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/fitting/paths.py",
+      "sha256": "9149f84bcadc7b8a8d91316d967d4ef6609aad9061fab1edd04f16ac44908541"
+    },
+    "fitting/primitives.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/fitting/primitives.py",
+      "sha256": "be323cf9b55cfec46ac370b98435e64f125d15686ebf91f8e68b3ac799c763de"
+    },
+    "fitting/adapter.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/fitting/adapter.py",
+      "sha256": "6189f30780f3419962e5374a337b77b520592aa7cd4795a0102b2a80b4a96085"
+    },
+    "styling/contracts.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/styling/contracts.py",
+      "sha256": "6a6443e5ee98ce9838f6a0656a22252fa145c67c3e2c73426d01fb9df74d21a0"
+    },
+    "styling/geometry.py": {
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_pipeline_integration_20260922/src/shape_integration/styling/geometry.py",
+      "sha256": "8615382d8f7ddd85e646b726205f1f73d0a5caa8891d0273e2e40903dc700bdc"
+    }
+  }
+}

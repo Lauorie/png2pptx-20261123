@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "path": "tests/test_style_recovery_20260921/rules.py",
+      "sha256": "2f342cd43911fa744d66c86043e7feff69486f6a9106cd7160633dfb6fe6c5d0"
+    },
+    {
+      "path": "tests/test_style_recovery_20260921/calibrate_dash.py",
+      "sha256": "c448d0ba7058c3e6c456a64ab7c80855dea3b84bd2658b29c2847cd1e393ce38"
+    }
+  ],
+  "adaptations": [
+    "explicit scene/part API",
+    "visible-only source samples; unknown spans are not dash gaps",
+    "candidate extraction retained",
+    "typed two-stop gradient candidates",
+    "no image-ID branches"
+  ]
+}

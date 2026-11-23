@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "renderers": {
+    "text": {
+      "pdf_bytes": 11188,
+      "pages": 1,
+      "native_text_preserved": true
+    },
+    "arrow": {
+      "pdf_bytes": 20135,
+      "pages": 1,
+      "native_text_preserved": true
+    }
+  },
+  "font_families": [
+    "Arial",
+    "Times New Roman",
+    "Calibri",
+    "Courier New",
+    "Cambria",
+    "Cambria Math",
+    "text_symbol_fallback"
+  ],
+  "arrow_version": "LibreOffice 26.8.0.3 bce0998afefdbc355585ca324285661a2170ba77",
+  "scope": "Synthetic native PPT; no recovered PNG or GPU inference"
+}

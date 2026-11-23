@@ -1,0 +1,39 @@
+{
+  "source_code": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v012_global_prompt_localization24/code",
+  "source_config": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v012_global_prompt_localization24/config.json",
+  "approved_draft": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/working/draft_prompt_localization24/code/PROMPT_DRAFT.md",
+  "changed_files": [
+    "global_report.py",
+    "local_review.py",
+    "presentation.py",
+    "run.py",
+    "transport/format_repair.py",
+    "transport/model.py"
+  ],
+  "added_files": [
+    "PROMPT_DRAFT.md",
+    "draft_prompt_blocks.json",
+    "draft_prompt_provenance.json",
+    "draft_prompts.py"
+  ],
+  "prompt_text_changed": false,
+  "new_discovery_calls": true,
+  "old_model_outputs_reused": false,
+  "integration_only": [
+    "Use stage-specific approved prompt text",
+    "Fill LOCAL image size from saved frame metadata",
+    "Select separate review SYSTEM",
+    "Support plain text in existing format-retry code",
+    "Preserve existing candidate semantic-hint sanitization before text rendering",
+    "Update report labels"
+  ],
+  "unchanged": [
+    "Coordinate transforms",
+    "Input image preprocessing",
+    "IoU compression",
+    "Local batch scheduling and crop",
+    "Protocol validators",
+    "Model, inference budget and concurrency"
+  ],
+  "created_at": "2026-10-28T05:28:56.056861+00:00"
+}

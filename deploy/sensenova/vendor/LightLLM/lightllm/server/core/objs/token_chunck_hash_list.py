@@ -1,0 +1,119 @@
+import numpy as np
+import os
+import ctypes
+from typing import List
+from lightllm.utils.log_utils import init_logger
+
+logger = init_logger(__name__)
+
+LIGHTLLM_TOKEN_HASH_LIST_SIZE = int(os.getenv("LIGHTLLM_TOKEN_HASH_LIST_SIZE", 2048))
+
+
+class TokenHashList(ctypes.Structure):
+    _pack_ = 4
+    _fields_ = [
+        ("items", ctypes.c_uint64 * (LIGHTLLM_TOKEN_HASH_LIST_SIZE * 2)),  # 存储128位哈希,每个哈希用2个uint64
+        ("size", ctypes.c_int),  # 队列大小(表示哈希的数量,非uint64数量)
+    ]
+
+    def __init__(self):
+        # 初始化头和尾
+        self.size = 0
+        return
+
+    def is_empty(self):
+        return self.size == 0
+
+    def is_full(self):
+        return self.size == LIGHTLLM_TOKEN_HASH_LIST_SIZE
+
+    def fill(self, data: List[int]):
+        if len(data) > LIGHTLLM_TOKEN_HASH_LIST_SIZE:
+            logger.warning(
+                f"Queue capcity is smaller than data size ({len(data)} > {LIGHTLLM_TOKEN_HASH_LIST_SIZE}), "
+                f"remove tail to write"
+            )
+            data = data[0:LIGHTLLM_TOKEN_HASH_LIST_SIZE]
+        if len(data) == 0:
+            self.size = 0
+            return
+        hash_array = np.asarray(data, dtype=object)
+        low_bits = (hash_array & 0xFFFFFFFFFFFFFFFF).astype(np.uint64)
+        high_bits = (hash_array >> 64).astype(np.uint64)
+        self.items[0 : len(data) * 2 : 2] = low_bits
+        self.items[1 : len(data) * 2 : 2] = high_bits
+        self.size = len(data)
+        return
+
+    def clear(self):
+        self.size = 0
+
+    def get_all(self):
+        if self.size == 0:
+            return []
+        items_array = np.array(self.items[0 : self.size * 2], dtype=np.uint64)
+        low = items_array[0::2]
+        high = items_array[1::2]
+        result = (high.astype(object) << 64) | low.astype(object)
+        return result.tolist()
+
+
+class CpuCachePageList(ctypes.Structure):
+    _pack_ = 4
+    _fields_ = [
+        ("items", ctypes.c_int * LIGHTLLM_TOKEN_HASH_LIST_SIZE),  # 元素静态数组
+        ("size", ctypes.c_int),  # 队列大小
+    ]
+
+    def __init__(self):
+        # 初始化头和尾
+        self.size = 0
+        return
+
+    def is_empty(self):
+        return self.size == 0
+
+    def is_full(self):
+        return self.size == LIGHTLLM_TOKEN_HASH_LIST_SIZE
+
+    def fill(self, data: List[int]):
+        assert len(data) <= LIGHTLLM_TOKEN_HASH_LIST_SIZE, f"data size is too large: {len(data)}"
+        self.items[0 : len(data)] = data
+        self.size = len(data)
+        return
+
+    def clear(self):
+        self.size = 0
+
+    def get_all(self):
+        return list(self.items[0 : self.size])
+
+
+class TokenPageLenList(CpuCachePageList):
+    """
+    用于记录cpu cache 每个 page 对应的真实prefix token数量, 用于支持含有 linear_att 的如qwen3.5 模型的cpu cache的
+    的最后一个页面的非满页面的碎片化处理。
+    """
+
+    pass
+
+
+class PastKVCachePageList(CpuCachePageList):
+    _pack_ = 4
+    _fields_ = CpuCachePageList._fields_ + [
+        ("token_len", ctypes.c_int),  # 对应的token数量
+        ("img_tokens", ctypes.c_int),
+        ("img_len", ctypes.c_int),
+    ]
+
+    def __init__(self, token_len: int = 0):
+        super().__init__()
+        self.token_len = token_len
+        self.img_tokens = 0
+        self.img_len = 0
+
+    def get_compressed_len(self):
+        return self.token_len - self.img_tokens + self.img_len
+
+    def __repr__(self):
+        return f"(token_len={self.token_len}, img_tokens={self.img_tokens}, img_len={self.img_len})"

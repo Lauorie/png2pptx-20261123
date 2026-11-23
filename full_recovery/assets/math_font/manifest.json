@@ -1,0 +1,10 @@
+{
+  "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/benchmark/pptbench_service/runtime/libreoffice-25.8.7.3/opt/libreoffice25.8/share/fonts/truetype/DejaVuMathTeXGyre.ttf",
+  "sha256": "40da67c0b6b03076504fbda4bf3e7b4f20b35999c98063019a3392fe9b1294fe",
+  "family": "DejaVu Math TeX Gyre",
+  "glyph_probe": [
+    119989,
+    119967,
+    119979
+  ]
+}

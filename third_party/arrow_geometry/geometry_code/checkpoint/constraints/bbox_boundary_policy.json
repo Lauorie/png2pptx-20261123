@@ -1,0 +1,10 @@
+{
+  "user_request": "越界把他拉回去，设置一个上下限，你这样直接丢弃的危害更大",
+  "applies_to": [
+    "SAM missing candidates",
+    "new-addition review replacements"
+  ],
+  "policy": "x in [0,W-1], y in [0,H-1] in actual current CLEAN input pixel centers",
+  "original_model_reply_preserved": true,
+  "baseline_boxes_immutable": true
+}

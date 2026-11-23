@@ -1,0 +1,34 @@
+{
+  "version": "shape_integration.fitting.1",
+  "sources": [
+    {
+      "path": "tests/test_fit_format/fit_geometry.py",
+      "sha256": "0921c747df2fe0df4951e760ea7be709a78fd637b04ade304be9720a5f8fdb70"
+    },
+    {
+      "path": "png2pptx/fitting.py",
+      "sha256": "837ac9046f433a0c6eb943579405d4af3022bb03803638398aa7f440ba5d49cd"
+    },
+    {
+      "path": "png2pptx/frames.py",
+      "sha256": "a3713e96c014a6e82cdff29dce26a257e25fb438ae92c1e3b5e94be36f8b7255"
+    },
+    {
+      "path": "tests/test_fit_format/local_points_no_text_bbox_20260920_131737/protocol.py",
+      "sha256": "0aff9b75e3e3435b1aabe05813dc711898e43f8a386ff3ecc37d23be3b0391a6"
+    },
+    {
+      "path": "tests/test_fit_format/local_points_no_text_bbox_20260920_131737/geometry.py",
+      "sha256": "8e76ea7183deab9a522e9b076151f18e4a26082c641cc4663a2753e79db41313"
+    },
+    {
+      "path": "tests/test_fit_format/local_points_no_text_bbox_20260920_131737/test_experiment.py",
+      "sha256": "9e954adba263c6c26fc7a7bc3a85d20b9f207ef30de2044bd78cb938dbdb889b"
+    },
+    {
+      "path": "tests/test_fit_format/compound_prompt_001_20260920_1752/test_prompt.py",
+      "sha256": "4bb6490f4a3ce46543a03ade080b340c29a2177aaa7af0d8a292d26dce3ad08e"
+    }
+  ],
+  "extraction": "Pure functions copied; no runtime import of historical runners or API clients."
+}

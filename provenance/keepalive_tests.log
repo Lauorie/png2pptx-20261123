@@ -1,0 +1,23 @@
+test_arrival_stops_idle_before_waiting_for_locks (test_idle_policy.IdlePolicyTests.test_arrival_stops_idle_before_waiting_for_locks) ... ok
+test_cancelled_partial_lock_acquisition_releases_every_lock (test_idle_policy.IdlePolicyTests.test_cancelled_partial_lock_acquisition_releases_every_lock) ... ok
+test_health_does_not_reset_idle_timer (test_idle_policy.IdlePolicyTests.test_health_does_not_reset_idle_timer) ... ok
+test_idle_controllers_can_run_on_both_gpus (test_idle_policy.IdlePolicyTests.test_idle_controllers_can_run_on_both_gpus) ... ok
+test_long_request_blocks_idle_then_waits_full_ten_minutes (test_idle_policy.IdlePolicyTests.test_long_request_blocks_idle_then_waits_full_ten_minutes) ... ok
+test_overlapping_requests_and_new_request_reset_deadline (test_idle_policy.IdlePolicyTests.test_overlapping_requests_and_new_request_reset_deadline) ... ok
+test_stream_lifetime_and_full_cooldown_after_last_chunk (test_idle_policy.IdlePolicyTests.test_stream_lifetime_and_full_cooldown_after_last_chunk) ... ok
+test_busy_rejection_health_and_cooldown_without_model_inference (test_idle_policy.SamHttpTests.test_busy_rejection_health_and_cooldown_without_model_inference) ... 127.0.0.1 - - [19/Nov/2026 12:17:02] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [19/Nov/2026 12:17:02] "POST /v1/segment HTTP/1.1" 503 -
+127.0.0.1 - - [19/Nov/2026 12:17:02] "POST /v1/segment HTTP/1.1" 200 -
+ok
+test_high_power_alone_never_starts_idle_load (test_low_power_policy.LowPowerTests.test_high_power_alone_never_starts_idle_load) ... ok
+test_low_observation_overlaps_response_cooldown_without_double_wait (test_low_power_policy.LowPowerTests.test_low_observation_overlaps_response_cooldown_without_double_wait) ... ok
+test_model_startup_does_not_count_as_idle_observation (test_low_power_policy.LowPowerTests.test_model_startup_does_not_count_as_idle_observation) ... ok
+test_own_power_rise_does_not_turn_idle_load_off (test_low_power_policy.LowPowerTests.test_own_power_rise_does_not_turn_idle_load_off) ... ok
+test_power_at_or_above_forty_resets_continuous_low_timer (test_low_power_policy.LowPowerTests.test_power_at_or_above_forty_resets_continuous_low_timer) ... ok
+test_request_stops_idle_load_and_restarts_observation (test_low_power_policy.LowPowerTests.test_request_stops_idle_load_and_restarts_observation) ... ok
+test_waits_full_ten_minutes_after_cold_start (test_low_power_policy.LowPowerTests.test_waits_full_ten_minutes_after_cold_start) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.583s
+
+OK

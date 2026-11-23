@@ -1,0 +1,56 @@
+{
+  "sources": [
+    {
+      "path": "tests/test_style_recovery_20260921/rules.py",
+      "sha256": "2f342cd43911fa744d66c86043e7feff69486f6a9106cd7160633dfb6fe6c5d0"
+    },
+    {
+      "path": "tests/test_style_recovery_20260921/calibrate_dash.py",
+      "sha256": "c448d0ba7058c3e6c456a64ab7c80855dea3b84bd2658b29c2847cd1e393ce38"
+    }
+  ],
+  "adaptations": [
+    "explicit scene/part API",
+    "visible-only source samples; unknown spans are not dash gaps",
+    "candidate extraction retained",
+    "typed two-stop gradient candidates",
+    "no image-ID branches"
+  ],
+  "native_style_optimization": {
+    "run": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/style_sam_native_20261016_v1",
+    "arm": "numeric_preserve_ep10",
+    "code": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/style_sam_native_20261016_v1/code/p13/src/shape_integration/styling",
+    "reference_arrow_experiment": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_crop_recover_20261013",
+    "sam_cache": {
+      "baseline": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/style_line_sam_20261016_v1",
+      "sam_cache": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/style_sam_native_20261016_v1/sam_lines/side96_both_ep10",
+      "checkpoint": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu_bs32_ep10_min10_20261015/checkpoints/best.pt",
+      "epoch": 10,
+      "same_sam_runtime": true,
+      "note": "Fresh epoch10 inference in the original SAM runtime; only source tile PNGs reused. Epoch7 outputs retained as intermediate control.",
+      "prior_input_audit": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/style_line_sam_20261016_v1/delivery/sam_comparison/audit.json",
+      "checkpoint_stat_at_audit": {
+        "size_bytes": 10081250502,
+        "mtime_ns": 1792133710056537091,
+        "audit_at": 1792147171.395791
+      },
+      "phase": "completed",
+      "checkpoint_identity": {
+        "checkpoint": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu_bs32_ep10_min10_20261015/checkpoints/best.pt",
+        "epoch": 10,
+        "best": {
+          "epoch": 10,
+          "metric": "coco_eval_segm_AP",
+          "value": 0.2665154277511173,
+          "checkpoint": "best.pt"
+        },
+        "size": 10081250502,
+        "mtime_ns": 1792133710056537091,
+        "sha256": "5afdd80e4cedc36b4d034faa06e56f580e06f89c325e4d52c59acc97815720c9"
+      },
+      "requests": 8795
+    },
+    "geometry_changed": false,
+    "adaptation": "Native SAM/CLEAN border profile fit, CLEAN dash periods, semantic-only model roles and stable-render context review."
+  }
+}

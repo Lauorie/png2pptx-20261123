@@ -1,0 +1,21 @@
+{
+  "source_run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v021_full_rules_aligned24",
+  "revision": "fan_grouping_clarified_20261028",
+  "changed_blocks": [
+    "review_user",
+    "discovery_rules"
+  ],
+  "changed_rules": [
+    "G1",
+    "G2",
+    "G4",
+    "R3",
+    "R4"
+  ],
+  "language_changed": false,
+  "output_protocol_changed": false,
+  "coordinate_rules_changed": false,
+  "programmatic_merge_changed": false,
+  "global_candidates_in_local_input": false,
+  "current_prompt_document": "PROMPTS_ALIGNED.md"
+}

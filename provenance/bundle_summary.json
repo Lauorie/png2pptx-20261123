@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-19",
+  "files": 42556,
+  "symlinks": 6,
+  "weight_files": 19,
+  "weight_bytes": 45152405448,
+  "indexed_bytes": 49699467898,
+  "runtime_overlay_files_source_verified": 19591,
+  "outside_bundle_symlinks": 0,
+  "hosted_multimodal_api_required": true,
+  "base_conda_environments_and_cuda_copied": false,
+  "gpu_inference_run_in_this_handoff": false,
+  "fresh_arrow_old_run_paths_cleared": true,
+  "glm_parameters_documented": true
+}

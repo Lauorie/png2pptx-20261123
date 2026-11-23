@@ -1,0 +1,90 @@
+{
+  "evidence.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/evidence.py",
+    "sha256": "b93d0eb5fa0396bf611c6f92c06161927bd9f7781930d4c0cdcf9ed3df53a0be"
+  },
+  "global_input.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/global_input.py",
+    "sha256": "c5534b323eb36348e9b0faf31efa6a83faea4ba1a4899b7fe326ada36be906e4"
+  },
+  "graph.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/graph.py",
+    "sha256": "c8cf9f55ef9e8c9920bbf96895802acc848411760afde177935bafe8e76bf27c"
+  },
+  "visual.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/visual.py",
+    "sha256": "578a8fa43e6c3fcb7f6cfb6ffc79f5074f6ce63482816acd7eb9748d69eec53e"
+  },
+  "mask_filters.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/mask_filters.py",
+    "sha256": "bc9d8e249519e81f40cf7f9b96f3dcf5505e457b860ec071adc20478bbb2482a"
+  },
+  "mask_grouping.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/mask_grouping.py",
+    "sha256": "fecabf04899c591457ced3e31af2f789fe7da740e25a9779a41bbe614aa64363"
+  },
+  "mask_keypoints.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/mask_keypoints.py",
+    "sha256": "492f891db9d19965671936431a9f8bc8b2df03e3b16f366d84eb3ad407678d55"
+  },
+  "sam_client.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/sam_client.py",
+    "sha256": "930636760c01e2d2fbd95bbb86eaf83f813cd7cd0db9458b7650b1375de781e2"
+  },
+  "contracts.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/contracts.py",
+    "sha256": "cec1be190fe56f15e8174582e0bc863f7d015de899cebafecb76875e1fb8ae5b"
+  },
+  "transport/model.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/transport/model.py",
+    "sha256": "7270c34f0dc63bd0737f5dc5264e9781a53d6161ee1b8170c652bbd8367ec4c6"
+  },
+  "transport/prompts.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/transport/prompts.py",
+    "sha256": "e82fac854f6f08b79fd336728392c8bd336de1a01e58e26cadef005256074a52"
+  },
+  "transport/client.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/transport/client.py",
+    "sha256": "12edf511a77d5df6955e5daa4b0442ee2d18da218f49c09133f9c031fd83f8e4"
+  },
+  "transport/credentials.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/transport/credentials.py",
+    "sha256": "52d2f6cd8666968a0fc1a9ed71e107febb85744504075026d5c25f7e3ea5adb1"
+  },
+  "transport/__init__.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/transport/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "transport/common.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/transport/common.py",
+    "sha256": "eda2f900314a39dd376d9dd50aa5eabd301522e885e159662025b87584da9568"
+  },
+  "lib/preview_path.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/reconstruction/legacy/preview_path.py",
+    "sha256": "c2ed10e982c64f82d753a01eb67b7f4412568fe0ba94cb264328a60480134d30"
+  },
+  "lib/native.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/reconstruction/legacy/native.py",
+    "sha256": "6cf4b016a09c366d1fc36261179b92c29da67a40485b146a38b5b0e95726fb7c"
+  },
+  "lib/viz.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/reconstruction/legacy/viz.py",
+    "sha256": "efe2ef46a8d6281d759b57e930e7b576cd06123401ef678c82ad554acff5a0b8"
+  },
+  "lib/fit.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/reconstruction/legacy/fit.py",
+    "sha256": "0644f022cdd448d2949ebdb9901680f76aef2bb8e4d842ae12e4a4927c1d8a5b"
+  },
+  "lib/style.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_discovery_evidence_20261015/reconstruction/legacy/style.py",
+    "sha256": "6dd90417589b1da6ff71e3fa8af635e23bc275bddc5294a499f0a653065560c1"
+  },
+  "inkgraph.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_graph_20261013/inkgraph.py",
+    "sha256": "65167988bad87bf359f8f896a56d42365c6e78cef060aa36da6ba974d5dc790b"
+  },
+  "arrows.py": {
+    "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_graph_20261013/arrows.py",
+    "sha256": "ac7ade804227bbf947968a95c78780c62946683669acbab7f4a1c4d59549d848"
+  }
+}

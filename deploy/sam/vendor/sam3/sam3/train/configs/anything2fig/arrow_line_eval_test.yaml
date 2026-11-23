@@ -1,0 +1,27 @@
+# @package _global_
+# Eval-only: run best_checkpoint on the held-out TEST split (new images),
+# dump segm predictions and score them. Inherits the arrow/line full-ft config.
+defaults:
+  - /configs/anything2fig/arrow_line_full_ft
+  - _self_
+
+paths:
+  experiment_log_dir: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_runs/arrow_line_eval_test
+
+trainer:
+  mode: val
+  skip_first_val: false
+  data:
+    val:
+      dataset:
+        img_folder: ${paths.dataset_root}/images/test
+        ann_file: ${paths.dataset_root}/annotations/instances_test.json
+  meters:
+    val:
+      roboflow100:
+        detection:
+          pred_file_evaluators:
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_test.json
+              tide: false
+              iou_type: "segm"

@@ -1,0 +1,38 @@
+{
+  "sources": [
+    {
+      "destination": "style_locator.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v049_pptbench125_geometryfirst_t40m_retry1_c24a64_20261030/analysis/style_failure_gt_20261105/rounds/critic_locator_layout_20261105_01/code/locator_layout.py",
+      "sha256": "a9f9000f3b2f7b1172c801309e2f989726a80aad28f2aa5df5639d8df2e42fd2"
+    },
+    {
+      "destination": "head_style_prompt.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v049_pptbench125_geometryfirst_t40m_retry1_c24a64_20261030/analysis/style_failure_gt_20261105/rounds/head_direction_consistency_20261105_01/code/head_prompt.py",
+      "sha256": "7cbf0ca75fd20c13794ac4de4bcd4f898f83b580f39124d3dc8a3f4cf4420515"
+    },
+    {
+      "destination": "assets/head_reference/head_reference.png",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v049_pptbench125_geometryfirst_t40m_retry1_c24a64_20261030/analysis/style_failure_gt_20261105/rounds/head_direction_consistency_20261105_01/inputs/reference/head_reference.png",
+      "sha256": "f1afbd16582334603cbbe3a904d097ca4a5399173fa39b94fbcfa8850b5f5c4d"
+    },
+    {
+      "destination": "assets/head_reference/head_reference.pptx",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v049_pptbench125_geometryfirst_t40m_retry1_c24a64_20261030/analysis/style_failure_gt_20261105/rounds/head_direction_consistency_20261105_01/inputs/reference/head_reference.pptx",
+      "sha256": "e5c41a3f6531a398bd4828fe3f1078120b9ff986cb6bc65a6c3489438f1f41e8"
+    },
+    {
+      "destination": "assets/head_reference/manifest.json",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v049_pptbench125_geometryfirst_t40m_retry1_c24a64_20261030/analysis/style_failure_gt_20261105/rounds/head_direction_consistency_20261105_01/inputs/reference/manifest.json",
+      "sha256": "174aa7395ff8f937596c72653e27769fdbffe90bda632c730971de6e8121d4c6"
+    }
+  ],
+  "prompt_version": "head_prompt_v004_direction_consistency_20261105",
+  "integration": "Shared adaptive locators, prompt v004 with native reference, independent heads after existing style critic/refine",
+  "adopted_files_sha256": {
+    "style_locator.py": "bb587e1d2ae27434154ce9c7fc0583f828f986b91a40405051fe8b0f26fc37e3",
+    "head_style_prompt.py": "f954fa30916637d72d41a9a81dd05e06666aa7c1f06ece380339b6ffc6d608ce",
+    "head_style_recovery.py": "ea4f6cb7dcc2ee522140a934e9222918221f51d27c0be990ac55278a0644ac92",
+    "assets/head_reference/head_reference.png": "f1afbd16582334603cbbe3a904d097ca4a5399173fa39b94fbcfa8850b5f5c4d",
+    "assets/head_reference/head_reference.pptx": "e5c41a3f6531a398bd4828fe3f1078120b9ff986cb6bc65a6c3489438f1f41e8"
+  }
+}

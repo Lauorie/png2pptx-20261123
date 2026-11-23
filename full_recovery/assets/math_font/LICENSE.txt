@@ -1,0 +1,3 @@
+Copyright (c) 2003 by Bitstream, Inc. All Rights Reserved. DejaVu changes are in public domain, math extensions are in public domain.
+
+http://dejavu-fonts.org/wiki/License

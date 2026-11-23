@@ -1,0 +1,23 @@
+{
+  "categories": [
+    "none",
+    "circle",
+    "arrow"
+  ],
+  "native_types": [
+    "none",
+    "oval",
+    "triangle"
+  ],
+  "head_width": "med",
+  "head_length": "med",
+  "shaft_width_px": 6,
+  "size": [
+    960,
+    240
+  ],
+  "render": "native PowerPoint -> LibreOffice 26.8 -> PNG; text labels added outside ink",
+  "meaning": "Generic shape examples, not target candidates or GT; not calibrated to source pixel scale",
+  "ooxml_verified": true,
+  "source_pptx": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v049_pptbench125_geometryfirst_t40m_retry1_c24a64_20261030/analysis/style_failure_gt_20261105/rounds/head_reference_recovery_20261105_01/inputs/reference/head_reference.pptx"
+}

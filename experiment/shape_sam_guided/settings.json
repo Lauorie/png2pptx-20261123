@@ -1,0 +1,63 @@
+{
+  "namespace": "ailab-llmmultimodal",
+  "charged_group": "llmmultimodal_gpu_pool",
+  "training_run": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu128cpu_20261007-032429",
+  "dataset_root": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_semantic_shapes_lines_11classes_trainval_20261006",
+  "glm_model": "/opt/glm-repo/snapshots/3f1971b7b5f7a528c9c4ef6212c8785298a8c24a",
+  "sam_threshold": 0.3,
+  "seed": 42,
+  "glm_max_tokens": 20000,
+  "glm_concurrency": 12,
+  "sam_ports": [
+    18103,
+    18104,
+    18105,
+    18106
+  ],
+  "glm_url": "http://127.0.0.1:10088/v1",
+  "baseline_root": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/shape_geometry27_20261009",
+  "baseline_run": "geometry27_glm53flash_v1",
+  "service_launcher_source": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/shape_refine_sam_20261010_v2/code/serve_glm.py",
+  "max_revisions": 1,
+  "case_workers": 3,
+  "fit_workers": 24,
+  "worker_cpu": 128,
+  "worker_memory_mib": 524288,
+  "evidence": {
+    "region_limit": 12,
+    "object_limit": 1,
+    "object_iou": 0.45,
+    "min_mask_short_side": 64,
+    "observer_numeric_bbox": false,
+    "mask_iou": 0.0,
+    "activation": "all"
+  },
+  "sam_cache_run": null,
+  "glm_tp": 8,
+  "reuse_sam_indices": [
+    "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/shape_forward_sam_20261010_v2/comparison/sam_cache",
+    "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry/runs/shape_forward_sam_20261010_v1/comparison/sam_cache"
+  ],
+  "project_root": "/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry",
+  "debug_idle_seconds": 7200,
+  "worker_max_seconds": 36000,
+  "arms": [
+    "sam_fixed_base"
+  ],
+  "arm_modes": {
+    "sam_fixed_base": "critic"
+  },
+  "recover_clipped_partial": true,
+  "sam_cache_only": true,
+  "arm_precheck": {
+    "sam_fixed_base": false
+  },
+  "sam_schedule": "fixed",
+  "evaluate_background_panels": true,
+  "evaluation_pairs": [
+    [
+      "historical",
+      "sam_fixed_base"
+    ]
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/line_discovery_grouping_20261023_v1/runs/integrated_mainline_full125_20261025_v26_c12a128",
+  "version": "v026_integrated_discovery",
+  "policy": "Frozen user-selected frontend; later discovery experiments not substituted"
+}

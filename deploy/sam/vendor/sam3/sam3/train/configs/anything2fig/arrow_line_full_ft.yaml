@@ -1,0 +1,152 @@
+# @package _global_
+defaults:
+  - /configs/roboflow_v100/roboflow_v100_full_ft_100_images
+  - _self_
+
+# Fine-tuning configuration for the COCO-format arrow/line semantic-group
+# dataset exported by Anything2Fig.  The inherited file is Meta's official
+# Roboflow full-finetuning example; only dataset-specific and mask-training
+# settings are overridden here.
+paths:
+  dataset_root: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_arrow_line_semantic_groups_20260918
+  experiment_log_dir: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_runs/arrow_line_full_ft
+  bpe_path: /home/dongdaozhu/Anything2Fig/third_party/sam3/sam3/assets/bpe_simple_vocab_16e6.txt.gz
+  checkpoint_path: /mnt/shared-storage-gpfs2/gpfs2-shared-public/huggingface/hub/models--facebook--sam3.1/sam3.1_multiplex.pt
+
+roboflow_train:
+  num_images: null
+  supercategory: anything2fig_arrow_line
+  # The upstream validation pipeline assumes box-only evaluation.  Decode the
+  # COCO RLE masks before resizing when segmentation is enabled.
+  val_transforms:
+    - _target_: sam3.train.transforms.basic_for_api.ComposeAPI
+      transforms:
+        - _target_: sam3.train.transforms.segmentation.DecodeRle
+        - _target_: sam3.train.transforms.basic_for_api.RandomResizeAPI
+          sizes: ${scratch.resolution}
+          max_size:
+            _target_: sam3.train.transforms.basic.get_random_resize_max_size
+            size: ${scratch.resolution}
+          square: true
+          consistent_transform: false
+        - _target_: sam3.train.transforms.basic_for_api.ToTensorAPI
+        - _target_: sam3.train.transforms.basic_for_api.NormalizeAPI
+          mean: ${scratch.val_norm_mean}
+          std: ${scratch.val_norm_std}
+  loss:
+    _target_: sam3.train.loss.sam3_loss.Sam3LossWrapper
+    matcher: ${scratch.matcher}
+    o2m_weight: 2.0
+    o2m_matcher:
+      _target_: sam3.train.matcher.BinaryOneToManyMatcher
+      alpha: 0.3
+      threshold: 0.4
+      topk: 4
+    use_o2m_matcher_on_o2m_aux: false
+    loss_fns_find:
+      - _target_: sam3.train.loss.loss_fns.Boxes
+        weight_dict:
+          loss_bbox: 5.0
+          loss_giou: 2.0
+      - _target_: sam3.train.loss.loss_fns.IABCEMdetr
+        weak_loss: false
+        weight_dict:
+          loss_ce: 20.0
+          presence_loss: 20.0
+        pos_weight: 10.0
+        alpha: 0.25
+        gamma: 2
+        use_presence: true
+        pos_focal: false
+        pad_n_queries: 200
+        pad_scale_pos: 1.0
+      - _target_: sam3.train.loss.loss_fns.Masks
+        focal_alpha: 0.25
+        focal_gamma: 2.0
+        weight_dict:
+          loss_mask: 200.0
+          loss_dice: 10.0
+        compute_aux: false
+    loss_fn_semantic_seg:
+      # The official example's commented mask block currently says
+      # `sam3.losses...`; the class actually lives under `sam3.train.loss`.
+      _target_: sam3.train.loss.loss_fns.SemanticSegCriterion
+      presence_head: true
+      presence_loss: false
+      focal: true
+      focal_alpha: 0.6
+      focal_gamma: 2.0
+      downsample: false
+      weight_dict:
+        loss_semantic_seg: 20.0
+        loss_semantic_presence: 1.0
+        loss_semantic_dice: 30.0
+    scale_by_find_batch_size: ${scratch.scale_by_find_batch_size}
+
+scratch:
+  enable_segmentation: true
+  num_train_workers: 8
+  num_val_workers: 4
+  train_batch_size: 4
+  val_batch_size: 1
+  # The inherited original_box_postprocessor deliberately discards model
+  # masks (its iou_type defaults to "bbox").  Segmentation evaluation needs a
+  # mask-aware postprocessor so PredictionDumper receives `masks_rle`.
+  original_mask_postprocessor:
+    _target_: sam3.eval.postprocessors.PostProcessImage
+    max_dets_per_img: -1
+    iou_type: "segm"
+    use_original_ids: true
+    use_original_sizes_box: true
+    use_original_sizes_mask: true
+    convert_mask_to_rle: true
+    use_presence: ${scratch.use_presence_eval}
+
+trainer:
+  skip_saving_ckpts: false
+  max_epochs: 10
+  val_epoch_freq: 1
+  data:
+    train:
+      dataset:
+        img_folder: ${paths.dataset_root}/images/train
+        ann_file: ${paths.dataset_root}/annotations/instances_train.json
+    val:
+      dataset:
+        img_folder: ${paths.dataset_root}/images/val
+        ann_file: ${paths.dataset_root}/annotations/instances_val.json
+  model:
+    checkpoint_path: ${paths.checkpoint_path}
+    load_from_HF: false
+  meters:
+    val:
+      roboflow100:
+        detection:
+          _target_: sam3.eval.coco_writer.PredictionDumper
+          iou_type: "segm"
+          dump_dir: ${launcher.experiment_log_dir}/dumps/anything2fig_arrow_line
+          merge_predictions: true
+          postprocessor: ${scratch.original_mask_postprocessor}
+          gather_pred_via_filesys: ${scratch.gather_pred_via_filesys}
+          maxdets: 100
+          pred_file_evaluators:
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_val.json
+              tide: false
+              iou_type: "segm"
+  checkpoint:
+    # `checkpoint.pt` is still updated every epoch for automatic resume.  Keep
+    # an immutable historical checkpoint every five epochs; each full-training
+    # checkpoint is about 10 GB because it includes AdamW state.
+    save_freq: 1
+
+launcher:
+  num_nodes: 1
+  gpus_per_node: 1
+
+submitit:
+  use_cluster: false
+  cpus_per_task: 12
+  job_array:
+    num_tasks: 0
+    task_index: 0

@@ -1,0 +1,9 @@
+{
+  "base_environment_mount": "gpfs://gpfs1/dongdaozhu/conda/envs/sam3",
+  "mount_target": "/data/dongdaozhu/conda/envs/sam3",
+  "reference_service_state": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/service-state.json",
+  "observed_torch_version_from_saved_state": "2.10.0+cu128",
+  "snapshot_not_live_health": true,
+  "gpu_count": 1,
+  "bf16_required": true
+}

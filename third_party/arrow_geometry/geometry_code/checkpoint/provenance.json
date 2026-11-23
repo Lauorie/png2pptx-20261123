@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-10-29T18:45:43.020434+08:00",
+  "base_geometry_code": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2/geometry_code",
+  "changed_files": [
+    "bbox_geometry.py",
+    "simple_style_contract.py",
+    "tests/test_localization_block_dispatch.py"
+  ],
+  "sources": {
+    "localization": {
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v022_fan_grouping24",
+      "code_files": {
+        "draft_prompts.py": "9c61282760799d12d52839c181634b84e8115476abf35c1dbe230524e897548b",
+        "scoped_review.py": "58d6c2b6f6254d4d394b36c136a7002918d88734bb801753542dec3add8b05e2",
+        "test_fusion.py": "ac37b5a87058db84aec0094ea3c9da42ae211e258d213f59edcb4931dea21919",
+        "test_localization.py": "10a1787147053c217659c74b3cef0fdcae1ef0bc628a7dac6ff9dc36a9f32cba",
+        "PROMPT_DRAFT.md": "56ee390aff3fcaa0a1fd3d0db575595119b6b10034be322b8ee4bc31d5883373",
+        "semantic_hint_contract.py": "6ba953d4a009109d1f9564d7a64b8e67daba891597f8fb3ea9df8b9c9fbfc666",
+        "test_global_stage_override.py": "8359311a71cff2781f1788ceb4b0c4d26032e1c0a1c01085b6d8200c9e4af5b0",
+        "test_reconstruction_queue.py": "3e08597dad24693c750428343170eebc5ca98c4cf0a1ea12afa3e089cee9cf70",
+        "watch_local_study.py": "ec1715c512efe77c2a9364b8b97b90314ed3e556dec8d2da1f7f05eacd51a19d",
+        "frames.py": "02682392686cfc6bd9ab2d66679d72c9120ad8f68161c9285ad4577e849bb774",
+        "test_scoped_review.py": "822a4b1e94ed5c0032cc11764186f9744b7e86639942e6c279667ad861751aae",
+        "run.py": "0e2196ebf7a11b920ce1b6e233978d33e5e10e97b71697245bec19367f75ecf1",
+        "pipeline_frames.py": "a3713e96c014a6e82cdff29dce26a257e25fb438ae92c1e3b5e94be36f8b7255",
+        "local_review.py": "77c322b20a374d3c0d26a19115db226965c2060e42cb30b5da64e70284ae86a3",
+        "global_report.py": "2023eb4427a248e7f4866f072ab66303e71aecd84a76f3429873f8e5c5ff4bf4",
+        "local_report.py": "c2fd67c4dd662fba116feecd4d67b0c11d4af6f66bf9f7f4e5a3ff18da2dbfe5",
+        "PROMPTS_ALIGNED.md": "b2c0f0f8dc77bd6a6b60d1caacd71e39c0753ccd747c7fca91e6e3e23bff6d68",
+        "presentation.py": "be8d108292042c249f709ceb318afc50e317806a35dd2e0e250286ce12f3e221",
+        "global_discovery_prompt.py": "cc3a825703d596ab4419017cfdb4ad7c10164b0e30b988fcb39a3ffec95f1d06",
+        "fusion_report.py": "6c5f4eea499eea507d7b807dff8238bbc205b54d3a6106662974cb29b7b4df5c",
+        "fusion_experiment.py": "5e70657569949326877c640043889017e97b67e70c9d47125df65c419dcddce3",
+        "discovery_granularity_study.py": "70f8c778368032c28ed87399a37b02e19b1619f0ad36582d877fe82a5157fcad",
+        "draft_prompt_provenance.json": "98c6d794888b14c25345ff07c2f7d7423e67040bda04aacc65244fc172ed9e4c",
+        "reuse_provenance.json": "8384006f5ac90ec07baa8ed84d6e64e65ea000a42dd6361999db0b2284ac6779",
+        "frozen_global.py": "f5526397627f3452c39867203ea13d39f4dcd6573ab42cfcc34db4149967731e",
+        "reconstruction_queue.py": "62377994a7d77be9baddb3569624f0cfbcfea95808eb98c785ff0f81377fffa2",
+        "contracts.py": "5dbdb6c9dbac871ea2a0f08fec25ba2b93a7464e2839cecf49a0016a33b38e0a",
+        "handoff.py": "27bebb77c4b626d08b688f9314b26e1df0e95a0192214bd6e56cee5e16116491",
+        "test_local_review.py": "0aa633f810ec2bdfa5f2431ea5e9ae5d8fb8293ebc4bedfe616064322436e57f",
+        "fusion_geometry.py": "4c40098223de29df4e8f7075d8f114953d917ffa952c254b473eca0d10ad04c7",
+        "draft_prompt_blocks.json": "d23c755ffca3ed9ca3b396eb67d2a543f72eb0ebb306ab5028c808e672383e3b",
+        "transport/model.py": "d83bec9fffdb6684c5c4bf383aeab3043beff40d98d25693e4c956e881f640cd",
+        "transport/prompts.py": "e82fac854f6f08b79fd336728392c8bd336de1a01e58e26cadef005256074a52",
+        "transport/client.py": "694b70e727b08ac3dbbdb747f6f5339d1c20e058de10001d94f53c1449fc50f7",
+        "transport/credentials.py": "52d2f6cd8666968a0fc1a9ed71e107febb85744504075026d5c25f7e3ea5adb1",
+        "transport/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "transport/common.py": "eda2f900314a39dd376d9dd50aa5eabd301522e885e159662025b87584da9568",
+        "transport/format_repair.py": "7978bf7a563320d64ed6b4783501f6e11d6e5d691f48db981b34aba509098590"
+      }
+    },
+    "sam_supplement": {
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v031_sam_protocol24/receiver_v3_clamp",
+      "code_files": {
+        "draft_prompts.py": "9c61282760799d12d52839c181634b84e8115476abf35c1dbe230524e897548b",
+        "prepare_clamp_replay.py": "2b777f4028b9dbff1afa64808f744e8920f142ab29a79c06f5ddbb53ce1c5c3c",
+        "prepare_protocol24.py": "11c84f6cf88debaeef2a4c5609702632c2e950448c2d8fce909eeb88d5c6a415",
+        "semantic_hint_contract.py": "6ba953d4a009109d1f9564d7a64b8e67daba891597f8fb3ea9df8b9c9fbfc666",
+        "review_additions.py": "85a4b667481be0851dbfaf446ad244e5e94e74842c1b44b12611019035960793",
+        "review_spatial.py": "a6a0c3e23487ce2ac1c8e49febf7cbc9f17194a24ceaae77ffa26e030db5c763",
+        "prepare_review.py": "a88c9040a0a250efdaae6542e6d2d82632977df2e2b7aad1d350bf13758e6bd2",
+        "frames.py": "02682392686cfc6bd9ab2d66679d72c9120ad8f68161c9285ad4577e849bb774",
+        "pipeline_frames.py": "a3713e96c014a6e82cdff29dce26a257e25fb438ae92c1e3b5e94be36f8b7255",
+        "replay_protocol.py": "7f1adbafe687d9f0f1b3364db6a4663d4fd9c385c8f9eb7a9534d0871b3073c9",
+        "containment_filter.py": "216a18f71af309e565ca8c34dc42673fd3bc484c5329ce5f05a7f4f623c3c353",
+        "test_supplement_protocol.py": "280b9d41bd380584c1cddd7da76a5cb6a2e9c7e07e3e4ddee6119b75429099ef",
+        "run_protocol24.py": "21b0d5a01dbae0fc739bc4c2b15b9fbb108afde4a42a99aa61ae6f128344fa2e",
+        "test_review_additions.py": "e613912bd401c87ef8935e5b43d94e7ffe31e66c2febd534fa14707ce3510445",
+        "verify_bbox_clamp.py": "649544036da5389677fa6c6d4b3ba1223e9fda4237c9bec32bc29e3491b83005",
+        "sam_client.py": "930636760c01e2d2fbd95bbb86eaf83f813cd7cd0db9458b7650b1375de781e2",
+        "contracts.py": "5dbdb6c9dbac871ea2a0f08fec25ba2b93a7464e2839cecf49a0016a33b38e0a",
+        "handoff.py": "27bebb77c4b626d08b688f9314b26e1df0e95a0192214bd6e56cee5e16116491",
+        "supplement_protocol.py": "5cb2b5644f5f346fac1878448f9aacb146f48558f9aa06f55628900e583e9ae6",
+        "smoke_protocol24.py": "0188a3b3aaddf6f3e8c8d1ec1e18e2fb8a390c23fa2a61eb20d5a7d7d8b0e68c",
+        "experiment.py": "014f6816b6ce287c9c18766f0cd8bca48c4aba35c80d130bdfec2a1b33a3727a",
+        "draft_prompt_blocks.json": "d23c755ffca3ed9ca3b396eb67d2a543f72eb0ebb306ab5028c808e672383e3b",
+        "transport/model.py": "bccd996570b8343fb0c90c1ecd03f4f5ad62927b9810bf11137e03bfffb288ed",
+        "transport/prompts.py": "e82fac854f6f08b79fd336728392c8bd336de1a01e58e26cadef005256074a52",
+        "transport/client.py": "694b70e727b08ac3dbbdb747f6f5339d1c20e058de10001d94f53c1449fc50f7",
+        "transport/credentials.py": "52d2f6cd8666968a0fc1a9ed71e107febb85744504075026d5c25f7e3ea5adb1",
+        "transport/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "transport/common.py": "eda2f900314a39dd376d9dd50aa5eabd301522e885e159662025b87584da9568",
+        "transport/format_repair.py": "7978bf7a563320d64ed6b4783501f6e11d6e5d691f48db981b34aba509098590"
+      }
+    },
+    "geometry_dedup": {
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v032_geometry_dedup24",
+      "manifest_sha256": "ccbb5b2d8d532271277e6a8fbf7045924d902f6fda51018fdd92635bcc77bd84",
+      "config_sha256": "c23bdc14f58a543dbb6a6ec5aa2448a73d03eabfd47cc2e01897186d4383e15c"
+    },
+    "style24": {
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v036_style_heads24/receiver_v2",
+      "manifest_sha256": "d309d9f85047eafd19d07a0200d7d2a660e3ec672870f33532ca3696838af44f",
+      "config_sha256": "1e55d0365719010448eb63444347ca7b0f831629d8ceb2bbb36772b5a46cd1d1"
+    },
+    "block_dispatch_trial": {
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v037_localization_type_route4",
+      "manifest_sha256": "f94745fbb493ceb2a6a108f77e94ca507dd9da244383562d0e8c3f007c732072",
+      "config_sha256": "bebc4eae0098d90894e01db0c33d6ea692fbd8f338c2b837e481f964283b28fd"
+    },
+    "round_terminal_trial": {
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/runs/v038_round_terminal_style4",
+      "manifest_sha256": "4be9226f7a74cffdd7896e0d18112f620eb7232502862b2a1e4aa2bbbeea179e",
+      "config_sha256": "139d994bdb0b6778eaff7a4a0fafe06b18b822d5b3b3623624a24c97b5c65183"
+    }
+  },
+  "combined_full24_rerun": false,
+  "merged_external_mainline": false,
+  "credentials_copied": false
+}

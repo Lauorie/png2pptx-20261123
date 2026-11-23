@@ -1,0 +1,298 @@
+{
+  "policy": "Packaging, dependency paths and deployment configuration only; model prompts, geometry, budgets and stage logic preserved.",
+  "changes": [
+    {
+      "path": "run_ppt.py",
+      "reason": "Use bundled backend sources",
+      "before_sha256": "7a884b2819e35b7e3c7cc02486c03174e859854824b606729380f6b3c5beb9c1",
+      "after_sha256": "97bf07cf9f9b6f2d54b59a6c3d3fc17d583d128af1c9d304a5c43e78e47040f6"
+    },
+    {
+      "path": "run_ppt.py",
+      "reason": "Bundle method code and audit metadata only",
+      "before_sha256": "97bf07cf9f9b6f2d54b59a6c3d3fc17d583d128af1c9d304a5c43e78e47040f6",
+      "after_sha256": "6a61e5836d37b454fc9d2f3b4e3671ed4ed47de149204a739b6ba0b41b70e8de"
+    },
+    {
+      "path": "full_recovery/prepare.py",
+      "reason": "Freeze text transport dependencies without an external symlink",
+      "before_sha256": "55e6d3c7acddac948eb657d705fcff9b6eb5f435706899c7fdeeab343b6ed79a",
+      "after_sha256": "d9632ec4752b093b8a39c890620cfe8b5485b391b837e6fd20f27a42c67ff688"
+    },
+    {
+      "path": "full_recovery/prepare.py",
+      "reason": "Bind frozen SAM assets to the copied checkpoint and source tree",
+      "before_sha256": "d9632ec4752b093b8a39c890620cfe8b5485b391b837e6fd20f27a42c67ff688",
+      "after_sha256": "8ff66ea85eb43d9b4cefcecc7e29a703181b53d55f856c570aead748f156e41c"
+    },
+    {
+      "path": "full_recovery/prepare_api.py",
+      "reason": "Remove implicit access to the original owner credential",
+      "before_sha256": "66e47e94140f6673fd5d51616e4c57b15fab2e658f77bcf07f7bd5af5b2aa0dc",
+      "after_sha256": "e13242459422a62863a505249c974d381b59c2b7d03057ad6515a3e6473a9afd"
+    },
+    {
+      "path": "full_recovery/prepare_api.py",
+      "reason": "Remove a historical run dependency",
+      "before_sha256": "e13242459422a62863a505249c974d381b59c2b7d03057ad6515a3e6473a9afd",
+      "after_sha256": "9b7e86f92751df8b14574c291d1e476de8bfb5d3ec3d9367d19ef5b3048281f9"
+    },
+    {
+      "path": "full_recovery/prepare_api.py",
+      "reason": "Use bundled renderer compatibility libraries",
+      "before_sha256": "9b7e86f92751df8b14574c291d1e476de8bfb5d3ec3d9367d19ef5b3048281f9",
+      "after_sha256": "44c25cf50e837c942d11f040e4d45be1270bc0930b85f74832439a5e0f291516"
+    },
+    {
+      "path": "full_recovery/prepare_api.py",
+      "reason": "Use bundled renderer wrapper",
+      "before_sha256": "44c25cf50e837c942d11f040e4d45be1270bc0930b85f74832439a5e0f291516",
+      "after_sha256": "43bd5da81aa894025a1609f6ee9dc2959c31366e885c7a1d57a5de6b2ebde9ce"
+    },
+    {
+      "path": "full_recovery/api_worker.py",
+      "reason": "Use the bundled exact-version arrow renderer",
+      "before_sha256": "1382361e2250afdbf96032209245fe212f223804d47860cd5ea6014d163547ab",
+      "after_sha256": "b3b5c886b716fbdea72267bedc41b4784617763f830d214b1dc918b1a586f445"
+    },
+    {
+      "path": "deploy/sam/code/client.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/client.py",
+      "source_sha256": "930636760c01e2d2fbd95bbb86eaf83f813cd7cd0db9458b7650b1375de781e2",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/engine.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/engine.py",
+      "source_sha256": "a76dbb0337ecb75278fcc872d9ffaf9292910608a863a0ed418f2c3e8875a9d3",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/idle_activity.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/idle_activity.py",
+      "source_sha256": "e488c6462fb8e383e8bd84ee804ec1dddfd74c398b71e7b1da9d16d415b9200a",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/low_power_policy.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/low_power_policy.py",
+      "source_sha256": "fba9ba0bb42b5eb17b07fcef058636ccc1700b4b507da18c136618a1832dd3d4",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/power_keepalive.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/power_keepalive.py",
+      "source_sha256": "d8b0b7ff3270e7fdf4fdfc9373a6bd116bc3490cbc1abe9e149bfe73b135871f",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/server.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/server.py",
+      "source_sha256": "a95eac9e72a3b5e88de54f2e3f17acf7a052653d1024713b89e288182c4e4364",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/verify_assets.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/verify_assets.py",
+      "source_sha256": "d4d7c00aab893a1ff86f2d78c388c4cb35de104bbe35aa28750af10213b7813d",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/worker.py",
+      "source": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_mask_first_20261016/runs/pptbench125_refine_20261023/experiments/arrow_localization/experiments/model_led_localization_20261026/experiments/sam_service/runs/epoch7_lowpower60_20261113_193505/code/worker.py",
+      "source_sha256": "91a0c7db5576b61663b5d967979a82a1aab939e06fe37acec690069788f96235",
+      "reason": "Freeze request-priority threshold keepalive deployment source"
+    },
+    {
+      "path": "deploy/sam/code/engine.py",
+      "reason": "Allow the copied inference repository without a training directory",
+      "before_sha256": "a76dbb0337ecb75278fcc872d9ffaf9292910608a863a0ed418f2c3e8875a9d3",
+      "after_sha256": "bbbce27a2e82fc7e743d9f54b649f663146b25921562d8856020e084bb20cb5a"
+    },
+    {
+      "path": "backends/reference/arrow_sam_ckpt_20261015/sam_service/engine.py",
+      "reason": "Allow the copied inference repository without a training directory",
+      "before_sha256": "a76dbb0337ecb75278fcc872d9ffaf9292910608a863a0ed418f2c3e8875a9d3",
+      "after_sha256": "bbbce27a2e82fc7e743d9f54b649f663146b25921562d8856020e084bb20cb5a"
+    },
+    {
+      "path": "tests/tmp9o5ccxuh",
+      "reason": "Exclude copied test output directory"
+    },
+    {
+      "path": "full_recovery/service_endpoints.py",
+      "reason": "Replace stale worker IP defaults with environment-selected services"
+    },
+    {
+      "path": "full_recovery/fresh_arrow.py",
+      "reason": "Clear inherited localization_reuse_from, comparison_run and reused_review_from in fresh-run configuration so inference cannot depend on old batch outputs; preserve geometry, prompts and stage budgets."
+    }
+  ],
+  "changed_copied_files": [
+    {
+      "path": "full_recovery/api_worker.py",
+      "copied_source_sha256": "1382361e2250afdbf96032209245fe212f223804d47860cd5ea6014d163547ab",
+      "packaged_sha256": "b3b5c886b716fbdea72267bedc41b4784617763f830d214b1dc918b1a586f445"
+    },
+    {
+      "path": "full_recovery/fresh_arrow.py",
+      "copied_source_sha256": "56c8899fb7914798de42e17d82a1ae32007d7049c94ba6fc465d96cc5f73b9c9",
+      "packaged_sha256": "b2ce6c976f0a435eb227f0cf9f2eb9b959233a4916002fc54095099e8fe0a2ed"
+    },
+    {
+      "path": "full_recovery/prepare.py",
+      "copied_source_sha256": "55e6d3c7acddac948eb657d705fcff9b6eb5f435706899c7fdeeab343b6ed79a",
+      "packaged_sha256": "8ff66ea85eb43d9b4cefcecc7e29a703181b53d55f856c570aead748f156e41c"
+    },
+    {
+      "path": "full_recovery/prepare_api.py",
+      "copied_source_sha256": "66e47e94140f6673fd5d51616e4c57b15fab2e658f77bcf07f7bd5af5b2aa0dc",
+      "packaged_sha256": "43bd5da81aa894025a1609f6ee9dc2959c31366e885c7a1d57a5de6b2ebde9ce"
+    },
+    {
+      "path": "full_recovery/service_endpoints.py",
+      "copied_source_sha256": "28dee0873be35858fd070d899b95ad5b80f70f09f298bcb7cd0019483ce7a231",
+      "packaged_sha256": "0bbc771015941276e651116e4184690c011eb54032c8093cd3a12a185433b5e6"
+    },
+    {
+      "path": "run_ppt.py",
+      "copied_source_sha256": "7a884b2819e35b7e3c7cc02486c03174e859854824b606729380f6b3c5beb9c1",
+      "packaged_sha256": "6a61e5836d37b454fc9d2f3b4e3671ed4ed47de149204a739b6ba0b41b70e8de"
+    },
+    {
+      "path": "scripts/shape_worker.py",
+      "copied_source_sha256": "abcb73f301f2f9f2bb39c0dc2d6b6c8e040b09ac0cf8ea25c9b919e59d6925b9",
+      "packaged_sha256": "6d252be61713cd31705d45108de08ceb81c80ae5f905bbe403e603f31e9f7c05"
+    },
+    {
+      "path": "scripts/submit_ppt_api_cpu.sh",
+      "copied_source_sha256": "60e15a1f70c67d0a343021444bd3a002d9226048951adfb2f9cba557959a2956",
+      "packaged_sha256": "3fbae6227ed2ad181bafed933abcc46cc2dc1fd6f2d3bc4a52f7f37a7636321b"
+    },
+    {
+      "path": "scripts/arrow_renderer_wrapper.py",
+      "copied_source_sha256": "35e3bbd2401976751092df8346be587b82c0e9dd5aa932d4593ec4bb78bf1807",
+      "packaged_sha256": "31efb192bdacb6973944b8753bfd34d75c00210db98c7ddfd591d1b91930b8f6"
+    },
+    {
+      "path": ".runtime/portable_lo/bin/libreoffice",
+      "copied_source_sha256": "463514e1bfe72d9d63f08cd5029bf5eaaad4718309ad227df0a4fe15910e85ae",
+      "packaged_sha256": "a54dcdb696775b5487fdfa5a34c785280dfe3d9553339d80e109102f5e4e7e20"
+    },
+    {
+      "path": ".runtime/portable_lo/fonts.conf",
+      "copied_source_sha256": "c647e4ca3ff8ba4ec870aeb057632a13f99d5eda6c94e2bc527e6cf0a4284bcf",
+      "packaged_sha256": "fa26b6606e9661463db153f3254dca2aac5e2619193eae777163586c8a15b475"
+    },
+    {
+      "path": ".runtime/portable_lo/libreoffice/program/fundamentalrc",
+      "copied_source_sha256": "4eba6a8ff62c780992d127f4b38061bac77cfe267a9228a3ce21246bdc138eab",
+      "packaged_sha256": "f9390939c46c9a88abc6e43b0c0705c47a163710b9eccec6778ccb6a00ccaa5c"
+    },
+    {
+      "path": ".runtime/portable_lo/libreoffice/program/sofficerc",
+      "copied_source_sha256": "0c452c4fd9b8ea9911a65688df33d4ac609804c96d183f477a9c657df7a61747",
+      "packaged_sha256": "789eed4b76ab9321a15f96bfb144a5d3bc9c7963e11b9b80ce61fbbeea6489ca"
+    },
+    {
+      "path": ".runtime/renderer_support/lo_cpu.py",
+      "copied_source_sha256": "c62efef82b98add4030b0ede6aca65f51b7a9035066f5865ac73d2f31205f399",
+      "packaged_sha256": "a0e630c5f23154647fad624782c1b37c0bb482c4d28e8eb643d113f9a8b974c1"
+    },
+    {
+      "path": ".runtime/arrow_renderer/soffice",
+      "copied_source_sha256": "35e3bbd2401976751092df8346be587b82c0e9dd5aa932d4593ec4bb78bf1807",
+      "packaged_sha256": "31efb192bdacb6973944b8753bfd34d75c00210db98c7ddfd591d1b91930b8f6"
+    },
+    {
+      "path": "backends/reference/arrow_sam_ckpt_20261015/sam_service/engine.py",
+      "copied_source_sha256": "a76dbb0337ecb75278fcc872d9ffaf9292910608a863a0ed418f2c3e8875a9d3",
+      "packaged_sha256": "bbbce27a2e82fc7e743d9f54b649f663146b25921562d8856020e084bb20cb5a"
+    },
+    {
+      "path": "deploy/sam/code/server.py",
+      "copied_source_sha256": "30318ca71b3c04ad833541dc3e0c449fe64da9d679de6e5fdcb876b4df6faba7",
+      "packaged_sha256": "a95eac9e72a3b5e88de54f2e3f17acf7a052653d1024713b89e288182c4e4364"
+    },
+    {
+      "path": "deploy/sam/code/engine.py",
+      "copied_source_sha256": "a76dbb0337ecb75278fcc872d9ffaf9292910608a863a0ed418f2c3e8875a9d3",
+      "packaged_sha256": "bbbce27a2e82fc7e743d9f54b649f663146b25921562d8856020e084bb20cb5a"
+    },
+    {
+      "path": "deploy/sam/code/worker.py",
+      "copied_source_sha256": "18506727fa75b9279594a3bc729cd5703a0df49ac693896bc44419a01c6719d7",
+      "packaged_sha256": "91a0c7db5576b61663b5d967979a82a1aab939e06fe37acec690069788f96235"
+    },
+    {
+      "path": "deploy/sam/code/power_keepalive.py",
+      "copied_source_sha256": "92e19fa9faacb0f7db4d8e2b2d04d056d9ef53bec21eacbdff85c2a6450ecc17",
+      "packaged_sha256": "d8b0b7ff3270e7fdf4fdfc9373a6bd116bc3490cbc1abe9e149bfe73b135871f"
+    },
+    {
+      "path": "deploy/sam/categories.json",
+      "copied_source_sha256": "538c29e9ccae3657df29ed1565cfc6b291e4c19d6f88cc4cbcce4ec0e60c84e2",
+      "packaged_sha256": "140358a7ebe362c5eac9840fd4ab2233bb6998cb5539a4d91e7dd282e7b1f9d7"
+    },
+    {
+      "path": "deploy/sensenova/code_snapshot/service.sh",
+      "copied_source_sha256": "889edc4afda26b1f7732f264d86ffe012a627d7dd5e88f0acecf41fc8b7b2f22",
+      "packaged_sha256": "714459e0aa80addb264a5c27c8105492ba43d2ecb58c5d014d287fb28844aced"
+    },
+    {
+      "path": "deploy/sensenova/code_snapshot/worker.sh",
+      "copied_source_sha256": "ab9643b1e3aebd4ccfb14aa89ec3aa0ac27d04377553658a32f47f5f66ba2272",
+      "packaged_sha256": "f872a547a238f94c1359c29383422675d085bd0bb5845831b7c45d885ccd2f6c"
+    }
+  ],
+  "excluded_after_copy": [
+    "tests/tmp9o5ccxuh/fitting/objects/G1/.object.lock",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/image_assets.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/input_context.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/record.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/calls/check_00/raw.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/calls/check_00/request.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/calls/observe_00/raw.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/calls/observe_00/request.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/candidate.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/clean.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/comparison.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/critic_assets.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/critic_part_map.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/critic_source.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/description_audit.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/fit_geometry.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/fit_local.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/fit_original.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/fit_overlay.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/frame.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/frame_edge_refinement.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/inspection.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/job.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/native.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/observation.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/observation_normalization.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/observation_raw.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/observed_points.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/outline_edge_refinement.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/overlay.png",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/prompt.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/review.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/revision_00/status.json",
+    "tests/tmp9o5ccxuh/fitting/objects/G1/source_registration.json",
+    "tests/tmp9o5ccxuh/input.png",
+    "tests/tmp9o5ccxuh/original.png",
+    "deploy/sensenova/code_snapshot/submit.sh"
+  ],
+  "new_handoff_utilities": [
+    "deploy/prepare.py",
+    "deploy/submit.sh",
+    "deploy/sensenova/setup_runtime.py",
+    "deploy/sensenova/code_snapshot/environment.sh",
+    "scripts/prepare_forward.py",
+    "scripts/make_input_catalog.py",
+    "scripts/check_prepare.py",
+    "scripts/check_render.py",
+    "scripts/verify_bundle.py"
+  ]
+}

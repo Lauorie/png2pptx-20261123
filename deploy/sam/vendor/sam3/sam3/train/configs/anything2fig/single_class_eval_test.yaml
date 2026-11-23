@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - /configs/anything2fig/single_class_full_ft
+  - _self_
+
+# Eval-only run of the single-class model on the held-out TEST split.
+paths:
+  experiment_log_dir: /mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_runs/single_class_eval_test
+
+trainer:
+  mode: val
+  skip_first_val: false
+  data:
+    val:
+      dataset:
+        img_folder: ${paths.dataset_root}/images/test
+        ann_file: ${paths.dataset_root}/annotations/instances_test.json
+  meters:
+    val:
+      roboflow100:
+        detection:
+          pred_file_evaluators:
+            - _target_: sam3.eval.coco_eval_offline.CocoEvaluatorOfflineWithPredFileEvaluators
+              gt_path: ${paths.dataset_root}/annotations/instances_test.json
+              tide: false
+              iou_type: "segm"

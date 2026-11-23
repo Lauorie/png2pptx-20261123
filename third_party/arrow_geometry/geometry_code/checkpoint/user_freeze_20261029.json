@@ -1,0 +1,15 @@
+{
+  "request": "固定住这个版本，接着debug",
+  "include": [
+    "block_arrow localization direct shape routing",
+    "round terminal versus nearby node style description"
+  ],
+  "deferred_cases": [
+    "task_0122"
+  ],
+  "open_issues": [
+    "task_0104/R0002 blunt shape head accepted by critic"
+  ],
+  "new_model_calls": false,
+  "ordinary_geometry_protocol_unchanged": true
+}
