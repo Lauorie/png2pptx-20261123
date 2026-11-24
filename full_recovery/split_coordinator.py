@@ -90,7 +90,7 @@ def submit_worker(run, label, external):
     if not entry.exists(): entry = run / 'code/full_recovery/api_worker.py'
     remote += ['SSL_CERT_FILE=' + ('/etc/ssl/certs/ca-certificates.crt' if external else str(run / 'private/cpa-worker.crt')),
                '/opt/shape-cpu/bin/python', '-B', '-u', str(entry), '--run-dir', str(run)]
-    script.write_text('#!/usr/bin/env bash\nset -euo pipefail\necho 0 > /proc/self/oom_score_adj\n'
+    script.write_text('#!/usr/bin/env bash\nset -euo pipefail\necho 0 2>/dev/null > /proc/self/oom_score_adj || true\n'
         'RJOB_ARGS=(submit --name=' + shlex.quote(label + '-' + time.strftime('%Y%m%d-%H%M%S')) + '\n'
         ' --namespace ailab-intern10 --gpu=0 --cpu=16 --memory=65536\n'
         ' --charged-group=intern10_proxy --private-machine=group -P 1\n'
@@ -161,7 +161,8 @@ def prepare_merge(plan):
 
 
 def main():
-    Path('/proc/self/oom_score_adj').write_text('0')
+    try: Path('/proc/self/oom_score_adj').write_text('0')
+    except OSError: pass  # container forbids lowering the OOM score
     parser = argparse.ArgumentParser(); parser.add_argument('--plan', type=Path, required=True)
     args = parser.parse_args(); plan = read(args.plan); report = Path(plan['report'])
     preflight = read(report / 'probe_v2/preflight_status.json')

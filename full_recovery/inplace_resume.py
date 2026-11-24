@@ -76,7 +76,8 @@ def load_module(name, path):
 
 
 def main():
-    Path('/proc/self/oom_score_adj').write_text('0')
+    try: Path('/proc/self/oom_score_adj').write_text('0')
+    except OSError: pass  # container forbids lowering the OOM score
     parser = argparse.ArgumentParser()
     parser.add_argument('--spec', type=Path, required=True)
     parser.add_argument('--stage', choices=['worker', 'pipeline'], default='worker')
