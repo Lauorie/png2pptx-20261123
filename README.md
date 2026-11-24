@@ -2,6 +2,7 @@
 
 交接给 juli，整理日期：2026-11-19。代码来源为原目录
 `/mnt/shared-storage-user/intern7shared/kouyiqun/png2pptx_geometry`。
+集群外部署见 [部署说明](DEPLOYMENT.zh-CN.md)。
 完整流程入口是 `run_ppt.py`，推荐通过下面的 `scripts/prepare_forward.py` 使用。
 
 GLM 的模型名、thinking、分阶段 token 上限、并发、超时及本地服务历史配置见
