@@ -39,6 +39,9 @@ def load_backend(root):
     # like stacked text, shrinking native type to fit a tall unrotated frame.
     from full_recovery.text_inventory import install as install_inventory_review
     install_inventory_review()
+    # Some models drop the "text" key of a run; restore it instead of failing the image.
+    from full_recovery.text_json_repair import install as install_json_repair
+    install_json_repair()
     from full_recovery.source_text_attributes import install as install_source_attributes
     install_source_attributes()
     from full_recovery.text_spacing import install as install_text_spacing
