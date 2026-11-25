@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 from types import SimpleNamespace
@@ -213,7 +214,10 @@ def prepare(project,args):
                                   'glm_b':{'glm_tp':4,'glm_dp':1,'glm_max_model_len':262144,'glm_max_num_seqs':24,'glm_gpu_memory_utilization':.72}},
                     sam_devices=[4,5,6],arrow_sam_device=7,arrow_sam_port=18107,
                     text_workers=2,text_api_limit_per_case=text_config['api_concurrency'],
-                    text_ocr_python='/opt/shape-cpu/bin/python',
+                    # PNG2PPTX_CPU_ENV relocates the CPU environment; the default is the cluster mount.
+                    text_ocr_python=os.environ.get('PNG2PPTX_CPU_ENV','/opt/shape-cpu')+'/bin/python',
+                    # Category names come from the manifest frozen in this run, not the training dataset.
+                    dataset_root=str(sam_backend),
                     text_models='/mnt/shared-storage-user/dongdaozhu/Anything2Fig/third_party/DrawAI/.local/drawai_runtime/models/paddlex/official_models',
                     text_recognition_mode='staged',text_geometry_backend='glm',text_ocr_mode='geometry',text_ocr_template_validation='on',
                     text_review_policy='reference_text_pipeline_high',

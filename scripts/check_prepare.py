@@ -2,6 +2,7 @@
 """Offline integration check: prepare all branches while forbidding old sources."""
 import http.server
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -60,7 +61,8 @@ def main():
                 "--input-root",str(data),"--run-dir",str(run),
                 "--sam-url","http://127.0.0.1:"+str(server.server_port),
                 "--api-base-url","http://127.0.0.1:9/v1","--api-key-file",str(key)],
-                cwd=ROOT, text=True, capture_output=True)
+                cwd=ROOT, text=True, capture_output=True,
+                env={**os.environ,"PNG2PPTX_CPU_ENV":str(tmp/"cpu-env")})
             if result.returncode:
                 sys.stdout.write(result.stdout)
                 sys.stderr.write(result.stderr)
@@ -83,6 +85,16 @@ def main():
                     elif isinstance(value,str) and value.startswith(("/mnt/","/data/","/opt/")):
                         assert value.startswith(str(ROOT)+"/") or value.startswith(str(tmp)+"/"), value
                 check_paths(active)
+            # A deployment outside the original cluster has neither the training
+            # dataset directory nor a CPU environment mounted at /opt/shape-cpu.
+            categories=[c["name"] for c in json.loads((ROOT/"deploy/sam/categories.json").read_text())["categories"]]
+            for name in ("settings.json","shape/settings.json"):
+                active=json.loads((run/name).read_text())
+                dataset_root=Path(active["dataset_root"])
+                assert dataset_root.is_relative_to(run.resolve()), dataset_root
+                manifest=json.loads((dataset_root/"dataset_manifest.json").read_text())
+                assert [c["name"] for c in manifest["categories"]]==categories
+                assert active["text_ocr_python"]==str(tmp/"cpu-env/bin/python"), active["text_ocr_python"]
             assert (run/"backends/text/vendor/png2pptx").is_dir()
             assert not (run/"backends/text/.deps").is_symlink()
             print(json.dumps({"passed":True,"scope":"fresh PNG preparation of shape, text, arrow and composition",

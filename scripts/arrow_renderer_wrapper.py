@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Portable exact-version renderer with bounded first-profile restarts."""
 from pathlib import Path
-Path('/proc/self/oom_score_adj').write_text('0')
+try: Path('/proc/self/oom_score_adj').write_text('0')
+except OSError: pass  # container forbids lowering the OOM score
 import fcntl
 import json
 import os

@@ -35,7 +35,8 @@ def save(path,data):
 
 
 def main(*, pipeline_argv=None):
-    Path('/proc/self/oom_score_adj').write_text('0')
+    try: Path('/proc/self/oom_score_adj').write_text('0')
+    except OSError: pass  # container forbids lowering the OOM score
     p=argparse.ArgumentParser();p.add_argument('--run-dir',type=Path,required=True)
     run=p.parse_args().run_dir.resolve();settings=read(run/'settings.json')
     shape_only=settings.get('workflow_scope')=='shape'
@@ -98,6 +99,9 @@ def main(*, pipeline_argv=None):
         save(run/'font_validation.json',configure(run/'backends/reference_fonts',portable))
         raw=portable/'bin/libreoffice-raw'
         shutil.copy2(run/'renderer_runtime/lo_cpu.py',raw);raw.chmod(0o755)
+        # The bundled launcher names the cluster CPU environment in its shebang.
+        cpu_env=os.environ.get('PNG2PPTX_CPU_ENV','/opt/shape-cpu')
+        raw.write_text(raw.read_text().replace('#!/opt/shape-cpu/bin/python','#!'+cpu_env+'/bin/python',1))
         if settings.get('native_renderer'):
             raw=Path(settings['native_renderer'])
             if not raw.is_file():raise FileNotFoundError('Native renderer absent: '+str(raw))
@@ -113,8 +117,8 @@ def main(*, pipeline_argv=None):
             'PPT_RENDER_LOCK_DIR':str(run/'render_locks'),'PPT_LIBREOFFICE_RAW':str(raw),
             'PPT_SHARED_SAM_LOCK_ROOT':str(project/'.runtime/sam_endpoint_locks'),
             'FONTCONFIG_FILE':str(portable/'fonts.conf'),
-            'LD_LIBRARY_PATH':'/opt/shape-cpu/lib:'+os.environ.get('LD_LIBRARY_PATH','')}
-        env['PATH']=str(portable/'bin')+':/opt/shape-cpu/bin:'+os.environ['PATH']
+            'LD_LIBRARY_PATH':cpu_env+'/lib:'+os.environ.get('LD_LIBRARY_PATH','')}
+        env['PATH']=str(portable/'bin')+':'+cpu_env+'/bin:'+os.environ['PATH']
         if settings.get('api_force_reasoning_effort'):
             env['PPT_FORCE_REASONING_EFFORT']=settings['api_force_reasoning_effort']
         if settings.get('native_renderer'):

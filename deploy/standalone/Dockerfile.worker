@@ -1,0 +1,36 @@
+# CPU worker image for the PNG -> editable PPTX pipeline.
+#
+# Build from the repository root:
+#   docker build -f deploy/standalone/Dockerfile.worker -t png2pptx-worker .
+#
+# The image holds only the Python environment. The repository (with .runtime/,
+# backends/ and weights/) is mounted at run time, at the same absolute path the
+# SAM service sees, because SAM requests carry file paths.
+#
+# Base matches the machine the pipeline was validated on (Ubuntu 22.04, glibc
+# 2.35, CPython 3.12). The bundled LibreOffice builds bring their own loader.
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends software-properties-common ca-certificates \
+ && add-apt-repository -y ppa:deadsnakes/ppa \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+      python3.12 python3.12-venv fontconfig libnss3 libcairo2 \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY deploy/standalone/requirements.worker.txt /tmp/requirements.worker.txt
+RUN python3.12 -m venv /opt/shape-cpu \
+ && /opt/shape-cpu/bin/pip install --no-cache-dir -r /tmp/requirements.worker.txt
+
+# The renderer wrappers start with "#!/usr/bin/env python3", so the
+# environment's bin directory has to be on PATH.
+ENV PNG2PPTX_CPU_ENV=/opt/shape-cpu \
+    PATH=/opt/shape-cpu/bin:$PATH \
+    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    PYTHONDONTWRITEBYTECODE=1
+
+# The worker replaces /usr/bin/libreoffice and stages a renderer under /tmp,
+# so it runs as root and one container serves one worker process at a time.
+USER root

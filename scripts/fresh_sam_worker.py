@@ -8,7 +8,8 @@ import sys
 
 
 def main():
-    Path('/proc/self/oom_score_adj').write_text('0')
+    try: Path('/proc/self/oom_score_adj').write_text('0')
+    except OSError: pass  # container forbids lowering the OOM score
     parser=argparse.ArgumentParser()
     parser.add_argument('--run-dir',type=Path,required=True)
     root=parser.parse_args().run_dir.resolve()
