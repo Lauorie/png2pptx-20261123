@@ -11,7 +11,8 @@
 #   PNG2PPTX_API_BASE_URL    OpenAI-compatible chat completions base URL
 #   PNG2PPTX_API_KEY_FILE    file holding the API key (mode 0600)
 #   PNG2PPTX_SAM_URL         SAM3 service, e.g. http://127.0.0.1:18103
-#   PNG2PPTX_IMAGE_EDIT_URL  SenseNova service, e.g. http://127.0.0.1:8091/v1
+#   PNG2PPTX_IMAGE_EDIT_URL  image edit service: the image adapter (http://127.0.0.1:18300/v1)
+#                            or SenseNova (http://127.0.0.1:8091/v1)
 # Optional environment:
 #   PNG2PPTX_API_MODEL         default z-ai/glm-5.3-flash
 #   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default high
@@ -19,7 +20,7 @@
 set -euo pipefail
 
 if [ "$#" -ne 2 ]; then
-  sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//' >&2
+  sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//' >&2
   exit 2
 fi
 : "${PNG2PPTX_API_BASE_URL:?set PNG2PPTX_API_BASE_URL}"

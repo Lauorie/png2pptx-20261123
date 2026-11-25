@@ -9,10 +9,11 @@
 #
 # Optional environment:
 #   PNG2PPTX_BASE_PYTHON  a CPython 3.12 interpreter; default python3.12
+#   PNG2PPTX_SKIP_SENSENOVA  set to 1 to build only ENV_ROOT/sam3
 set -euo pipefail
 
 if [ "$#" -ne 1 ]; then
-  sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//' >&2
+  sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//' >&2
   exit 2
 fi
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -26,6 +27,10 @@ if [ ! -e "$ENV_ROOT/sam3/.png2pptx-ready" ]; then
   "$BASE_PYTHON" -m venv "$ENV_ROOT/sam3"
   "$ENV_ROOT/sam3/bin/pip" install -r "$HERE/requirements.sam3.txt"
   touch "$ENV_ROOT/sam3/.png2pptx-ready"
+fi
+if [ "${PNG2PPTX_SKIP_SENSENOVA:-0}" = "1" ]; then
+  echo "sam3 python:      $ENV_ROOT/sam3/bin/python"
+  exit 0
 fi
 if [ ! -e "$ENV_ROOT/openrlhf/.png2pptx-ready" ]; then
   rm -rf "$ENV_ROOT/openrlhf"

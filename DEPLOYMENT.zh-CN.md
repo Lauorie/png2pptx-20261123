@@ -13,15 +13,15 @@
 | CPU worker | 调度图形、文字、箭头三个分支，合成 PPTX | CPU；实测机器上单任务无 GPU 占用 | 命令行，见第 4 节 |
 | 多模态大模型 | 三个分支的识别与推理 | 外部 API | OpenAI 兼容的 `/chat/completions` |
 | SAM3 服务 | 定位、轮廓、mask | 1 张 GPU，约 10 GB 显存 | HTTP，端口 18103 |
-| SenseNova 服务 | 图片素材的编辑与补全 | 1 张 GPU，约 62 GB 显存 | HTTP，端口 8091 |
+| 图片编辑服务 | 图片素材的编辑与补全 | 外部 API（推荐），或自建 SenseNova（1 张 GPU，约 62 GB 显存） | HTTP，`/v1/images/edits` |
 
-两个 GPU 服务可以放在同一张 80 GB 的卡上（实测为 A800 80GB，共占用约 74 GB）。
+图片编辑有两种接法，见 5.2。用外部图片模型时，整套系统只需要一张约 10 GB 显存的 GPU 跑 SAM3，`weights/sensenova`、`runtime_overlay/` 和 SenseNova 环境都不用准备。自建 SenseNova 时，两个 GPU 服务可以放在同一张 80 GB 的卡上（实测为 A800 80GB，共占用约 74 GB）。
 
 三条必须遵守的约束：
 
 - **worker 和 SAM3 必须共享文件系统，且路径一致**。SAM3 的请求里传的是图片和输出目录的绝对路径，不是图片内容。
 - **一个容器同一时间只跑一个 worker 进程**。worker 会改写 `/usr/bin/libreoffice`，并在 `/tmp/shape-recovery-lo` 下放置渲染器，因此需要 root，且多个 worker 会互相覆盖。要并行就把多张图放进同一个任务（见第 4 节），或者开多个容器。
-- **不要用 RTX PRO 6000 Blackwell**。SenseNova 在这张卡上预热时会触发 CUDA 非法访存，之后 GPU 需要宿主机复位才能恢复。
+- **自建 SenseNova 时不要用 RTX PRO 6000 Blackwell**。SenseNova 在这张卡上预热时会触发 CUDA 非法访存，之后 GPU 需要宿主机复位才能恢复。
 
 ## 2. 需要准备的文件
 
@@ -39,7 +39,7 @@
 
 文件放好后用清单核对：`provenance/bundle_manifest.json` 记录了每个文件的 SHA-256，`provenance/weights_manifest.json` 记录了权重。注意 `scripts/verify_bundle.py` 会对本分支改过的文件报哈希不符（清单是原作者打包时生成的），改动列表见第 8 节。
 
-`.runtime/sensenova/` 不需要传输，它由第 5.2 节的搭建脚本在本机生成，里面有指向本机环境的绝对路径。
+`.runtime/sensenova/` 不需要传输，它由第 5.3 节的搭建脚本在本机生成，里面有指向本机环境的绝对路径。
 
 ## 3. CPU worker 环境
 
@@ -81,10 +81,11 @@ apt-get install -y fontconfig libnss3 libcairo2 ca-certificates
 ## 4. 运行一次转换
 
 ```bash
-export PNG2PPTX_API_BASE_URL=http://127.0.0.1:18200/v1
+export PNG2PPTX_API_BASE_URL=https://<网关>/api/v1
+export PNG2PPTX_API_MODEL=Sage-S2.1-Flash
 export PNG2PPTX_API_KEY_FILE=/path/to/api_key        # 权限 0600
 export PNG2PPTX_SAM_URL=http://127.0.0.1:18103
-export PNG2PPTX_IMAGE_EDIT_URL=http://127.0.0.1:8091/v1
+export PNG2PPTX_IMAGE_EDIT_URL=http://127.0.0.1:18300/v1   # 图片转接层；自建 SenseNova 时为 http://127.0.0.1:8091/v1
 
 bash deploy/standalone/run_job.sh /data/jobs/123/images /data/jobs/123/run
 ```
@@ -106,7 +107,7 @@ bash deploy/standalone/run_job.sh /data/jobs/123/images /data/jobs/123/run
 
 进度和最终状态写在 `<任务目录>/status.json` 的 `state` 字段：运行中为 `recovering_full_ppt` 等，结束后为 `completed` 或 `failed`。各阶段日志在 `<任务目录>/logs/`。
 
-**失败后重试**：在原任务目录上重新启动 worker 即可，已完成的分支会被复用。实测一次合成阶段失败后的重跑只用了 2 分半，没有重新调用大模型。命令是 `run_job.sh` 里的最后一步：
+**失败后重试**：环境类的失败（例如依赖版本问题）修好后，在原任务目录上重新启动 worker 即可，已完成的分支会被复用。**模型回复本身有问题导致的失败不适用**：出错的回复缓存在任务目录里，重跑会原样复用并立刻再次失败；要重新请求模型，需先移走对应的缓存目录（文字分支是 `<任务目录>/texts/cases/<图片名>/`）。实测一次合成阶段失败后的重跑只用了 2 分半，没有重新调用大模型。命令是 `run_job.sh` 里的最后一步：
 
 ```bash
 cd <任务目录> && "$PNG2PPTX_CPU_ENV/bin/python" -B -u code/full_recovery/api_worker.py --run-dir <任务目录>
@@ -116,35 +117,46 @@ cd <任务目录> && "$PNG2PPTX_CPU_ENV/bin/python" -B -u code/full_recovery/api
 
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |
-| `PNG2PPTX_API_MODEL` | `z-ai/glm-5.3-flash` | 模型名 |
+| `PNG2PPTX_API_MODEL` | `z-ai/glm-5.3-flash` | 模型名；当前选定的是 `Sage-S2.1-Flash`，需显式设置 |
 | `PNG2PPTX_REASONING_EFFORT` | `high` | `low`、`medium`、`high`，或 `none` 表示沿用原配置 |
 | `PNG2PPTX_CPU_ENV` | `/opt/shape-cpu` | worker 的 Python 环境前缀 |
 
-## 5. 三个常驻服务
+## 5. 常驻服务
 
 ### 5.1 大模型
 
 worker 需要一个 OpenAI 兼容的 `/chat/completions` 接口，支持图片输入、thinking 和 `reasoning_effort`，单次输出上限要能设到 113000 token。
 
-验证时用的是一个第三方网关。它上面的 GLM 只能通过 Anthropic 风格的 `/messages` 调用，所以仓库里带了一个转接层 `chat_to_messages_adapter/`，把 `/chat/completions` 转成 `/messages`：
+当前选定的模型是 `Sage-S2.1-Flash`，它在验证用的网关上直接支持 `/chat/completions`，把 `PNG2PPTX_API_BASE_URL` 指向网关即可，不需要任何转接。
+
+此前验证用的 `z-ai/glm-5.3-flash` 在同一网关上只能通过 Anthropic 风格的 `/messages` 调用，为此仓库里带了转接层 `chat_to_messages_adapter/`（`start_adapter.sh`，端口 18200）。它只在模型不支持 `/chat/completions` 时才需要；它不保存密钥，只把请求里的 `Authorization` 原样转发，不记录请求内容。
+
+**推理强度请保持 `high`**（`run_job.sh` 的默认值）。原配置在箭头阶段不设推理强度，用 GLM 时表现为不封顶：大量调用思考到撞上输出上限后重试，五张图 162 分钟、箭头阶段输出 3510 万 token；强制 high 后是 58 分钟、690 万 token，质量大体相当。Sage 没有在不设推理强度的配置下测过。
+
+### 5.2 图片编辑
+
+worker 以 JSON 调用 `<PNG2PPTX_IMAGE_EDIT_URL>/images/edits`，请求不带密钥。调用量很小：六张图的任务一共只调用了 3 次。有两种接法。
+
+**用外部图片模型（推荐）**。仓库里的 `images_edits_adapter/` 把这个接口转成对图片输出模型的 `/chat/completions` 调用，当前选定的模型是 `google/gemini-3.1-flash-image`：
 
 ```bash
-python -m chat_to_messages_adapter --upstream-base-url https://<网关>/api/v1 --port 18200
+PNG2PPTX_IMAGE_UPSTREAM_BASE_URL=https://<网关>/api/v1 \
+PNG2PPTX_IMAGE_MODEL=google/gemini-3.1-flash-image \
+PNG2PPTX_IMAGE_KEY_FILE=/path/to/api_key \
+PNG2PPTX_IMAGE_USAGE_LOG=/data/png2pptx-logs/image_usage.jsonl \
+  bash deploy/standalone/start_image_adapter.sh        # 端口 18300，前台运行
 ```
 
-转接层不保存密钥，只把请求里的 `Authorization` 原样转发，不记录请求内容。**如果生产环境的接口本身支持 `/chat/completions`，就不需要转接层**，直接把 `PNG2PPTX_API_BASE_URL` 指过去。
+- 这个转接层**持有密钥**（从密钥文件读取，因为 worker 的请求不带密钥），只监听本机，不要暴露到外网。
+- 它不记录提示词和图片，每次调用往用量日志里追加一行 token 数，供第 7 节的成本统计使用。
+- 上游偶发失败或没有返回图片时会重试一次。
+- 请求里的模型名会被忽略，一律使用 `PNG2PPTX_IMAGE_MODEL`。
 
-**推理强度请保持 `high`**。原配置在箭头阶段不设推理强度，在验证用的网关上表现为不封顶：大量调用思考到撞上输出上限后重试。五张图的对比如下。
+**自建 SenseNova**。按 5.3 搭环境并启动，把 `PNG2PPTX_IMAGE_EDIT_URL` 指向 `http://127.0.0.1:8091/v1`。需要 62 GB 显存、约 42 GiB 权重和 3.2 GB 的 `runtime_overlay/`。
 
-| | 原配置 | 强制 high |
-| --- | --- | --- |
-| 总耗时 | 162 分钟 | 58 分钟 |
-| 箭头阶段输出 token | 3510 万 | 690 万 |
-| 撞上限的调用 | 104 次 | 7 次 |
+### 5.3 SAM3 和自建 SenseNova
 
-两种配置的输出质量大体相当。这个现象只在该网关上验证过，换接口后需要重新确认。
-
-### 5.2 SAM3 和 SenseNova
+只用外部图片模型时，下面只需要 SAM3 的部分：搭建环境时加上 `PNG2PPTX_SKIP_SENSENOVA=1`，脚本只建 SAM3 环境；启动时只需要 `start_sam.sh`。
 
 原 `README.md` 第 2、3 节描述的是原集群的做法（挂载现成的 conda 环境、用 `deploy/submit.sh` 提交），集群外不适用。下面的脚本替代它们，都在 `deploy/standalone/` 下。
 
@@ -234,14 +246,42 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 
 演练中发现的问题都已修进本分支，列在第 8 节。
 
+### 换用 Sage 和 Gemini 后的验证（2026-11-25）
+
+大模型换成 `Sage-S2.1-Flash`（直连 `/chat/completions`）、图片编辑换成 `google/gemini-3.1-flash-image`（经图片转接层）后，在同一台机器上重跑，SenseNova 不参与：
+
+| 任务 | 结果 | 耗时 | 对比 GLM |
+| --- | --- | --- | --- |
+| 简单流程图 1 张 | 导出 1 张 | 6 分 36 秒 | 2 分 17 秒 |
+| 六张图同一任务 | **失败**，见下 | 第 6 分钟失败 | 108 分钟，6 张 |
+| 去掉 `acl23_xray` 后的五张图 | 导出 5 张，0 失败 | 244 分钟 | 同样五张约 108 分钟 |
+
+- **Sage 在 `acl23_xray` 上稳定失败**。这张图有 77 段文字和一个多段上下标公式，Sage 的文字清单 JSON 在公式处漏写键名（`{", y", "script": ...}` 少了 `"text":`），四次请求全部如此。文字分支只重试一次，失败后整个任务失败，同任务的其他图也拿不到结果。GLM 在这张图上没有这个问题。
+- **Sage 慢约一倍**，个别请求单次长达 20 到 33 分钟。五张图的 1361 次调用里有 13 次撞输出上限、6 次失败，流程自行重试后没有影响结果。
+- **还原质量与 GLM 大体相当**（看过三张图的对比）：各有细节出入，没有系统性的优劣。
+- Gemini 图片编辑在五张图的任务里被调用 3 次，全部成功，每次约 9 秒。
+
 ## 7. 已知限制
 
 接入前请让产品方知情：
 
 - **线条样式不还原**：线条和箭头的颜色、粗细、虚实都不会被还原，输出一律是细实线。这是流程本身的限制，与模型无关。
 - **复杂插图会丢内容**：叠在位图上的小图标、手绘风格的路径容易丢失。
-- **耗时长且波动大**：单张 2 到 50 分钟，接口必须做成异步（提交、查询、取结果）。
-- **成本**：箭头阶段每张图约 140 万到 170 万输出 token，其他阶段没有统计。
+- **耗时长且波动大**：用 GLM 时单张 2 到 50 分钟；用 Sage 时单张 7 分钟到 3 小时以上。接口必须做成异步（提交、查询、取结果）。
+- **Sage 对部分图片稳定失败**：见第 6 节。上线后建议一张图一个任务，避免一张图失败连带其他图；失败的图目前只能换模型重跑。
+- **成本**（Sage 输入 $0.05、输出 $0.2 每百万 token；Gemini 图片模型输入 $0.5、输出 $3.0 每百万 token）：
+
+  | 任务 | 大模型调用 | 输入 token | 输出 token | 大模型费用 | 图片编辑 | 合计 |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | 简单流程图 1 张 | 55 次 | 31 万 | 2 万 | $0.019 | 0 次 | $0.02 |
+  | 五张复杂图 | 1361 次 | 827 万 | 385 万 | $1.184 | 3 次，$0.012 | $1.20，平均 $0.24/张 |
+
+  图片编辑每次约 $0.004，可以忽略。失败的那次六张图任务另外花了 $0.20。任务结束后用下面的命令统计，图片用量取自图片转接层的用量日志，按任务的起止时间截取，所以同一时段只有一个任务在跑时才准确：
+
+  ```bash
+  python scripts/estimate_cost.py <任务目录> --image-usage-log <用量日志> \
+    --chat-input-price 0.05 --chat-output-price 0.2 --image-input-price 0.5 --image-output-price 3.0
+  ```
 - **并发**：只验证过单个 worker 内最多六张图的任务，没有验证过多个 worker 同时访问同一组 GPU 服务。
 - **结果需要人工看**：任务状态为 `completed` 只表示流程走完并导出了文件，各分支日志里常见 `needs_review`、`completed_with_unresolved` 这类标记，还原质量要看 `comparison.png`。
 
@@ -254,6 +294,7 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 | `full_recovery/api_worker.py`、`inplace_resume.py`、`split_coordinator.py`，`scripts/arrow_renderer_wrapper.py`、`fresh_sam_worker.py` | 写 `/proc/self/oom_score_adj` 失败时忽略 | 多数容器禁止写这个文件，原代码会直接崩溃 |
 | `scripts/check_prepare.py` | 增加对上面两项路径的断言 | |
 | `chat_to_messages_adapter/`、`tests/test_chat_to_messages_*.py` | 新增 | 见 5.1 |
+| `images_edits_adapter/`、`tests/test_images_edits_adapter.py`、`scripts/estimate_cost.py` | 新增 | 见 5.2 和第 7 节 |
 | `deploy/standalone/` | 新增 | 本文用到的脚本和清单 |
 | `.gitignore` | `weights/` 改为 `/weights` | 原规则把 SenseNova 源码里 19 个名为 `weights` 的代码目录（99 个 `.py` 文件）也忽略了，仓库因此缺代码，现已补入 |
 | `backends/reference/arrow_sam_ckpt_20261015/runs/` | 两个配置文件强制纳入 git | 准备任务时必须读取，原来被 `runs/` 规则忽略 |
