@@ -8,6 +8,6 @@ outputs/
 private/
 .runtime/sensenova/
 *.partial
-weights/
+/weights
 .runtime/
 deploy/sensenova/runtime_overlay/

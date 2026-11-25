@@ -1,6 +1,6 @@
 # 部署说明（面向后端）
 
-本文说明怎样在原集群之外部署这套 PNG → 可编辑 PPTX 系统。内容来自 2026-11-23 至 11-24 在一台租用 GPU 机器上的实测，凡是没有实测的部分都单独标出。
+本文说明怎样在原集群之外部署这套 PNG → 可编辑 PPTX 系统。内容来自 2026-11-23 至 11-25 在两台租用 GPU 机器上的实测：第一台用于摸索，第二台是全新实例，严格按本文从 GitHub 拉代码、从零搭环境、启动服务并跑通转换（记录见第 6 节）。凡是没有实测的部分都单独标出。
 
 原作者的 `README.md` 描述的是原集群（rjob、gpfs 挂载）上的用法，本文不依赖那些设施。
 
@@ -25,17 +25,21 @@
 
 ## 2. 需要准备的文件
 
-代码仓库之外，还有三类不进 git 的大文件，都要放到仓库目录下：
+代码仓库之外，还有三类不进 git 的大文件，都要放到仓库目录下的同名位置：
 
 | 路径 | 内容 | 大小 |
 | --- | --- | --- |
 | `weights/` | SenseNova 和 SAM3 权重 | 约 42 GiB |
-| `.runtime/` | 两套 LibreOffice、兼容库、字体、辅助 Python 包 | 约 4.2 GB，约 1.7 万个文件 |
-| `backends/reference/arrow_sam_ckpt_20261015/runs/` | SAM 配置快照 | 很小 |
+| `.runtime/` 下的 `arrow_renderer`、`portable_lo`、`renderer_support`、`shape_layers_py311`、`text_font_bundle_20261021` | 两套 LibreOffice、兼容库、字体、辅助 Python 包 | 约 1.2 GB，约 1.7 万个文件 |
+| `deploy/sensenova/runtime_overlay/` | SenseNova 运行时的 Python 包覆盖层 | 约 3.2 GB，约 2.2 万个文件 |
+
+`weights/` 可以是指向别处的软链接。
 
 **打包传输请用 tar，不要用 zip**。zip 会丢掉 `.runtime/` 里的软链接和可执行权限，渲染器随后无法启动。
 
-文件放好后用清单核对：`provenance/bundle_manifest.json` 记录了每个文件的 SHA-256，`provenance/weights_manifest.json` 记录了权重。注意 `scripts/verify_bundle.py` 会对本分支改过的文件报哈希不符（清单是原作者打包时生成的），改动列表见第 7 节。
+文件放好后用清单核对：`provenance/bundle_manifest.json` 记录了每个文件的 SHA-256，`provenance/weights_manifest.json` 记录了权重。注意 `scripts/verify_bundle.py` 会对本分支改过的文件报哈希不符（清单是原作者打包时生成的），改动列表见第 8 节。
+
+`.runtime/sensenova/` 不需要传输，它由第 5.2 节的搭建脚本在本机生成，里面有指向本机环境的绝对路径。
 
 ## 3. CPU worker 环境
 
@@ -67,6 +71,8 @@ python3.12 -m venv /opt/shape-cpu
 /opt/shape-cpu/bin/pip install -r deploy/standalone/requirements.worker.txt
 apt-get install -y fontconfig libnss3 libcairo2 ca-certificates
 ```
+
+这四个系统包在两台验证机器的镜像里都已预装，所以这份清单是按渲染器的动态库依赖推出来的，没有在缺少它们的系统上验证过是否完整。
 
 环境可以建在别的位置，通过环境变量 `PNG2PPTX_CPU_ENV` 指定前缀，默认值是 `/opt/shape-cpu`。
 
@@ -140,31 +146,64 @@ python -m chat_to_messages_adapter --upstream-base-url https://<网关>/api/v1 -
 
 ### 5.2 SAM3 和 SenseNova
 
-这两个服务的准备步骤见 `README.md` 第 2、3 节（`deploy/prepare.py`）。原 README 里的 `deploy/submit.sh` 是原集群的提交脚本，集群外不能用，改为直接启动进程。验证机器上实际使用的启动脚本和环境清单放在 `deploy/standalone/reference/`：
+原 `README.md` 第 2、3 节描述的是原集群的做法（挂载现成的 conda 环境、用 `deploy/submit.sh` 提交），集群外不适用。下面的脚本替代它们，都在 `deploy/standalone/` 下。
 
-| 文件 | 内容 |
-| --- | --- |
-| `start_services.sh` | 启动转接层和 SAM3 |
-| `sn_restart.sh` | 启动或重启 SenseNova |
-| `sam3_env_freeze.txt` | SAM3 环境的 `pip freeze`（Python 3.12，torch 2.12.1+cu130） |
-| `sensenova_runtime_freeze.txt` | SenseNova 运行时的 `pip freeze`（Python 3.12，torch 2.9.1+cu128） |
+**前提**：CPython 3.12；CUDA 工具包装在 `/usr/local/cuda`（SenseNova 启动时会检查 `nvcc`），或用 `CUDA_HOME` 指定；能访问 PyPI 和 `download.pytorch.org`。
 
-这些脚本里的路径是验证机器上的路径，使用前要改。两个 GPU 环境没有做成镜像。
+**搭建环境**（一次性，实测约 15 分钟，主要是下载）：
 
-部署时要注意：
+```bash
+PNG2PPTX_BASE_PYTHON=/path/to/python3.12 bash deploy/standalone/setup_gpu_envs.sh /data/png2pptx-envs
+```
 
-- **SenseNova 单卡部署**：原配置需要 2 张卡。单卡时把运行目录里 `service.sh` 的部署模式改成 `--x2i_server_deploy_mode colocate --x2i_server_used_gpus 1`。
-- **SenseNova 启动约 7 分钟**，期间 `/health` 不通。
-- **SenseNova 占用约 54 GiB 的 SysV 共享内存**，容器内存上限实测为 120 GiB 时够用。
-- **SenseNova 异常退出后必须清理再重启**：它会残留共享内存段和占着 GPU 的子进程，直接重启会撞上容器内存上限。`sn_restart.sh` 里有清理步骤（结束残留进程、`ipcrm` 释放无人挂接的段）。
-- **SAM3 的空闲保活**：原配置在空闲时会主动制造 GPU 负载（原集群用来避免资源被回收）。`start_services.sh` 把 `idle_resume_seconds` 调到极大值关掉了它。
+它建三样东西：
+
+| 位置 | 内容 | 大小 |
+| --- | --- | --- |
+| `<环境目录>/sam3` | SAM3 环境，依赖锁 `requirements.sam3.txt`（torch 2.12.1+cu130） | 约 5 GB |
+| `<环境目录>/openrlhf` | SenseNova 基础环境，依赖锁 `requirements.sensenova-base.txt`（torch 2.9.1+cu128） | 约 11 GB |
+| `<仓库>/.runtime/sensenova` | SenseNova 运行时，由基础环境加 `runtime_overlay/` 组合而成 | 约 3 GB |
+
+脚本可以重复执行，中途失败后重跑会从失败的那一步重做。两点说明：
+
+- SenseNova 基础环境是**不解析依赖**安装的。原环境记录的版本组合本身不满足包之间声明的依赖（例如 `vllm 0.16.0` 要求 `transformers<5`，实际运行的是 5.2.0），按常规方式安装会直接报冲突。
+- `.runtime/sensenova` 里是指向 `<环境目录>/openrlhf` 的链接，所以这个目录建好后不能移动。
+
+**启动服务**（三个脚本都在前台运行，交给 systemd、supervisor 或容器去托管）：
+
+```bash
+# SAM3，端口 18103，约 1 分钟就绪
+PNG2PPTX_SAM_PYTHON=/data/png2pptx-envs/sam3/bin/python \
+  bash deploy/standalone/start_sam.sh /data/png2pptx-runs/sam
+
+# SenseNova，端口 8091，约 5 分钟就绪
+PNG2PPTX_SENSENOVA_BASE_ENV=/data/png2pptx-envs/openrlhf \
+  bash deploy/standalone/start_sensenova.sh /data/png2pptx-runs/sensenova
+
+# 转接层，端口 18200，仅在需要时启动（见 5.1）
+PNG2PPTX_UPSTREAM_BASE_URL=https://<网关>/api/v1 \
+  bash deploy/standalone/start_adapter.sh
+```
+
+每个脚本的参数是一个**不存在的新目录**，用来放这次运行的配置和日志；重启服务时换一个目录，或先删掉旧的。
+
+启动脚本相对原配置做了三处调整：
+
+- **SenseNova 改为单卡**：原配置把理解和生成分在 2 张卡上，脚本改成 `--x2i_server_deploy_mode colocate`。
+- **关掉空闲保活**：原配置在服务空闲时会主动制造 GPU 负载（原集群用来避免资源被回收），脚本把 `idle_resume_seconds` 调到极大值关掉了它。
+- **SenseNova 启动前先清理**：结束上一次残留的进程，释放无人挂接的 SysV 共享内存段。
+
+关于最后一点：SenseNova 运行时占用约 54 GiB 的 SysV 共享内存，容器内存上限为 120 GiB 时够用。但它异常退出或启动失败后，会残留子进程和那段共享内存。**在残留没清掉的情况下再启动，新进程会因为内存超限被系统杀掉，表现为加载到一半卡住、日志里没有任何报错**。`start_sensenova.sh` 每次启动前都会清理，所以重启请始终通过这个脚本。
 
 健康检查：
 
 ```bash
-curl --noproxy '*' http://127.0.0.1:18103/health   # 应有 warmup_passed=true、checkpoint_hash_verified=true
-curl --noproxy '*' http://127.0.0.1:8091/health
+curl --noproxy '*' http://127.0.0.1:18103/health     # 应有 "phase": "ready"、"warmup_passed": true、"checkpoint_hash_verified": true
+curl --noproxy '*' http://127.0.0.1:8091/health      # 返回 200
+curl --noproxy '*' http://127.0.0.1:8091/v1/models   # 模型 ID 为 SenseNova-U1.5-8B-MoT
 ```
+
+两个 GPU 环境没有做成镜像。
 
 ## 6. 验收
 
@@ -178,13 +217,22 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 
 然后用 `run_job.sh` 跑真实图片。**只有跑完整流程才算验收**：验证过程中有两次环境问题都是在最后的合成阶段才暴露的，前面的自检查不出来。
 
-验证时用过的六张图和耗时可以作为参照（GLM，强制 high）：
+### 演练记录（2026-11-25，全新实例）
 
-| 图片 | 耗时 | 备注 |
+在一台没有任何历史环境的 A800 80GB 实例上，按本文从头做了一遍，结果如下（GLM，强制 high）：
+
+| 步骤 | 结果 | 耗时 |
 | --- | --- | --- |
-| 简单流程图（flow） | 约 2 分钟 | |
-| 五张顶会论文图，同一任务 | 58 分钟 | 五张并行 |
-| 带三维曲面的示意图 | 51 分钟 | |
+| 从 GitHub 克隆本分支，放入第 2 节的三类大文件 | 通过 | |
+| 建 CPU 环境，`check_prepare.py`、`check_render.py` | 通过 | 几分钟 |
+| `setup_gpu_envs.sh` 从零建两个 GPU 环境 | 通过 | 约 15 分钟 |
+| 启动 SAM3、SenseNova、转接层，健康检查 | 通过 | SenseNova 约 5 分钟 |
+| `run_job.sh` 转换一张简单流程图 | 导出 1 张 | 2 分 17 秒 |
+| `run_job.sh` 转换六张图（五张顶会论文图加一张带三维曲面的示意图，同一任务） | 导出 6 张，0 失败 | 108 分钟 |
+
+六张图的任务共调用大模型 1909 次，没有失败和限流，同时在途的请求最多 48 个。各张图完成的时间点（从任务启动算起）依次是第 26、41、47、51、52、108 分钟：前五张集中在前 52 分钟，最后一张带三维曲面的图独占了后面近一个小时，时间主要花在箭头分支上。此前在第一台机器上，五张论文图单独一个任务是 58 分钟，带三维曲面的那张单独一个任务是 51 分钟，两者相加与这次接近，说明**把多张图放进同一个任务并不会明显缩短总耗时**。
+
+演练中发现的问题都已修进本分支，列在第 8 节。
 
 ## 7. 已知限制
 
@@ -194,7 +242,8 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 - **复杂插图会丢内容**：叠在位图上的小图标、手绘风格的路径容易丢失。
 - **耗时长且波动大**：单张 2 到 50 分钟，接口必须做成异步（提交、查询、取结果）。
 - **成本**：箭头阶段每张图约 140 万到 170 万输出 token，其他阶段没有统计。
-- **并发**：只验证过单个 worker 内五张图并行，没有验证过多个 worker 同时访问同一组 GPU 服务。
+- **并发**：只验证过单个 worker 内最多六张图的任务，没有验证过多个 worker 同时访问同一组 GPU 服务。
+- **结果需要人工看**：任务状态为 `completed` 只表示流程走完并导出了文件，各分支日志里常见 `needs_review`、`completed_with_unresolved` 这类标记，还原质量要看 `comparison.png`。
 
 ## 8. 本分支相对原包的改动
 
@@ -206,6 +255,9 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 | `scripts/check_prepare.py` | 增加对上面两项路径的断言 | |
 | `chat_to_messages_adapter/`、`tests/test_chat_to_messages_*.py` | 新增 | 见 5.1 |
 | `deploy/standalone/` | 新增 | 本文用到的脚本和清单 |
+| `.gitignore` | `weights/` 改为 `/weights` | 原规则把 SenseNova 源码里 19 个名为 `weights` 的代码目录（99 个 `.py` 文件）也忽略了，仓库因此缺代码，现已补入 |
+| `backends/reference/arrow_sam_ckpt_20261015/runs/` | 两个配置文件强制纳入 git | 准备任务时必须读取，原来被 `runs/` 规则忽略 |
+| `deploy/sensenova/setup_runtime.py` | 容忍基础环境里几个无功能的缺失条目；不链接被覆盖层替换的包的版本元数据；生成 `hypercorn` 启动命令 | 原脚本只适用于原集群的现成环境，对按清单重建的环境会报错或生成无法启动的运行时 |
 
 `.runtime/arrow_renderer/soffice` 也需要同样的 `oom_score_adj` 容错，但 `.runtime/` 不进 git。拿到原始 `.runtime/` 后，把这个文件开头的
 
