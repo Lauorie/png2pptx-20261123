@@ -16,11 +16,13 @@
 # Optional environment:
 #   PNG2PPTX_API_MODEL         default z-ai/glm-5.3-flash
 #   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default high
+#   PNG2PPTX_ARROW_REASONING_EFFORT  low | medium | high for the arrow branch only; default: same as above
+#   PNG2PPTX_ARROW_MAX_TOKENS        output cap per arrow-branch request; default: backend's own
 #   PNG2PPTX_CPU_ENV           Python environment prefix; default /opt/shape-cpu
 set -euo pipefail
 
 if [ "$#" -ne 2 ]; then
-  sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//' >&2
+  sed -n '2,21p' "$0" | sed 's/^# \{0,1\}//' >&2
   exit 2
 fi
 : "${PNG2PPTX_API_BASE_URL:?set PNG2PPTX_API_BASE_URL}"
@@ -54,6 +56,12 @@ PREPARE=("$PYTHON" -B "$REPO/scripts/prepare_forward.py"
   --image-edit-url "$PNG2PPTX_IMAGE_EDIT_URL")
 if [ "$EFFORT" != "none" ]; then
   PREPARE+=(--force-reasoning-effort "$EFFORT")
+fi
+if [ -n "${PNG2PPTX_ARROW_REASONING_EFFORT:-}" ]; then
+  PREPARE+=(--arrow-reasoning-effort "$PNG2PPTX_ARROW_REASONING_EFFORT")
+fi
+if [ -n "${PNG2PPTX_ARROW_MAX_TOKENS:-}" ]; then
+  PREPARE+=(--arrow-max-tokens "$PNG2PPTX_ARROW_MAX_TOKENS")
 fi
 "${PREPARE[@]}"
 

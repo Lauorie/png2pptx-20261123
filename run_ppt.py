@@ -25,6 +25,9 @@ def main():
     p.add_argument('--api-base-url',default='http://35.220.164.252:3888/v1')
     p.add_argument('--api-model',default='glm-5.3-flash')
     p.add_argument('--force-reasoning-effort',choices=('low','medium','high'))
+    p.add_argument('--arrow-reasoning-effort',choices=('low','medium','high'),
+                   help='Reasoning effort for the arrow branch only; overrides --force-reasoning-effort there')
+    p.add_argument('--arrow-max-tokens',type=int,help='Output cap per arrow-branch request')
     p.add_argument('--critic-profile',choices=('full','lean'),default='full')
     p.add_argument('--api-budget-config',type=Path,help='Shared persistent task budget configuration')
     p.add_argument('--sam-url',default=SAM_BASE_URL)

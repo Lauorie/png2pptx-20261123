@@ -17,6 +17,7 @@ import urllib.request
 import hashlib
 import uuid
 from .api_budget import BudgetGuard, BudgetBusy, BudgetPaused
+from .arrow_budget import routed_body
 
 
 def payload_for_api(body, model, force_effort=None, service_tier=None, image_detail=None):
@@ -41,7 +42,13 @@ def payload_for_api(body, model, force_effort=None, service_tier=None, image_det
         payload.setdefault('thinking', {'type': 'enabled'})
     if template.get('reasoning_effort') is not None:
         payload.setdefault('reasoning_effort', template['reasoning_effort'])
-    if force_effort is not None:
+    if template.get('pin_reasoning_effort'):
+        # A stage pinned its own effort (see arrow_budget); the run-wide force does not replace it.
+        if template.get('reasoning_effort') not in ('low', 'medium', 'high'):
+            raise ValueError('Invalid pinned reasoning effort')
+        payload['reasoning_effort'] = template['reasoning_effort']
+        payload['thinking'] = {'type': 'enabled'}
+    elif force_effort is not None:
         if force_effort not in ('low', 'medium', 'high'):
             raise ValueError('Invalid forced reasoning effort')
         payload['reasoning_effort'] = force_effort
@@ -344,10 +351,12 @@ class ApiRelay:
                 self.reply(200, relay.stamp())
 
             def do_POST(self):
-                if self.path != '/v1/chat/completions':
+                if routed_body(self.path, {}, {}) is None:
                     return self.reply(404, {'error': 'Unknown route'})
                 try:
                     body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                    # The arrow branch posts to its own route and may carry its own budget.
+                    body = routed_body(self.path, body, relay.settings)
                 except (ValueError, TypeError, KeyError):
                     return self.reply(400, {'error': 'Invalid JSON request'})
                 streaming = bool(body.get('stream'))

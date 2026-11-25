@@ -115,7 +115,10 @@ def configure(project,args):
     save(run/'settings.json',settings);save(run/'shape/settings.json',settings)
     text=read(run/'backends/text/config.json');text['expected_boyue_base_url']=('http://127.0.0.1:18190/v1' if settings.get('api_relays') else base)
     save(run/'backends/text/config.json',text)
-    arrow=read(run/'arrows/config.json');arrow.update(base_url=('http://127.0.0.1:18189/v1' if settings.get('api_relays') else base),sam_url=args.sam_url.rstrip('/'),case_workers=8)
+    from .arrow_budget import arrow_base_url, to_settings as arrow_budget_settings
+    settings=arrow_budget_settings(settings,getattr(args,'arrow_reasoning_effort',None),
+                                   getattr(args,'arrow_max_tokens',None))
+    arrow=read(run/'arrows/config.json');arrow.update(base_url=arrow_base_url('http://127.0.0.1:18189/v1' if settings.get('api_relays') else base),sam_url=args.sam_url.rstrip('/'),case_workers=8)
     save(run/'arrows/config.json',arrow)
     if settings.get('workflow_scope')=='fresh_full':
         if not external_arrows:

@@ -86,6 +86,8 @@ export PNG2PPTX_API_MODEL=Sage-S2.1-Flash
 export PNG2PPTX_API_KEY_FILE=/path/to/api_key        # 权限 0600
 export PNG2PPTX_SAM_URL=http://127.0.0.1:18103
 export PNG2PPTX_IMAGE_EDIT_URL=http://127.0.0.1:18300/v1   # 图片转接层；自建 SenseNova 时为 http://127.0.0.1:8091/v1
+export PNG2PPTX_ARROW_REASONING_EFFORT=low                # 用 Sage 时建议设置，见第 6 节
+export PNG2PPTX_ARROW_MAX_TOKENS=32000
 
 bash deploy/standalone/run_job.sh /data/jobs/123/images /data/jobs/123/run
 ```
@@ -119,6 +121,8 @@ cd <任务目录> && "$PNG2PPTX_CPU_ENV/bin/python" -B -u code/full_recovery/api
 | --- | --- | --- |
 | `PNG2PPTX_API_MODEL` | `z-ai/glm-5.3-flash` | 模型名；当前选定的是 `Sage-S2.1-Flash`，需显式设置 |
 | `PNG2PPTX_REASONING_EFFORT` | `high` | `low`、`medium`、`high`，或 `none` 表示沿用原配置 |
+| `PNG2PPTX_ARROW_REASONING_EFFORT` | 不设，即与上一项相同 | 只作用于箭头分支的推理强度。`Sage-S2.1-Flash` 只接受 `low` 和 `high` |
+| `PNG2PPTX_ARROW_MAX_TOKENS` | 不设，即后端自带的 113000 | 箭头分支单次请求的输出上限 |
 | `PNG2PPTX_CPU_ENV` | `/opt/shape-cpu` | worker 的 Python 环境前缀 |
 
 ## 5. 常驻服务
@@ -256,10 +260,25 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 | 六张图同一任务 | **失败**，见下 | 第 6 分钟失败 | 108 分钟，6 张 |
 | 去掉 `acl23_xray` 后的五张图 | 导出 5 张，0 失败 | 244 分钟 | 同样五张约 108 分钟 |
 
-- **Sage 在 `acl23_xray` 上稳定失败**。这张图有 77 段文字和一个多段上下标公式，Sage 的文字清单 JSON 在公式处漏写键名（`{", y", "script": ...}` 少了 `"text":`），四次请求全部如此。文字分支只重试一次，失败后整个任务失败，同任务的其他图也拿不到结果。GLM 在这张图上没有这个问题。
+- **Sage 在 `acl23_xray` 上稳定失败（已修复，见下一小节）**。这张图有 77 段文字和一个多段上下标公式，Sage 的文字清单 JSON 在公式处漏写键名（`{", y", "script": ...}` 少了 `"text":`），四次请求全部如此。文字分支只重试一次，失败后整个任务失败，同任务的其他图也拿不到结果。GLM 在这张图上没有这个问题。
 - **Sage 慢约一倍**，个别请求单次长达 20 到 33 分钟。五张图的 1361 次调用里有 13 次撞输出上限、6 次失败，流程自行重试后没有影响结果。
 - **还原质量与 GLM 大体相当**（看过三张图的对比）：各有细节出入，没有系统性的优劣。
 - Gemini 图片编辑在五张图的任务里被调用 3 次，全部成功，每次约 9 秒。
+
+### 文字清单容错和箭头分支提速（2026-11-25，`acl23_xray` 一张图）
+
+- **文字清单容错**：`full_recovery/text_json_repair.py` 在 Sage 漏写 `"text":` 键名时把键名补回去，值不变；其他格式错误照旧失败。加上后这张图的文字分支正常完成（补回 12 处）。
+- **箭头分支为什么慢**：箭头分支对每个候选区域单独问一次模型。全程 `high` 时，五张图任务的输出 token 约有三分之二花在箭头分支；一次请求思考了 57,824 个 token、19 分钟，回答只是“这是容器边框，不是箭头”。
+- **箭头分支单独设推理强度**：`PNG2PPTX_ARROW_REASONING_EFFORT=low` 只降低箭头分支的强度，图形和文字分支仍是 `high`。实现方式是箭头分支走本地网关的 `/arrow/v1` 路由，网关只对这条路由改写强度和输出上限（`full_recovery/arrow_budget.py`）。
+- **箭头回答的格式修复**：低强度下 Sage 有约四分之一的箭头回答把节点编号写错（不带引号，或只写坐标不写编号），原后端会整条丢弃。`full_recovery/arrow_reply_repair.py` 只恢复编号、不改坐标，准备任务时装入该任务自己的箭头代码副本。
+
+| `acl23_xray`，Sage | 用时 | 输出 token | 费用 | 箭头几何任务失败 | 画面 |
+| --- | --- | --- | --- | --- | --- |
+| 全程 `high` | 167 分钟 | 163 万 | $0.51 | 1 / 52 | 箭头基本齐全 |
+| 箭头 `low`，无格式修复 | 37 分钟 | 59 万 | $0.33 | 12 / 45 | 少十来条箭头 |
+| 箭头 `low`，有格式修复 | 39 分钟 | 60 万 | $0.32 | 0 / 53 | 箭头基本齐全，与全程 `high` 相当 |
+
+只在这一张图上对比过，其余图片未验证；每行各跑一次，同一配置两次运行之间本身也有出入。Sage 不接受 `medium`（网关返回上游 400）。
 
 ## 7. 已知限制
 
@@ -267,8 +286,8 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 
 - **线条样式不还原**：线条和箭头的颜色、粗细、虚实都不会被还原，输出一律是细实线。这是流程本身的限制，与模型无关。
 - **复杂插图会丢内容**：叠在位图上的小图标、手绘风格的路径容易丢失。
-- **耗时长且波动大**：用 GLM 时单张 2 到 50 分钟；用 Sage 时单张 7 分钟到 3 小时以上。接口必须做成异步（提交、查询、取结果）。
-- **Sage 对部分图片稳定失败**：见第 6 节。上线后建议一张图一个任务，避免一张图失败连带其他图；失败的图目前只能换模型重跑。
+- **耗时长且波动大**：用 GLM 时单张 2 到 50 分钟；用 Sage 时单张 7 分钟到 3 小时以上，箭头分支设为 `low` 后实测一张复杂图从 167 分钟降到 39 分钟（见第 6 节）。接口必须做成异步（提交、查询、取结果）。
+- **一张图失败会连带同任务的其他图**：上线后建议一张图一个任务。已知的 Sage 格式错误有容错（见第 6 节），但只覆盖见过的几种写法，遇到新的写法仍会失败，失败的图只能换模型重跑。
 - **成本**（Sage 输入 $0.05、输出 $0.2 每百万 token；Gemini 图片模型输入 $0.5、输出 $3.0 每百万 token）：
 
   | 任务 | 大模型调用 | 输入 token | 输出 token | 大模型费用 | 图片编辑 | 合计 |
@@ -295,6 +314,9 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 | `scripts/check_prepare.py` | 增加对上面两项路径的断言 | |
 | `chat_to_messages_adapter/`、`tests/test_chat_to_messages_*.py` | 新增 | 见 5.1 |
 | `images_edits_adapter/`、`tests/test_images_edits_adapter.py`、`scripts/estimate_cost.py` | 新增 | 见 5.2 和第 7 节 |
+| `full_recovery/text_json_repair.py`、`full_recovery/text_stage.py`、`tests/test_text_json_repair.py` | 新增容错并在文字阶段启用 | 见第 6 节 |
+| `full_recovery/arrow_budget.py`、`api_gateway.py`、`prepare_api.py`、`run_ppt.py`、`tests/test_arrow_budget.py` | 箭头分支可单独设推理强度和输出上限；箭头分支改走网关的 `/arrow/v1` 路由 | 见第 6 节。不设置时请求内容与原来相同 |
+| `full_recovery/arrow_reply_repair.py`、`full_recovery/fresh_arrow.py`、`tests/test_arrow_reply_repair.py` | 准备任务时给箭头后端的解析函数加一层节点编号修复 | 见第 6 节。始终启用 |
 | `deploy/standalone/` | 新增 | 本文用到的脚本和清单 |
 | `.gitignore` | `weights/` 改为 `/weights` | 原规则把 SenseNova 源码里 19 个名为 `weights` 的代码目录（99 个 `.py` 文件）也忽略了，仓库因此缺代码，现已补入 |
 | `backends/reference/arrow_sam_ckpt_20261015/runs/` | 两个配置文件强制纳入 git | 准备任务时必须读取，原来被 `runs/` 规则忽略 |

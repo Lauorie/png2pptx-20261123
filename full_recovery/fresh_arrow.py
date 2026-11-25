@@ -44,8 +44,12 @@ def prepare(reference,root,items):
                   original_images=[{'id':i['id'],'path':i['original'],'sha256':i['source_sha256']} for i in items],
                   source_code_sha256={str(p.relative_to(reference)):sha(p)
                     for directory in ('code','geometry_code') for p in (reference/directory).rglob('*.py')},
-                  adaptations=['resource limits','loopback API transport','disable prior mask reuse'])
+                  adaptations=['resource limits','loopback API transport','disable prior mask reuse',
+                               'restore node naming in geometry replies (arrow_reply_repair)'])
     save(root/'provenance.json',record)
+    # Keep replies whose only defect is unquoted or positional node naming.
+    from .arrow_reply_repair import install as install_reply_repair
+    install_reply_repair(root/'geometry_code')
     refresh(root)
 
 
