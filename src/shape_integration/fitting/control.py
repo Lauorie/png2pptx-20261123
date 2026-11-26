@@ -517,13 +517,20 @@ def _process_object(root, candidate, item, workspace, runtime, options, *, names
     recovered=reviewed_coverage_recovery(history,selected)
     if recovered:
         record['coverage_recovery_retained']=selected
-    if (seed and not seed['fit_reused'] and seed.get('fallback_fit_available') and not recovered
-            and record['state'] != 'accepted_by_model'):
+    fresh = seed and not seed['fit_reused'] and seed.get('fallback_fit_available') and not recovered
+    shrunk = False
+    if fresh and selected and record['state'] == 'accepted_by_model':
+        from .repair_guard import discards_base
+        # An accepted repair that was only asked to add parts must not drop the rest.
+        shrunk = discards_base((input_context or {}).get('coverage_source_requests', []),
+                               read(Path(seed['path'])/'fit_original.json'), read(root/selected/'fit_original.json'))
+    if fresh and (record['state'] != 'accepted_by_model' or shrunk):
         # Fresh observation must be free to change the decomposition. Its
         # failed attempt must not erase the previous usable geometry, however.
         import_seed({**seed, 'fit_reused': True}, root/'revision_baseline', candidate, item)
         record.update(attempted_revision=selected, state='unresolved',
-                      selection_reason='fresh_observation_not_accepted_preserve_previous_geometry')
+                      selection_reason='repair_discarded_previous_geometry' if shrunk else
+                      'fresh_observation_not_accepted_preserve_previous_geometry')
         selected = 'revision_baseline'
     if selected and options.get('source_frame_refinement', True):
         from .source_boxes import register
