@@ -82,14 +82,10 @@ apt-get install -y fontconfig libnss3 libcairo2 ca-certificates
 
 ```bash
 export PNG2PPTX_API_BASE_URL=https://<网关>/api/v1
-export PNG2PPTX_API_MODEL=openai/gpt-6-luna            # 当前推荐，见第 6 节最后一小节
 export PNG2PPTX_API_KEY_FILE=/path/to/api_key        # 权限 0600
 export PNG2PPTX_SAM_URL=http://127.0.0.1:18103
 export PNG2PPTX_IMAGE_EDIT_URL=http://127.0.0.1:18300/v1   # 图片转接层；自建 SenseNova 时为 http://127.0.0.1:8091/v1
-export PNG2PPTX_REASONING_EFFORT=medium
-export PNG2PPTX_ARROW_MAX_TOKENS=32000
-export PNG2PPTX_API_MAX_TOKENS=32000
-export PNG2PPTX_CASE_WORKERS=6 PNG2PPTX_TEXT_WORKERS=6      # 一个任务里有多张图时才有用
+# 模型、推理强度、输出上限、并行数都有默认值（gpt-6-luna、medium、32000、6），见下表
 
 bash deploy/standalone/run_job.sh /data/jobs/123/images /data/jobs/123/run
 ```
@@ -121,13 +117,13 @@ cd <任务目录> && "$PNG2PPTX_CPU_ENV/bin/python" -B -u code/full_recovery/api
 
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |
-| `PNG2PPTX_API_MODEL` | `z-ai/glm-5.3-flash` | 模型名；当前选定的是 `Sage-S2.1-Flash`，需显式设置 |
-| `PNG2PPTX_REASONING_EFFORT` | `high` | `low`、`medium`、`high`，或 `none` 表示沿用原配置 |
+| `PNG2PPTX_API_MODEL` | `openai/gpt-6-luna` | 模型名 |
+| `PNG2PPTX_REASONING_EFFORT` | `medium` | `low`、`medium`、`high`，或 `none` 表示沿用原配置 |
 | `PNG2PPTX_ARROW_REASONING_EFFORT` | 不设，即与上一项相同 | 只作用于箭头分支的推理强度。`Sage-S2.1-Flash` 只接受 `low` 和 `high` |
-| `PNG2PPTX_ARROW_MAX_TOKENS` | 不设，即后端自带的 113000 | 箭头分支单次请求的输出上限 |
-| `PNG2PPTX_API_MAX_TOKENS` | 不设，即各后端自带的值 | 所有请求的输出上限。用 `gpt-6-luna` 时设 32000，避免个别请求推理过长 |
-| `PNG2PPTX_CASE_WORKERS` | 2 | 图形分支同时处理几张图。六张图的任务设为 6 后总用时从 40 分钟降到 20 分钟 |
-| `PNG2PPTX_TEXT_WORKERS` | 2 | 文字分支同时处理几张图 |
+| `PNG2PPTX_ARROW_MAX_TOKENS` | 32000 | 箭头分支单次请求的输出上限；设为空串则用后端自带的 113000 |
+| `PNG2PPTX_API_MAX_TOKENS` | 32000 | 所有请求的输出上限，避免个别请求推理过长；设为空串则用各后端自带的值 |
+| `PNG2PPTX_CASE_WORKERS` | 6 | 图形分支同时处理几张图。六张图的任务从 2 改为 6 后总用时从 40 分钟降到 20 分钟 |
+| `PNG2PPTX_TEXT_WORKERS` | 6 | 文字分支同时处理几张图 |
 | `PNG2PPTX_API_IDLE_TIMEOUT_SECONDS` | 300 | 模型流多久没有输出就放弃。`gpt-6-luna` 推理时长时间不出字，**不要**调到 60 |
 | `PNG2PPTX_API_HEDGE_AFTER_SECONDS` | 不设，即关闭 | 请求超过这么久没答完就再问一次，取先答完的 |
 | `PNG2PPTX_CPU_ENV` | `/opt/shape-cpu` | worker 的 Python 环境前缀 |
@@ -138,11 +134,11 @@ cd <任务目录> && "$PNG2PPTX_CPU_ENV/bin/python" -B -u code/full_recovery/api
 
 worker 需要一个 OpenAI 兼容的 `/chat/completions` 接口，支持图片输入、thinking 和 `reasoning_effort`，单次输出上限要能设到 113000 token。
 
-当前选定的模型是 `Sage-S2.1-Flash`，它在验证用的网关上直接支持 `/chat/completions`，把 `PNG2PPTX_API_BASE_URL` 指向网关即可，不需要任何转接。
+当前选定的模型是 `openai/gpt-6-luna`（`run_job.sh` 的默认值），它和此前用过的 `Sage-S2.1-Flash` 一样，在验证用的网关上直接支持 `/chat/completions`，把 `PNG2PPTX_API_BASE_URL` 指向网关即可，不需要任何转接。
 
 此前验证用的 `z-ai/glm-5.3-flash` 在同一网关上只能通过 Anthropic 风格的 `/messages` 调用，为此仓库里带了转接层 `chat_to_messages_adapter/`（`start_adapter.sh`，端口 18200）。它只在模型不支持 `/chat/completions` 时才需要；它不保存密钥，只把请求里的 `Authorization` 原样转发，不记录请求内容。
 
-**推理强度请保持 `high`**（`run_job.sh` 的默认值）。原配置在箭头阶段不设推理强度，用 GLM 时表现为不封顶：大量调用思考到撞上输出上限后重试，五张图 162 分钟、箭头阶段输出 3510 万 token；强制 high 后是 58 分钟、690 万 token，质量大体相当。Sage 没有在不设推理强度的配置下测过。
+**推理强度的默认值是 `medium`**。用 `gpt-6-luna` 时 `medium` 比 `high` 快一倍多，画面没有变差（第 6 节最后一小节）。不要用 `none`：原配置在箭头阶段不设推理强度，用 GLM 时表现为不封顶，大量调用思考到撞上输出上限后重试，五张图 162 分钟、箭头阶段输出 3510 万 token；强制 `high` 后是 58 分钟、690 万 token，质量大体相当。
 
 ### 5.2 图片编辑
 
@@ -289,7 +285,7 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 
 ### 换用 gpt-6-luna 和提速（2026-11-26，六张图同一任务）
 
-当前推荐配置：`PNG2PPTX_API_MODEL=openai/gpt-6-luna`、`PNG2PPTX_REASONING_EFFORT=medium`、`PNG2PPTX_ARROW_MAX_TOKENS=32000`、`PNG2PPTX_API_MAX_TOKENS=32000`，多图任务再加 `PNG2PPTX_CASE_WORKERS=6 PNG2PPTX_TEXT_WORKERS=6`。模型价格按输入 $0.1、输出 $0.5 每百万 token 计。
+下表最后一行的配置（`openai/gpt-6-luna`、`medium`、两个输出上限 32000、并行数 6）现在是 `run_job.sh` 的默认值。模型价格按输入 $0.1、输出 $0.5 每百万 token 计。
 
 | 配置 | 总用时 | 导出 | 模型费用 |
 | --- | --- | --- | --- |

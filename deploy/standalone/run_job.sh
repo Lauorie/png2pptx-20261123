@@ -14,15 +14,15 @@
 #   PNG2PPTX_IMAGE_EDIT_URL  image edit service: the image adapter (http://127.0.0.1:18300/v1)
 #                            or SenseNova (http://127.0.0.1:8091/v1)
 # Optional environment:
-#   PNG2PPTX_API_MODEL         default z-ai/glm-5.3-flash
-#   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default high
+#   PNG2PPTX_API_MODEL         default openai/gpt-6-luna
+#   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default medium
 #   PNG2PPTX_ARROW_REASONING_EFFORT  low | medium | high for the arrow branch only; default: same as above
-#   PNG2PPTX_ARROW_MAX_TOKENS        output cap per arrow-branch request; default: backend's own
-#   PNG2PPTX_API_MAX_TOKENS          output cap for every model request; default: backends' own
+#   PNG2PPTX_ARROW_MAX_TOKENS        output cap per arrow-branch request; default 32000, empty: backend's own
+#   PNG2PPTX_API_MAX_TOKENS          output cap for every model request; default 32000, empty: backends' own
 #   PNG2PPTX_API_IDLE_TIMEOUT_SECONDS  give up a silent model stream after this long; default: 300
 #   PNG2PPTX_API_HEDGE_AFTER_SECONDS   ask a request a second time when unanswered this long; default: never
-#   PNG2PPTX_CASE_WORKERS      images the shape branch works on at once; default 2
-#   PNG2PPTX_TEXT_WORKERS      images the text branch works on at once; default 2
+#   PNG2PPTX_CASE_WORKERS      images the shape branch works on at once; default 6
+#   PNG2PPTX_TEXT_WORKERS      images the text branch works on at once; default 6
 #   PNG2PPTX_CPU_ENV           Python environment prefix; default /opt/shape-cpu
 set -euo pipefail
 
@@ -43,7 +43,12 @@ export PNG2PPTX_CPU_ENV="${PNG2PPTX_CPU_ENV:-/opt/shape-cpu}"
 export PATH="${PNG2PPTX_CPU_ENV}/bin:${PATH}"
 export SSL_CERT_FILE="${SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}"
 PYTHON="${PNG2PPTX_CPU_ENV}/bin/python"
-EFFORT="${PNG2PPTX_REASONING_EFFORT:-high}"
+EFFORT="${PNG2PPTX_REASONING_EFFORT:-medium}"
+# Unset means the measured default; set but empty means the backend's own value.
+PNG2PPTX_ARROW_MAX_TOKENS="${PNG2PPTX_ARROW_MAX_TOKENS-32000}"
+PNG2PPTX_API_MAX_TOKENS="${PNG2PPTX_API_MAX_TOKENS-32000}"
+PNG2PPTX_CASE_WORKERS="${PNG2PPTX_CASE_WORKERS:-6}"
+PNG2PPTX_TEXT_WORKERS="${PNG2PPTX_TEXT_WORKERS:-6}"
 
 if [ -e "$RUN_DIR" ] || [ -e "$CATALOG" ]; then
   echo "run directory or its .input catalog already exists: $RUN_DIR" >&2
@@ -55,7 +60,7 @@ fi
 PREPARE=("$PYTHON" -B "$REPO/scripts/prepare_forward.py"
   --input-root "$CATALOG" --run-dir "$RUN_DIR"
   --api-base-url "$PNG2PPTX_API_BASE_URL"
-  --api-model "${PNG2PPTX_API_MODEL:-z-ai/glm-5.3-flash}"
+  --api-model "${PNG2PPTX_API_MODEL:-openai/gpt-6-luna}"
   --api-key-file "$PNG2PPTX_API_KEY_FILE"
   --sam-url "$PNG2PPTX_SAM_URL"
   --image-edit-url "$PNG2PPTX_IMAGE_EDIT_URL")
