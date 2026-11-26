@@ -197,6 +197,7 @@ def execute(run, *, record_stream=None):
         notify(cid,state='running',stage='ownership')
         # Stroke colour, width and dash are visible facts: read them from the source.
         from .arrow_restyle import restyled
+        branch_paths=dict(paths)  # the branches' own files, checked again after composition
         paths.update(restyled(paths,Path(item['original']),folder/'arrow_style',settings,code))
         scene=read(paths['shape_scene']);style_data=read(paths['shape_styles']);styles={k:v['style'] for k,v in style_data['parts'].items()}
         arrows=read(paths['arrow_scene']);texts=read(paths['text_scene'])
@@ -296,7 +297,7 @@ def execute(run, *, record_stream=None):
         with Image.open(folder/'native/native.png') as im:restored=im.convert('RGB')
         w=min(1400,original.width);h=round(original.height*w/original.width);panel=Image.new('RGB',(w*2,h+28),'white');d=ImageDraw.Draw(panel)
         panel.paste(original.resize((w,h)),(0,28));panel.paste(restored.resize((w,h)),(w,28));d.text((8,8),cid+' SOURCE',fill='black');d.text((w+8,8),'RECOVERED PPT',fill='black');panel.save(folder/'comparison.png')
-        for key,p in paths.items():
+        for key,p in branch_paths.items():
             if sha(p)!=record['sha256'][key]:raise ValueError('Input product modified during composition')
         done={'id':cid,'composition_protocol':COMPOSITION_PROTOCOL,'pptx_sha256':sha(folder/'combined.pptx'),
               'sources':record,'stage_sources_unchanged':True,'native_rendered':True,'visual_accuracy_verified':False,
