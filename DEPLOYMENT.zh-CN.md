@@ -82,12 +82,14 @@ apt-get install -y fontconfig libnss3 libcairo2 ca-certificates
 
 ```bash
 export PNG2PPTX_API_BASE_URL=https://<网关>/api/v1
-export PNG2PPTX_API_MODEL=Sage-S2.1-Flash
+export PNG2PPTX_API_MODEL=openai/gpt-6-luna            # 当前推荐，见第 6 节最后一小节
 export PNG2PPTX_API_KEY_FILE=/path/to/api_key        # 权限 0600
 export PNG2PPTX_SAM_URL=http://127.0.0.1:18103
 export PNG2PPTX_IMAGE_EDIT_URL=http://127.0.0.1:18300/v1   # 图片转接层；自建 SenseNova 时为 http://127.0.0.1:8091/v1
-export PNG2PPTX_ARROW_REASONING_EFFORT=low                # 用 Sage 时建议设置，见第 6 节
+export PNG2PPTX_REASONING_EFFORT=medium
 export PNG2PPTX_ARROW_MAX_TOKENS=32000
+export PNG2PPTX_API_MAX_TOKENS=32000
+export PNG2PPTX_CASE_WORKERS=6 PNG2PPTX_TEXT_WORKERS=6      # 一个任务里有多张图时才有用
 
 bash deploy/standalone/run_job.sh /data/jobs/123/images /data/jobs/123/run
 ```
@@ -123,6 +125,11 @@ cd <任务目录> && "$PNG2PPTX_CPU_ENV/bin/python" -B -u code/full_recovery/api
 | `PNG2PPTX_REASONING_EFFORT` | `high` | `low`、`medium`、`high`，或 `none` 表示沿用原配置 |
 | `PNG2PPTX_ARROW_REASONING_EFFORT` | 不设，即与上一项相同 | 只作用于箭头分支的推理强度。`Sage-S2.1-Flash` 只接受 `low` 和 `high` |
 | `PNG2PPTX_ARROW_MAX_TOKENS` | 不设，即后端自带的 113000 | 箭头分支单次请求的输出上限 |
+| `PNG2PPTX_API_MAX_TOKENS` | 不设，即各后端自带的值 | 所有请求的输出上限。用 `gpt-6-luna` 时设 32000，避免个别请求推理过长 |
+| `PNG2PPTX_CASE_WORKERS` | 2 | 图形分支同时处理几张图。六张图的任务设为 6 后总用时从 40 分钟降到 20 分钟 |
+| `PNG2PPTX_TEXT_WORKERS` | 2 | 文字分支同时处理几张图 |
+| `PNG2PPTX_API_IDLE_TIMEOUT_SECONDS` | 300 | 模型流多久没有输出就放弃。`gpt-6-luna` 推理时长时间不出字，**不要**调到 60 |
+| `PNG2PPTX_API_HEDGE_AFTER_SECONDS` | 不设，即关闭 | 请求超过这么久没答完就再问一次，取先答完的 |
 | `PNG2PPTX_CPU_ENV` | `/opt/shape-cpu` | worker 的 Python 环境前缀 |
 
 ## 5. 常驻服务
@@ -280,6 +287,30 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 
 只在这一张图上对比过，其余图片未验证；每行各跑一次，同一配置两次运行之间本身也有出入。Sage 不接受 `medium`（网关返回上游 400）。
 
+### 换用 gpt-6-luna 和提速（2026-11-26，六张图同一任务）
+
+当前推荐配置：`PNG2PPTX_API_MODEL=openai/gpt-6-luna`、`PNG2PPTX_REASONING_EFFORT=medium`、`PNG2PPTX_ARROW_MAX_TOKENS=32000`、`PNG2PPTX_API_MAX_TOKENS=32000`，多图任务再加 `PNG2PPTX_CASE_WORKERS=6 PNG2PPTX_TEXT_WORKERS=6`。模型价格按输入 $0.1、输出 $0.5 每百万 token 计。
+
+| 配置 | 总用时 | 导出 | 模型费用 |
+| --- | --- | --- | --- |
+| `high`，一次 2 张 | 83.7 分钟 | 6（带曲面的那张丢了底图） | $3.11 |
+| `medium`，一次 2 张 | 39.6 分钟 | 6 | $1.98 |
+| `medium`，六张并行 | 20.1 分钟 | 6 | $2.03 |
+
+最后一行各张图导出的时间点为第 5.5、8.9、12.6、13.2、14.8、19.8 分钟；最慢的是带三维曲面的示意图，它单独跑约 19 分钟。1877 次请求没有失败。每种配置只完整跑成一到两次。
+
+这一轮的改动：
+
+- **箭头分支的队列宽度**原来固定为 8，现在随网关并发数放宽（并发 48 时为 24）。
+- **箭头定位复核**：模型漏写 `label` 时用同一条目的 `reason` 补上，不再整条作废重做；复核失败后拆成的两半改为同时进行。
+- **`medium` 强度**：文字分支原先不接受这个取值，已放开。`medium` 比 `high` 快一倍多，六张图的画面没有变差，其中两张更好。
+- **带透明背景描述的位图素材**：给图片模型的指令里明确要求白底，否则图片模型会画出棋盘格，素材被整块丢弃。
+- **位图底图上的小图标**：没有指定遮挡对象的纹理底图改为插在它盖住的图形之下；被底图盖住的封闭路径也计入前景。
+- **上游短时故障**：5xx 和网络错误的重试由 3 次（间隔 1、2 秒）改为 5 次（间隔 2、4、8、16 秒）。
+- **模型服务方拒绝的请求**：网关把服务方的 4xx 包成 `502 upstream error 4xx`，重试没有用。现在识别后不重试，以 422 返回；图形分支遇到被拒绝的复核时保留已拟合的图形并标为未复核，不再让整张图失败。实测遇到过的一例是一张白底洋红色圆角矩形的示意图被服务方稳定拒绝（403），原因不明；这条降级路径只有单元测试，还没有在真实任务里触发过。
+
+仍然存在的问题：同一配置两次运行的结果不完全一样，例如同一张图的面板边框三次出了三种样子，曲面示意图上的小图标有一次只还原了 5 个中的 3 个。
+
 ## 7. 已知限制
 
 接入前请让产品方知情：
@@ -317,6 +348,9 @@ python scripts/check_render.py     # 两套渲染器，输出里没有失败项
 | `full_recovery/text_json_repair.py`、`full_recovery/text_stage.py`、`tests/test_text_json_repair.py` | 新增容错并在文字阶段启用 | 见第 6 节 |
 | `full_recovery/arrow_budget.py`、`api_gateway.py`、`prepare_api.py`、`run_ppt.py`、`tests/test_arrow_budget.py` | 箭头分支可单独设推理强度和输出上限；箭头分支改走网关的 `/arrow/v1` 路由 | 见第 6 节。不设置时请求内容与原来相同 |
 | `full_recovery/arrow_reply_repair.py`、`full_recovery/fresh_arrow.py`、`tests/test_arrow_reply_repair.py` | 准备任务时给箭头后端的解析函数加一层节点编号修复 | 见第 6 节。始终启用 |
+| `full_recovery/arrow_workers.py`、`texture_layer.py`、`foreground_candidates.py`、`transport_retry.py`、`request_limits.py`、`request_hedge.py`、`text_parallel.py` 及对应测试 | 新增 | 见第 6 节最后一小节 |
+| `full_recovery/api_gateway.py`、`image_edit.py`、`image_assets.py`、`fresh_arrow.py`，`experiment/shape_sam_guided/request_io.py`，`src/shape_integration/fitting/control.py`、`local.py` | 重试、拒绝识别、白底指令、素材层级 | 同上 |
+| `third_party/arrow_geometry/.../localization/code/local_review.py`、`review_label_policy.py` | 复核答案补 `label`，失败拆分并行 | 同上 |
 | `deploy/standalone/` | 新增 | 本文用到的脚本和清单 |
 | `.gitignore` | `weights/` 改为 `/weights` | 原规则把 SenseNova 源码里 19 个名为 `weights` 的代码目录（99 个 `.py` 文件）也忽略了，仓库因此缺代码，现已补入 |
 | `backends/reference/arrow_sam_ckpt_20261015/runs/` | 两个配置文件强制纳入 git | 准备任务时必须读取，原来被 `runs/` 规则忽略 |

@@ -42,6 +42,9 @@ def load_backend(root):
     # Some models drop the "text" key of a run; restore it instead of failing the image.
     from full_recovery.text_json_repair import install as install_json_repair
     install_json_repair()
+    # The audit regions and crop groups do not depend on each other: ask them together.
+    from full_recovery.text_parallel import install as install_parallel_requests
+    install_parallel_requests()
     from full_recovery.source_text_attributes import install as install_source_attributes
     install_source_attributes()
     from full_recovery.text_spacing import install as install_text_spacing

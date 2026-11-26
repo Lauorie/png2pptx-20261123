@@ -9,7 +9,9 @@ from PIL import Image, ImageDraw, ImageOps
 from shapely.geometry import box, LineString
 from shapely.ops import unary_union
 
+from .foreground_candidates import overlapping as foreground_candidates
 from .handoff import json_part_id, strokes, arrow_strokes
+from .texture_layer import behind_contained
 from .texture_fallback import PATTERNS, polygon, texture_candidates
 from png2pptx.images.ownership import IMAGE_OWNERSHIP
 
@@ -370,11 +372,7 @@ def review(scene,styles,arrows,texts,source,native_preview,folder,runtime,*,imag
         labels=[{'text':t.get('text'),'bbox':t['bbox_2d']} for t in texts
                 if t.get('bbox_2d') and box(*b).intersection(box(*t['bbox_2d'])).area>0]
         contained=[]
-        foreign=[{'key':k,'bbox':p['bbox_2d']} for k,p in scene['parts'].items()
-                 if k not in keys and isinstance(styles.get(k,{}).get('fill'),str)
-                 and p.get('kind') in ('ellipse','rectangle','rounded_rectangle')
-                 and box(*target_box).intersection(box(*p['bbox_2d'])).area>4
-                 and not box(*p['bbox_2d']).covers(box(*target_box))]
+        foreign=foreground_candidates(scene['parts'],styles,keys,target_box)
         for arrow in arrows:
             paths=arrow_strokes(arrow)
             if not paths:continue
@@ -416,7 +414,7 @@ def review(scene,styles,arrows,texts,source,native_preview,folder,runtime,*,imag
                 '局部编辑会提供完整目标作参照，仅提交edit_box内像素；其余登记像素保留。编辑提示词只能修复该区域，不要把整个目标重画进局部。',
                 'role=background 保留后方背景并清理前景；role=icon 保留获准的复杂非文字几何；role=texture 保留纹理/透视。三种角色均不能接收明显箭头。编辑描述与已登记的原生文字、边框、节点和箭头归属一致。',
                 'replace_arrows仅用于真实图片内不可分的图像内容，不得接收独立连接或明显箭头；按source_part_ownership移交的箭头继续使用原生产物，replace_arrows为空。需要移除外部覆盖物时选edit；crop不能完成此类清理。',
-                '仅method=edit填写edit_target和remove_overlays。edit_target只描述非文字目标的外观；remove_overlays只列外部覆盖物。文字移除、角色和坐标由程序统一加入，不要重复写指令。清理截图时保留原画法；只有局部错误时用最小edit_box。已有原生对象且证据不足时选 keep_native。'],
+                '仅method=edit填写edit_target和remove_overlays。edit_target只描述非文字目标的外观；remove_overlays只列外部覆盖物。文字移除、角色、坐标和背景去除由程序统一加入，不要重复写指令，也不要要求透明背景。清理截图时保留原画法；只有局部错误时用最小edit_box。已有原生对象且证据不足时选 keep_native。'],
             'parts':[{'key':short[k],'kind':scene['parts'][k]['kind'],'closed_surface':k in surfaces,
                       'source_role':ownership.get('retained_roles',{}).get(json_part_id(k),'uncertain'),
                       'bbox':scene['parts'][k]['bbox_2d'],'protected':k in protected_keys or k in frames} for k in keys],
@@ -884,6 +882,9 @@ def commit(base, output, assets, size):
             for i,(axis,extent) in enumerate((('x','cx'),('y','cy'))):
                 factor=int(ce.get(extent))/max(1,int(ext.get(extent)))
                 b[[i,i+2]]=(b[[i,i+2]]-int(off.get(axis)))*factor+int(co.get(axis))
+        if asset['role']=='texture' and not targets and parent is tree:
+            bounds={s._element:(s.left,s.top,s.left+s.width,s.top+s.height) for s in slide.shapes}
+            index=behind_contained(tuple(b),[bounds.get(node) for node in parent],index)
         pic=slide.shapes.add_picture(asset['path'],round(b[0]),round(b[1]),round(b[2]-b[0]),round(b[3]-b[1]))
         pic.name='IMG '+asset['id'];tree.remove(pic._element);parent.insert(index,pic._element);inserted.append(pic._element)
         enclosure=asset.get('native_enclosure')

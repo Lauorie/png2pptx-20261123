@@ -3,6 +3,7 @@ import importlib.util
 from pathlib import Path
 import shutil
 
+from .arrow_workers import widened
 from .prepare import read,save,sha
 
 
@@ -72,7 +73,7 @@ def configure(root,base_url,sam_url,api_concurrency=8):
     for path in paths:
         data=read(path);data.update(base_url=base_url,sam_url=sam_url,
                                    api_concurrency=api_concurrency)
-        save(path,data)
+        save(path,widened(data,api_concurrency))
     manifest=root/'localization/manifest.json';data=read(manifest)
     data['files']={n:sha(root/'localization'/n) for n in data['files']};save(manifest,data)
     for job in (root/'geometry/jobs').iterdir():

@@ -373,7 +373,8 @@ def _process_object(root, candidate, item, workspace, runtime, options, *, names
             if status['status'] != 'finished':
                 failure=status.get('failure_kind')
                 record.update(state='unresolved', stop_reason='observation_timeout' if failure=='request_timeout' else
-                    'observation_transport_failed' if failure=='model_transport' else 'observation_protocol_exhausted',
+                    'observation_transport_failed' if failure=='model_transport' else
+                    'observation_refused' if failure=='model_refused' else 'observation_protocol_exhausted',
                     reason=status.get('error', 'Observation failed'))
                 break
             action = 'revise'; reason = 'Reobserve the whole target and return complete geometry.'
@@ -427,7 +428,8 @@ def _process_object(root, candidate, item, workspace, runtime, options, *, names
                     except (RuntimeError, ValueError) as exc:
                         entry['check_error'] = str(exc)
                         record.update(state='unresolved', stop_reason='check_timeout' if isinstance(exc, RequestTimeout) else
-                            'check_transport_failed' if type(exc).__name__=='ModelTransportError' else 'check_protocol_exhausted',error=str(exc))
+                            'check_transport_failed' if type(exc).__name__=='ModelTransportError' else
+                            'check_refused' if type(exc).__name__=='ModelRefusedError' else 'check_protocol_exhausted',error=str(exc))
                         break
                     save(folder/'review.json', review); entry['review'] = review
                     action, reason = review['decision'], review['reason']

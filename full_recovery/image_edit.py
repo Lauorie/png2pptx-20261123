@@ -145,7 +145,10 @@ class Editor:
                 return [round(offset[i%2]+bounds[i]*size[i%2]/crop.size[i%2],2) for i in range(4)]
             instructions=['清理给定截图，保留原有画法，不重新设计或美化。',
                 '保留的非文字目标：'+prompt['target'],
-                '移除的外部覆盖物：'+json.dumps(prompt.get('remove_overlays',[]),ensure_ascii=False)]
+                '移除的外部覆盖物：'+json.dumps(prompt.get('remove_overlays',[]),ensure_ascii=False),
+                # Transparency is derived by the program from a white canvas; a drawn
+                # checkerboard reaches the canvas edge and the asset is rejected.
+                '背景由程序处理：目标以外必须是纯白(#FFFFFF)画布；忽略目标描述中关于透明背景的要求，不要画透明棋盘格。']
             labels=[{'text':r['text'],'canvas_box':canvas_box(r['box'])}
                     for r in prompt.get('native_labels',[])]
             if labels:instructions.append('以下文字由PPT另行提供，只从图片中移除这些文字；目标描述中的这些文字仅用于定位，不要求保留：'+json.dumps(labels,ensure_ascii=False))

@@ -246,6 +246,8 @@ def observe_and_fit(job, folder, runtime, *, namespace, max_tokens):
             record.update(failure_kind='request_timeout', output_discarded=True)
         elif type(exc).__name__=='ModelTransportError':
             record.update(failure_kind='model_transport',output_discarded=True)
+        elif type(exc).__name__=='ModelRefusedError':
+            record.update(failure_kind='model_refused',output_discarded=True)
     record['finished_utc'] = now()
     save(folder/'status.json', record)
     return record

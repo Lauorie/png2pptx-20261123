@@ -18,11 +18,16 @@
 #   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default high
 #   PNG2PPTX_ARROW_REASONING_EFFORT  low | medium | high for the arrow branch only; default: same as above
 #   PNG2PPTX_ARROW_MAX_TOKENS        output cap per arrow-branch request; default: backend's own
+#   PNG2PPTX_API_MAX_TOKENS          output cap for every model request; default: backends' own
+#   PNG2PPTX_API_IDLE_TIMEOUT_SECONDS  give up a silent model stream after this long; default: 300
+#   PNG2PPTX_API_HEDGE_AFTER_SECONDS   ask a request a second time when unanswered this long; default: never
+#   PNG2PPTX_CASE_WORKERS      images the shape branch works on at once; default 2
+#   PNG2PPTX_TEXT_WORKERS      images the text branch works on at once; default 2
 #   PNG2PPTX_CPU_ENV           Python environment prefix; default /opt/shape-cpu
 set -euo pipefail
 
 if [ "$#" -ne 2 ]; then
-  sed -n '2,21p' "$0" | sed 's/^# \{0,1\}//' >&2
+  sed -n '2,26p' "$0" | sed 's/^# \{0,1\}//' >&2
   exit 2
 fi
 : "${PNG2PPTX_API_BASE_URL:?set PNG2PPTX_API_BASE_URL}"
@@ -62,6 +67,21 @@ if [ -n "${PNG2PPTX_ARROW_REASONING_EFFORT:-}" ]; then
 fi
 if [ -n "${PNG2PPTX_ARROW_MAX_TOKENS:-}" ]; then
   PREPARE+=(--arrow-max-tokens "$PNG2PPTX_ARROW_MAX_TOKENS")
+fi
+if [ -n "${PNG2PPTX_API_MAX_TOKENS:-}" ]; then
+  PREPARE+=(--api-max-tokens "$PNG2PPTX_API_MAX_TOKENS")
+fi
+if [ -n "${PNG2PPTX_API_IDLE_TIMEOUT_SECONDS:-}" ]; then
+  PREPARE+=(--api-idle-timeout-seconds "$PNG2PPTX_API_IDLE_TIMEOUT_SECONDS")
+fi
+if [ -n "${PNG2PPTX_CASE_WORKERS:-}" ]; then
+  PREPARE+=(--case-workers "$PNG2PPTX_CASE_WORKERS")
+fi
+if [ -n "${PNG2PPTX_TEXT_WORKERS:-}" ]; then
+  PREPARE+=(--text-workers "$PNG2PPTX_TEXT_WORKERS")
+fi
+if [ -n "${PNG2PPTX_API_HEDGE_AFTER_SECONDS:-}" ]; then
+  PREPARE+=(--api-hedge-after-seconds "$PNG2PPTX_API_HEDGE_AFTER_SECONDS")
 fi
 "${PREPARE[@]}"
 
