@@ -58,7 +58,7 @@ def _ink(pixels: np.ndarray, background: np.ndarray) -> np.ndarray:
     return np.abs(pixels.astype(np.int16) - background).max(axis=2) > INK_THRESHOLD
 
 
-def _contour(pixels: np.ndarray) -> np.ndarray:
+def contour(pixels: np.ndarray) -> np.ndarray:
     """Return the mask of pixels where the colour changes sharply."""
     smooth = ndimage.gaussian_filter(pixels.astype(np.float32), (EDGE_SIGMA, EDGE_SIGMA, 0))
     strength = np.hypot(ndimage.sobel(smooth, axis=0), ndimage.sobel(smooth, axis=1)).max(axis=2)
@@ -124,7 +124,7 @@ def score(source: Image.Image, rendered: Image.Image) -> Fidelity:
     background = _background(first)
     first_ink, second_ink = _ink(first, background), _ink(second, background)
     tolerance = max(2, round(size[0] / TOLERANCE_DIVISOR))
-    first_contour, second_contour = _contour(first), _contour(second)
+    first_contour, second_contour = contour(first), contour(second)
     recall = _covered(first_contour, second_contour, tolerance)
     precision = _covered(second_contour, first_contour, tolerance)
     colour = _colour(first, second, first_ink | second_ink, tolerance)

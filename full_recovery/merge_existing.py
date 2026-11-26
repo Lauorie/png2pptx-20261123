@@ -278,6 +278,20 @@ def execute(run, *, record_stream=None):
         second=merge(folder/'images.pptx',[('text',selected/'text.pptx')],folder/'combined.pptx')
         notify(cid,stage='rendering')
         command(cid,'render',['--backend',run/'backends/text','--render-pptx',folder/'combined.pptx','--output',folder/'native','--size',*item['source_size']])
+        # Whatever no branch recovered is kept as a picture of the source.
+        residual=[]
+        if settings.get('source_residual_pictures',True):
+            from .residual import recover_missing
+            try:residual=recover_missing(folder/'combined.pptx',Path(item['original']),folder/'native/native.png',folder/'residual')
+            except (OSError,ValueError,KeyError) as exc:save(folder/'residual_failure.json',{'error':str(exc)})
+        if residual:
+            notify(cid,stage='rendering_residual')
+            try:
+                command(cid,'render_residual',['--backend',run/'backends/text','--render-pptx',folder/'combined.pptx','--output',folder/'native_residual','--size',*item['source_size']])
+                shutil.copy2(folder/'native_residual/native.png',folder/'native/native.png')
+            except (RuntimeError,OSError) as exc:
+                # The deck already holds the pictures; only its preview is one render behind.
+                save(folder/'residual_failure.json',{'error':str(exc),'preview_shows_residual_pictures':False})
         with Image.open(item['original']) as im:original=im.convert('RGB')
         with Image.open(folder/'native/native.png') as im:restored=im.convert('RGB')
         w=min(1400,original.width);h=round(original.height*w/original.width);panel=Image.new('RGB',(w*2,h+28),'white');d=ImageDraw.Draw(panel)
@@ -289,6 +303,7 @@ def execute(run, *, record_stream=None):
               'shape_geometry_refitted':False,'shape_type_reclassified':False,'sam_requests':0,
               'vectors':first,'text_composition':second,'ownership':plan,'text_paint':read(selected/'composition.json'),'at':time.time()}
         done['composition_ownership_complete']=bool(quality.get('line_ownership_complete'))
+        done['source_residual_pictures']=[list(box) for box in residual]
         dest=run/'delivery'/cid;dest.mkdir(exist_ok=True)
         for source,name in [(folder/'combined.pptx','combined.pptx'),(folder/'native/native.png','preview.png'),(folder/'comparison.png','comparison.png')]:shutil.copy2(source,dest/name)
         save(marker,done);save(dest/'validation.json',done);notify(cid,state='completed',stage='completed')
