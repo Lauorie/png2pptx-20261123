@@ -11,7 +11,7 @@ from shapely.ops import unary_union
 
 from .foreground_candidates import overlapping as foreground_candidates
 from .handoff import json_part_id, strokes, arrow_strokes
-from .texture_layer import behind_contained
+from .texture_layer import above_covering, behind_contained, opaque_boxes
 from .texture_fallback import PATTERNS, polygon, texture_candidates
 from png2pptx.images.ownership import IMAGE_OWNERSHIP
 
@@ -865,8 +865,10 @@ def commit(base, output, assets, size):
         # layer. The first piece may sit behind a retained card/cell fill and
         # would hide the whole replacement, even with no protected frame.
         index=max(indices)+1 if indices else len(parent)
-        if asset['role']=='background':index=2
         b=np.asarray(asset['placement_source_half_open'],float)*scale
+        if asset['role']=='background':
+            # A backdrop sits behind everything, except an opaque shape that would hide it.
+            index=above_covering(tuple(b),[opaque_boxes(node) for node in tree],2)
         # Invert each ancestor's axis-aligned coordinate frame. The bitmap is
         # already in slide coordinates; moving it into a group must not rescale
         # or offset it a second time. Native leaf transforms remain untouched.
