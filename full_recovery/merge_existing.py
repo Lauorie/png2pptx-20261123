@@ -195,6 +195,9 @@ def execute(run, *, record_stream=None):
             if done['composition_protocol']!=COMPOSITION_PROTOCOL or sha(folder/'combined.pptx')!=done['pptx_sha256']:raise ValueError('Completed composition changed')
             notify(cid,state='completed');return done
         notify(cid,state='running',stage='ownership')
+        # Stroke colour, width and dash are visible facts: read them from the source.
+        from .arrow_restyle import restyled
+        paths.update(restyled(paths,Path(item['original']),folder/'arrow_style',settings,code))
         scene=read(paths['shape_scene']);style_data=read(paths['shape_styles']);styles={k:v['style'] for k,v in style_data['parts'].items()}
         arrows=read(paths['arrow_scene']);texts=read(paths['text_scene'])
         from .native_paint import bind as bind_native_paint
