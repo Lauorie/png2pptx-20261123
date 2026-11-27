@@ -197,6 +197,7 @@ def execute(run, *, record_stream=None):
         notify(cid,state='running',stage='ownership')
         # Stroke colour, width and dash are visible facts: read them from the source.
         from .arrow_restyle import restyled
+        from .replay_composition import reuse_arguments
         branch_paths=dict(paths)  # the branches' own files, checked again after composition
         paths.update(restyled(paths,Path(item['original']),folder/'arrow_style',settings,code))
         scene=read(paths['shape_scene']);style_data=read(paths['shape_styles']);styles={k:v['style'] for k,v in style_data['parts'].items()}
@@ -275,7 +276,8 @@ def execute(run, *, record_stream=None):
         selected=folder/'selected_text'
         command(cid,'text_paint',['--backend',run/'backends/text','--paint-on-base',folder/'images.pptx','--text-scene',paths['text_scene'],
             '--source-image',item['original'],'--shape-scene',paths['shape_scene'],'--shape-styles',paths['shape_styles'],
-            '--arrow-scene',paths['arrow_scene'],'--ownership-plan',folder/'ownership.json','--output',selected])
+            '--arrow-scene',paths['arrow_scene'],'--ownership-plan',folder/'ownership.json','--output',selected,
+            *reuse_arguments(settings,run)])
         second=merge(folder/'images.pptx',[('text',selected/'text.pptx')],folder/'combined.pptx')
         notify(cid,stage='rendering')
         command(cid,'render',['--backend',run/'backends/text','--render-pptx',folder/'combined.pptx','--output',folder/'native','--size',*item['source_size']])

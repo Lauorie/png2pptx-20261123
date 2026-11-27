@@ -23,6 +23,8 @@ def load_backend(root):
     from full_recovery.text_breaks import install
     install()
     from shape_integration import common
+    from full_recovery.request_reuse import install as install_request_reuse
+    install_request_reuse(common)
     original=common.ExperimentDetectorClient
     class LocalDetector(original):
         def request_parameters(self):
@@ -100,6 +102,8 @@ def main():
     p.add_argument('--source-image',type=Path);p.add_argument('--ownership-plan',type=Path)
     p.add_argument('--shape-scene',type=Path);p.add_argument('--shape-styles',type=Path)
     p.add_argument('--arrow-scene',type=Path)
+    p.add_argument('--reuse-output-root',type=Path,help='Run directory whose request folders mirror the reference runs')
+    p.add_argument('--reuse-request-root',type=Path,action='append',default=[],help='Finished run whose identical requests are answered from its replies')
     p.add_argument('--refit-formulas',action='store_true')
     p.add_argument('--repair-formula-text',action='store_true')
     p.add_argument('--repair-text-occurrences',action='store_true')
@@ -209,6 +213,8 @@ def main():
         config=read(root/'config.json')
         # Retry an incomplete/invalid response once; valid visual decisions stay cached.
         config.update(api_concurrency=8,shape_schema_retries=1,reasoning_effort='low',request_timeout_seconds=360)
+        if args.reuse_output_root and args.reuse_request_root:
+            config.update(reuse_output_root=str(args.reuse_output_root),reuse_request_roots=[str(r) for r in args.reuse_request_root])
         runtime=Runtime(config,config['expected_boyue_base_url'],'')
         from PIL import Image
         from full_recovery.text_coverage import candidates as coverage_candidates, observe as observe_text_coverage
