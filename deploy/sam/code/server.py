@@ -17,6 +17,7 @@ import uuid
 from engine import SamEngine, save
 from verify_assets import verify_assets
 from idle_activity import IdleActivity
+from gpu_memory import apply_limit, policy_from, settle
 
 
 def make_server(engine, address, run_dir, state):
@@ -25,6 +26,7 @@ def make_server(engine, address, run_dir, state):
     state_lock = threading.Lock()
     config = json.loads((run_dir / "config.json").read_text())
     activity = IdleActivity(run_dir, cooldown_seconds=config.get("idle_resume_seconds", 600))
+    memory_policy = policy_from(config)
 
     class Handler(BaseHTTPRequestHandler):
         def respond(self, status, body):
@@ -88,8 +90,15 @@ def make_server(engine, address, run_dir, state):
                 with state_lock:
                     state['requests_failed'] += 1
             finally:
+                # Still under the inference lock: no other request owns GPU memory now.
+                try:
+                    memory = settle(engine.torch, memory_policy)
+                except RuntimeError:
+                    memory = {'error': traceback.format_exc()}
                 with state_lock:
-                    state.update(phase='ready', last_finished_at=time.time())
+                    state.update(phase='ready', last_finished_at=time.time(), gpu_memory=memory)
+                    if memory.get('request_peak_mib', 0) > state.get('gpu_peak_mib', 0):
+                        state['gpu_peak_mib'] = memory['request_peak_mib']
                     save(run_dir / 'service-state.json', state)
                 infer_lock.release()
             self.respond(status, result)
@@ -122,6 +131,9 @@ def main():
         engine = SamEngine(config)
         engine.metadata.update(checkpoint_sha256=checkpoint_sha256,
                                checkpoint_hash_verified=True, runtime_assets_verified=True)
+        memory_policy = policy_from(config)
+        state.update(gpu_memory_limit_mib=apply_limit(engine.torch, memory_policy),
+                     gpu_cache_limit_mib=memory_policy.cache_limit_mib)
         engine.warmup()
         state.update(model=engine.metadata, warmup_passed=True)
         server = make_server(engine, (config['host'], int(config['port'])), run_dir, state)
