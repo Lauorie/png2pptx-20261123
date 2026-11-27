@@ -3,8 +3,7 @@
 
 Usage: score_text.py RUN_DIR [RUN_DIR ...] [--json OUT] [--differences]
 
-A vision model other than the one that recognises text during the conversion
-reads each source figure and its slide, each at three sizes, keeping the
+A vision model reads each source figure and its slide, each at three sizes, keeping the
 reading the others agree with most (full_recovery/text_reader.py). Prints, per figure, the share
 of the source's characters the slide has (recall), the share of the slide's
 characters the source has (precision), and the number of words that differ;
@@ -87,7 +86,7 @@ def main() -> int:
     parser.add_argument('runs', nargs='+', type=Path)
     parser.add_argument('--json', type=Path)
     parser.add_argument('--differences', action='store_true')
-    parser.add_argument('--model', default='google/gemini-3.1-flash-image')
+    parser.add_argument('--model', default='openai/gpt-6-luna')
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     config = ReaderConfig(base_url=os.environ['PNG2PPTX_API_BASE_URL'], model=args.model,

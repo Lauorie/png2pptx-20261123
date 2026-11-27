@@ -2,7 +2,7 @@
 
 The pixel score in ``fidelity.py`` cannot read: a label recognised as other
 words, set twice on top of itself, or left out of a busy area costs it almost
-nothing. Here a reader that takes no part in the conversion (``text_reader.py``)
+nothing. Here a vision model (``text_reader.py``)
 transcribes the source figure and the rendered slide, and the two
 transcriptions are compared.
 

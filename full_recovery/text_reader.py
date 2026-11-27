@@ -1,8 +1,7 @@
 """Read a figure's text lines with a vision model behind the OpenAI-compatible gateway.
 
-The reader serves scoring only (see ``text_fidelity.py``): it should be a model
-other than the one that recognises text during the conversion, so that the two
-do not share their mistakes.
+The reader serves scoring only (see ``text_fidelity.py``). It reads the finished
+slide afresh, so it may be the model the conversion itself uses.
 """
 import base64
 import io
