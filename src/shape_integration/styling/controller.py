@@ -109,7 +109,14 @@ def commit_refinement(previous, proposed, checks, visibility_evidence=None):
                     'stroke_presence':('stroke','width_px','dash','dash_pattern_px'),
                     'stroke_color':('stroke',),'stroke_width':('width_px',),
                     'line_pattern':('dash','dash_pattern_px'),'occlusion':()}
+            presence_accepted=((old.get('stroke') is None)!=(proposed[key].get('stroke') is None)
+                               and 'stroke_presence' not in check['affected_fields'])
             for field in check['affected_fields']:
+                # An outline that was accepted as newly present or newly absent
+                # leaves the other style without a colour, width or pattern to
+                # return to: a present outline of the old width 0 is not a style.
+                if presence_accepted and field in ('stroke_color','stroke_width','line_pattern'):
+                    continue
                 # A confirmed category correction must not disappear because
                 # its new dash/gap lengths still need refinement. The old
                 # category's lengths cannot supply a valid numerical rollback.

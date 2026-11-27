@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
 from PIL import Image
 from native_qwen.element_protocol import protocol, validator as global_validator
+from .reply_ids import with_distinct_ids
 from png2pptx.frames import scale_box
 from png2pptx.images.search import native_crop
 from .common import *
@@ -73,7 +74,7 @@ def discover(source_path,input_path,root,runtime):
     p['kind_examples']=['rectangle','rounded_rectangle','ellipse','polygon','compound_symbol','projected_3d']
     p['kind_rule']='kind is a short visual type and a localization hint, not a fitted primitive.'
     p['task']='Locate schematic shapes. Return one JSON object with objects, more_pending and uncertain.'
-    def global_call():return runtime.call(root/'calls','global',system,p,[('Clean full figure',input_path)],global_validator(gs,'shape_bbox','absolute'),config['global_max_tokens'])
+    def global_call():return runtime.call(root/'calls','global',system,p,[('Clean full figure',input_path)],with_distinct_ids(global_validator(gs,'shape_bbox','absolute'),'objects'),config['global_max_tokens'])
     template=read(Path(__file__).with_name('layout_prompt.json'));plan_prompt=template['prompt'];plan_prompt['input_size']=gs
     plan_prompt['coordinates']=f'Only this image pixel centers. bbox_2d=[xmin,ymin,xmax,ymax], x=0..{gs[0]-1}, y=0..{gs[1]-1}. Width/height are not valid maximum endpoints.'
     def plan_call():return runtime.call(root/'calls','layout',template['system'],plan_prompt,[('Clean full figure',input_path)],lambda raw:validate_plan(raw,gs),config['plan_max_tokens'])
