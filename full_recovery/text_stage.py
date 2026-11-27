@@ -53,6 +53,9 @@ def load_backend(root):
     install_text_spacing()
     from full_recovery.text_angle_transport import install as install_angle_transport
     install_angle_transport()
+    # Bold is judged against the rest of the figure; a magnified crop cannot overrule it.
+    from full_recovery.text_weight import install as install_text_weight
+    install_text_weight()
     from full_recovery.formula_text import install as install_formula_text
     install_formula_text()
     # LO's disposable DOCX preview interprets a literal <n> superscript as an
