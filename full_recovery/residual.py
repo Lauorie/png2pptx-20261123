@@ -8,13 +8,19 @@ patch is not editable, but the reader sees what the figure showed.
 
 Only blank areas qualify. Content that is present but displaced, recoloured
 or set in another font has slide content near it and is left alone.
+
+A missing thing is judged within its own outline, and the picture carries
+only what lies inside that outline. Its bounding rectangle usually holds
+other content too, a label beside a photograph for instance, which must
+neither count against the missing thing nor be covered by its picture.
 """
 import io
 import json
 import logging
 import shutil
 from pathlib import Path
-from typing import List, Sequence, Tuple
+from dataclasses import dataclass
+from typing import List, Optional, Sequence, Tuple
 
 import numpy as np
 from PIL import Image
@@ -28,46 +34,71 @@ Box = Tuple[int, int, int, int]
 NEAR = 6            # px: slide content this close explains source content
 JOIN = 7            # px: unexplained content this close forms one patch
 MINIMUM = 60        # unexplained contour pixels a patch needs
-SHARE = 0.7         # share of the source content in a patch that must be unexplained
+SHARE = 0.7         # share of the source content inside a patch's outline that must be unexplained
 PAD = 2             # px added around a patch
 SQUARE = np.ones((3, 3), dtype=bool)
 
 
-def missing_boxes(source: np.ndarray, rendered: np.ndarray) -> List[Box]:
-    """Return boxes of source content with no slide content near it.
+@dataclass(frozen=True)
+class Area:
+    """One missing thing: its box in source pixels and, within the box, the pixels inside its outline."""
+
+    box: Box
+    mask: np.ndarray
+
+
+def missing_areas(source: np.ndarray, rendered: np.ndarray) -> List[Area]:
+    """Return the source content with no slide content near it.
 
     Args:
         source: The source figure, height by width by 3.
         rendered: The slide rendered at the same size.
 
     Returns:
-        Half-open (left, top, right, bottom) boxes in source pixels.
+        One area per missing thing, with a half-open (left, top, right, bottom) box.
     """
     present = contour(source)
     unexplained = present & ~ndimage.binary_dilation(contour(rendered), SQUARE, iterations=NEAR)
     labels, _ = ndimage.label(ndimage.binary_dilation(unexplained, SQUARE, iterations=JOIN))
     height, width = present.shape
-    boxes: List[Box] = []
+    areas: List[Area] = []
     for number, area in enumerate(ndimage.find_objects(labels), 1):
-        lost = int((unexplained[area] & (labels[area] == number)).sum())
-        if lost < MINIMUM or lost < SHARE * int(present[area].sum()):
+        outline = ndimage.binary_fill_holes(labels[area] == number)
+        lost = int((unexplained[area] & outline).sum())
+        if lost < MINIMUM or lost < SHARE * int((present[area] & outline).sum()):
             continue
-        rows, columns = np.nonzero(unexplained[area] & (labels[area] == number))
-        boxes.append((max(0, area[1].start + int(columns.min()) - PAD), max(0, area[0].start + int(rows.min()) - PAD),
-                      min(width, area[1].start + int(columns.max()) + 1 + PAD),
-                      min(height, area[0].start + int(rows.max()) + 1 + PAD)))
-    return boxes
+        rows, columns = np.nonzero(unexplained[area] & outline)
+        box = (max(0, area[1].start + int(columns.min()) - PAD), max(0, area[0].start + int(rows.min()) - PAD),
+               min(width, area[1].start + int(columns.max()) + 1 + PAD),
+               min(height, area[0].start + int(rows.max()) + 1 + PAD))
+        whole = np.zeros(present.shape, dtype=bool)
+        whole[area] = outline
+        areas.append(Area(box, whole[box[1]:box[3], box[0]:box[2]].copy()))
+    return areas
 
 
-def patch(deck_path: Path, output: Path, source: Image.Image, boxes: Sequence[Box]) -> None:
-    """Add each box of ``source`` to the single slide of ``deck_path`` as a top-most picture."""
+def missing_boxes(source: np.ndarray, rendered: np.ndarray) -> List[Box]:
+    """Return only the boxes of :func:`missing_areas`."""
+    return [area.box for area in missing_areas(source, rendered)]
+
+
+def patch(deck_path: Path, output: Path, source: Image.Image, boxes: Sequence[Box],
+          masks: Optional[Sequence[np.ndarray]] = None) -> None:
+    """Add each box of ``source`` to the single slide of ``deck_path`` as a top-most picture.
+
+    With ``masks``, one per box, a picture is transparent wherever its mask is false.
+    """
     from pptx import Presentation
     deck = Presentation(str(deck_path))
     slide = deck.slides[0]
     scale = deck.slide_width / source.width
     for number, box in enumerate(boxes, 1):
         data = io.BytesIO()
-        source.crop(box).save(data, format='PNG')
+        piece = source.crop(box)
+        if masks is not None:
+            piece = piece.convert('RGBA')
+            piece.putalpha(Image.fromarray(np.where(masks[number - 1], 255, 0).astype(np.uint8)))
+        piece.save(data, format='PNG')
         data.seek(0)
         picture = slide.shapes.add_picture(data, round(box[0] * scale), round(box[1] * scale),
                                            round((box[2] - box[0]) * scale), round((box[3] - box[1]) * scale))
@@ -95,11 +126,12 @@ def recover_missing(deck_path: Path, source_path: Path, render_path: Path, folde
         rendered = opened.convert('RGB')
     if rendered.size != source.size:
         rendered = rendered.resize(source.size, Image.LANCZOS)
-    boxes = missing_boxes(np.asarray(source), np.asarray(rendered))
+    areas = missing_areas(np.asarray(source), np.asarray(rendered))
+    boxes = [area.box for area in areas]
     folder.mkdir(parents=True, exist_ok=True)
-    (folder / 'receipt.json').write_text(json.dumps({'protocol': 'source_residual_pictures.1', 'boxes': boxes,
+    (folder / 'receipt.json').write_text(json.dumps({'protocol': 'source_residual_pictures.2', 'boxes': boxes,
                                                      'model_calls': 0}, indent=2) + '\n')
     if boxes:
-        patch(deck_path, deck_path, source, boxes)
+        patch(deck_path, deck_path, source, boxes, [area.mask for area in areas])
         logger.info('Kept %d area(s) of the source as pictures', len(boxes))
     return boxes
