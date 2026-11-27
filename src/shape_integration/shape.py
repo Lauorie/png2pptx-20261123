@@ -2,6 +2,7 @@
 import copy
 import math
 from pathlib import Path
+from typing import Any, Callable, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
 from PIL import Image
@@ -40,6 +41,20 @@ def assign(objects,regions,global_size,source_size):
         if max(scores,default=0)<=0:unassigned.append(o['id'])
         else:owners[o['id']]=regions[max(range(len(scores)),key=lambda j:scores[j])]['id']
     return owners,unassigned
+
+def local_review_checker(evidence: Any, checker: Callable[[dict], dict], folder: Path,
+                         candidates: List[dict]) -> Callable[[dict], dict]:
+    """Return the checker for one region review, with the SAM account when there is SAM evidence.
+
+    A SAM fragment the reply calls covered by an object it does not coincide
+    with (typically one part of a compound) is set to uncertain and left to the
+    whole-image coverage review; the rest of the reply still counts. Refusing
+    the whole reply for one such claim discarded most region reviews.
+    """
+    if evidence is None or not hasattr(evidence, 'review_validator'):
+        return checker
+    return evidence.review_validator(checker, folder, candidates, isolate_coverage_conflicts=True)
+
 
 def clipped_new_object(box,meta,source_size):
     """An internal crop cut is not an observed whole-object boundary."""
@@ -121,8 +136,7 @@ def run_shape(source_path,input_path,root,runtime):
         if evidence is not None:
             prompt,images=evidence.region(prompt,images,read(folder/'frame.json'),assignment,folder)
         checker=validator(assignment['assigned_ids'],frame.input_size)
-        if evidence is not None and hasattr(evidence,'review_validator'):
-            checker=evidence.review_validator(checker,folder,assignment['candidates'])
+        checker=local_review_checker(evidence,checker,folder,assignment['candidates'])
         result=runtime.call(root/'calls','review_'+rid,SYSTEM,prompt,images,checker,config['local_max_tokens'])
         save(folder/'result.json',result);return result
     with ThreadPoolExecutor(max_workers=config['local_workers']) as pool:
