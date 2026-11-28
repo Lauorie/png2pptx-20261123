@@ -3,6 +3,7 @@ import importlib.util
 from pathlib import Path
 import shutil
 
+from .arrow_workers import widened
 from .prepare import read,save,sha
 
 
@@ -44,8 +45,16 @@ def prepare(reference,root,items):
                   original_images=[{'id':i['id'],'path':i['original'],'sha256':i['source_sha256']} for i in items],
                   source_code_sha256={str(p.relative_to(reference)):sha(p)
                     for directory in ('code','geometry_code') for p in (reference/directory).rglob('*.py')},
-                  adaptations=['resource limits','loopback API transport','disable prior mask reuse'])
+                  adaptations=['resource limits','loopback API transport','disable prior mask reuse',
+                               'restore node naming in geometry replies (arrow_reply_repair)',
+                               'retry the renderer version probe (arrow_renderer_probe)'])
     save(root/'provenance.json',record)
+    # Keep replies whose only defect is unquoted or positional node naming.
+    from .arrow_reply_repair import install as install_reply_repair
+    install_reply_repair(root/'geometry_code')
+    # One slow renderer start must not fail every arrow of an image.
+    from .arrow_renderer_probe import install as install_probe_retry
+    install_probe_retry(root/'geometry_code')
     refresh(root)
 
 
@@ -61,14 +70,14 @@ def refresh(root):
     save(root/'manifest.json',manifest)
 
 
-def configure(root,base_url,sam_url,api_concurrency=8):
+def configure(root,base_url,sam_url,api_concurrency=8,images=None):
     root=Path(root)
     paths=[root/'config.json',root/'localization/config.json',root/'sam/missing/config.json',
            *sorted((root/'geometry/jobs').glob('*/config.json'))]
     for path in paths:
         data=read(path);data.update(base_url=base_url,sam_url=sam_url,
                                    api_concurrency=api_concurrency)
-        save(path,data)
+        save(path,widened(data,api_concurrency,images))
     manifest=root/'localization/manifest.json';data=read(manifest)
     data['files']={n:sha(root/'localization'/n) for n in data['files']};save(manifest,data)
     for job in (root/'geometry/jobs').iterdir():

@@ -11,6 +11,10 @@ class ModelTransportError(RuntimeError):
     """No usable service response; never feed this failure to the model as geometry feedback."""
 
 
+class ModelRefusedError(ModelTransportError):
+    """The provider rejected this very request (HTTP 422); the same request cannot succeed later."""
+
+
 def request_json(opener, url, body, *, trace_path=None, timeout=1200., attempts=3, headers=None, busy_only=False):
     if timeout <= 0 or attempts < 1:
         raise ValueError('Positive transport timeout and attempt count required')
@@ -65,5 +69,7 @@ def request_json(opener, url, body, *, trace_path=None, timeout=1200., attempts=
             break
         time.sleep(delay)
     last = history[-1] if history else {'error_type': 'DeadlineExceeded'}
+    if last.get('http_status') == 422:
+        raise ModelRefusedError('Model service refused the request (HTTP 422); output unavailable')
     raise ModelTransportError('Model transport failed after '+str(len(history))+' attempt(s): '+
                               last['error_type']+(' HTTP '+str(last['http_status']) if 'http_status' in last else ''))

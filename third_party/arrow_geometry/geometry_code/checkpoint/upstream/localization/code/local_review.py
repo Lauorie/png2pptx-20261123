@@ -13,6 +13,7 @@ from frames import crop_from_global, global_frame, visible_global_bounds
 from presentation import compact, overlay, latest
 from transport.common import write_json as write
 from review_type_policy import inherit as inherit_types
+from review_label_policy import fill as fill_labels
 
 
 def area(b):
@@ -113,7 +114,8 @@ def validate(answer, size, rows, inherit_existing_type=False):
         return {k: answer[k] for k in ('frame', 'decision', 'reason')}
     if answer.get('decision') != 'edit':
         raise ValueError('Use edit or expand')
-    checked_answer = inherit_types(answer, rows)[0] if inherit_existing_type else answer
+    checked_answer = fill_labels(answer)[0]
+    checked_answer = inherit_types(checked_answer, rows)[0] if inherit_existing_type else checked_answer
     C.review_valid({**checked_answer, 'frame': 'GLOBAL'}, size, rows, allow_inspect=False)
     # Store the unmodified model JSON in request/result.json. Inheritance is
     # applied separately below, so resume produces the same auditable decision.
@@ -182,6 +184,9 @@ def run(root, cid, rows, model, cfg, state):
                     if answer['decision'] == 'expand':
                         continue
                     type_issue = None
+                    answer, label_audit = fill_labels(answer)
+                    if label_audit['filled']:
+                        write(target / 'label_fallback_audit.json', label_audit)
                     if cfg.get('review_inherit_existing_type', False):
                         write(target / 'accepted_model_answer.json', answer)
                         answer, type_audit = inherit_types(answer, local)
@@ -204,7 +209,12 @@ def run(root, cid, rows, model, cfg, state):
                 # Failed local edits are retried with fewer IDs, not handed off as the whole raw inventory.
                 if len(focus) > 1 and not part:
                     mid = len(focus) // 2
-                    a = review_one(index, focus[:mid], 'a'); b = review_one(index, focus[mid:], 'b')
+                    # The halves share no candidates or folders; waiting for one before
+                    # starting the other only lengthens the round.
+                    with ThreadPoolExecutor(max_workers=2) as halves:
+                        first = halves.submit(review_one, index, focus[:mid], 'a')
+                        second = halves.submit(review_one, index, focus[mid:], 'b')
+                        a = first.result(); b = second.result()
                     return {'focus': focus, 'replacement': a['replacement'] + b['replacement'], 'folder': str(base),
                             'issue': a['issue'] or b['issue'], 'recovered_by_smaller_requests': not a['issue'] and not b['issue']}
                 return {'focus': focus, 'replacement': [{**r, 'extent': 'uncertain'} for r in focus],

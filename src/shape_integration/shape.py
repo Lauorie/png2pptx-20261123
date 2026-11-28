@@ -2,10 +2,12 @@
 import copy
 import math
 from pathlib import Path
+from typing import Any, Callable, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter
 from PIL import Image
 from native_qwen.element_protocol import protocol, validator as global_validator
+from .reply_ids import with_distinct_ids
 from png2pptx.frames import scale_box
 from png2pptx.images.search import native_crop
 from .common import *
@@ -40,6 +42,20 @@ def assign(objects,regions,global_size,source_size):
         else:owners[o['id']]=regions[max(range(len(scores)),key=lambda j:scores[j])]['id']
     return owners,unassigned
 
+def local_review_checker(evidence: Any, checker: Callable[[dict], dict], folder: Path,
+                         candidates: List[dict]) -> Callable[[dict], dict]:
+    """Return the checker for one region review, with the SAM account when there is SAM evidence.
+
+    A SAM fragment the reply calls covered by an object it does not coincide
+    with (typically one part of a compound) is set to uncertain and left to the
+    whole-image coverage review; the rest of the reply still counts. Refusing
+    the whole reply for one such claim discarded most region reviews.
+    """
+    if evidence is None or not hasattr(evidence, 'review_validator'):
+        return checker
+    return evidence.review_validator(checker, folder, candidates, isolate_coverage_conflicts=True)
+
+
 def clipped_new_object(box,meta,source_size):
     """An internal crop cut is not an observed whole-object boundary."""
     w,h=meta['actual_crop_input_size_px'];crop=meta['source_crop_half_open']
@@ -73,7 +89,7 @@ def discover(source_path,input_path,root,runtime):
     p['kind_examples']=['rectangle','rounded_rectangle','ellipse','polygon','compound_symbol','projected_3d']
     p['kind_rule']='kind is a short visual type and a localization hint, not a fitted primitive.'
     p['task']='Locate schematic shapes. Return one JSON object with objects, more_pending and uncertain.'
-    def global_call():return runtime.call(root/'calls','global',system,p,[('Clean full figure',input_path)],global_validator(gs,'shape_bbox','absolute'),config['global_max_tokens'])
+    def global_call():return runtime.call(root/'calls','global',system,p,[('Clean full figure',input_path)],with_distinct_ids(global_validator(gs,'shape_bbox','absolute'),'objects'),config['global_max_tokens'])
     template=read(Path(__file__).with_name('layout_prompt.json'));plan_prompt=template['prompt'];plan_prompt['input_size']=gs
     plan_prompt['coordinates']=f'Only this image pixel centers. bbox_2d=[xmin,ymin,xmax,ymax], x=0..{gs[0]-1}, y=0..{gs[1]-1}. Width/height are not valid maximum endpoints.'
     def plan_call():return runtime.call(root/'calls','layout',template['system'],plan_prompt,[('Clean full figure',input_path)],lambda raw:validate_plan(raw,gs),config['plan_max_tokens'])
@@ -120,8 +136,7 @@ def run_shape(source_path,input_path,root,runtime):
         if evidence is not None:
             prompt,images=evidence.region(prompt,images,read(folder/'frame.json'),assignment,folder)
         checker=validator(assignment['assigned_ids'],frame.input_size)
-        if evidence is not None and hasattr(evidence,'review_validator'):
-            checker=evidence.review_validator(checker,folder,assignment['candidates'])
+        checker=local_review_checker(evidence,checker,folder,assignment['candidates'])
         result=runtime.call(root/'calls','review_'+rid,SYSTEM,prompt,images,checker,config['local_max_tokens'])
         save(folder/'result.json',result);return result
     with ThreadPoolExecutor(max_workers=config['local_workers']) as pool:

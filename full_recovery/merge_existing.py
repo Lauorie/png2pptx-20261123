@@ -195,6 +195,11 @@ def execute(run, *, record_stream=None):
             if done['composition_protocol']!=COMPOSITION_PROTOCOL or sha(folder/'combined.pptx')!=done['pptx_sha256']:raise ValueError('Completed composition changed')
             notify(cid,state='completed');return done
         notify(cid,state='running',stage='ownership')
+        # Stroke colour, width and dash are visible facts: read them from the source.
+        from .arrow_restyle import restyled
+        from .replay_composition import reuse_arguments
+        branch_paths=dict(paths)  # the branches' own files, checked again after composition
+        paths.update(restyled(paths,Path(item['original']),folder/'arrow_style',settings,code))
         scene=read(paths['shape_scene']);style_data=read(paths['shape_styles']);styles={k:v['style'] for k,v in style_data['parts'].items()}
         arrows=read(paths['arrow_scene']);texts=read(paths['text_scene'])
         from .native_paint import bind as bind_native_paint
@@ -271,21 +276,37 @@ def execute(run, *, record_stream=None):
         selected=folder/'selected_text'
         command(cid,'text_paint',['--backend',run/'backends/text','--paint-on-base',folder/'images.pptx','--text-scene',paths['text_scene'],
             '--source-image',item['original'],'--shape-scene',paths['shape_scene'],'--shape-styles',paths['shape_styles'],
-            '--arrow-scene',paths['arrow_scene'],'--ownership-plan',folder/'ownership.json','--output',selected])
+            '--arrow-scene',paths['arrow_scene'],'--ownership-plan',folder/'ownership.json','--output',selected,
+            *reuse_arguments(settings,run)])
         second=merge(folder/'images.pptx',[('text',selected/'text.pptx')],folder/'combined.pptx')
         notify(cid,stage='rendering')
         command(cid,'render',['--backend',run/'backends/text','--render-pptx',folder/'combined.pptx','--output',folder/'native','--size',*item['source_size']])
+        # Whatever no branch recovered is kept as a picture of the source.
+        residual=[]
+        if settings.get('source_residual_pictures',True):
+            from .residual import recover_missing
+            try:residual=recover_missing(folder/'combined.pptx',Path(item['original']),folder/'native/native.png',folder/'residual')
+            except (OSError,ValueError,KeyError) as exc:save(folder/'residual_failure.json',{'error':str(exc)})
+        if residual:
+            notify(cid,stage='rendering_residual')
+            try:
+                command(cid,'render_residual',['--backend',run/'backends/text','--render-pptx',folder/'combined.pptx','--output',folder/'native_residual','--size',*item['source_size']])
+                shutil.copy2(folder/'native_residual/native.png',folder/'native/native.png')
+            except (RuntimeError,OSError) as exc:
+                # The deck already holds the pictures; only its preview is one render behind.
+                save(folder/'residual_failure.json',{'error':str(exc),'preview_shows_residual_pictures':False})
         with Image.open(item['original']) as im:original=im.convert('RGB')
         with Image.open(folder/'native/native.png') as im:restored=im.convert('RGB')
         w=min(1400,original.width);h=round(original.height*w/original.width);panel=Image.new('RGB',(w*2,h+28),'white');d=ImageDraw.Draw(panel)
         panel.paste(original.resize((w,h)),(0,28));panel.paste(restored.resize((w,h)),(w,28));d.text((8,8),cid+' SOURCE',fill='black');d.text((w+8,8),'RECOVERED PPT',fill='black');panel.save(folder/'comparison.png')
-        for key,p in paths.items():
+        for key,p in branch_paths.items():
             if sha(p)!=record['sha256'][key]:raise ValueError('Input product modified during composition')
         done={'id':cid,'composition_protocol':COMPOSITION_PROTOCOL,'pptx_sha256':sha(folder/'combined.pptx'),
               'sources':record,'stage_sources_unchanged':True,'native_rendered':True,'visual_accuracy_verified':False,
               'shape_geometry_refitted':False,'shape_type_reclassified':False,'sam_requests':0,
               'vectors':first,'text_composition':second,'ownership':plan,'text_paint':read(selected/'composition.json'),'at':time.time()}
         done['composition_ownership_complete']=bool(quality.get('line_ownership_complete'))
+        done['source_residual_pictures']=[list(box) for box in residual]
         dest=run/'delivery'/cid;dest.mkdir(exist_ok=True)
         for source,name in [(folder/'combined.pptx','combined.pptx'),(folder/'native/native.png','preview.png'),(folder/'comparison.png','comparison.png')]:shutil.copy2(source,dest/name)
         save(marker,done);save(dest/'validation.json',done);notify(cid,state='completed',stage='completed')

@@ -78,7 +78,7 @@ def apply_style(shape, part, scale, style):
                 for alpha in list(rgb.findall('a:alpha',NS)):rgb.remove(alpha)
                 if style.get('fill_opacity',1)<1:
                     alpha=OxmlElement('a:alpha');alpha.set('val',str(round(style['fill_opacity']*100000)));rgb.append(alpha)
-    if style['stroke'] is None:
+    if style['stroke'] is None or not style['width_px'] > 0:
         shape.line.fill.background();return
     shape.line.color.rgb=RGBColor.from_string(style['stroke'][1:]);shape.line.width=max(1,round(style['width_px']*scale))
     line=shape._element.spPr.find('a:ln',NS)

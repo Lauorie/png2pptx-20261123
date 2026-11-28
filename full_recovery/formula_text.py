@@ -11,7 +11,20 @@ COMMANDS={'text','textbf','textit','textrm','textnormal','texttt'}
 # Accept these style aliases only inside a literal text group. Mathematical
 # expressions outside text mode still go through the original math parser.
 ALIASES={'mathbf':'textbf','mathit':'textit','mathrm':'textrm','mathtt':'texttt'}
-PROTOCOL='balanced_formula_text.2'
+# Text-mode boxes that carry no style of their own.
+BOXES={'mbox','hbox'}
+PROTOCOL='balanced_formula_text.3'
+
+
+def text_group(command: str) -> bool:
+    """Whether ``command`` opens a text-mode group: the ``\\text...`` family and plain boxes.
+
+    A style this parser has no rendering for (``\\textsf``, ``\\textsc``...)
+    still opens text mode: its content is text and inherits the surrounding
+    style. Left to the math converter, such a wrapper printed the placeholder
+    of the group inside it.
+    """
+    return command in COMMANDS or command in BOXES or (command!='textcolor' and re.fullmatch(r'text[a-z]+',command) is not None)
 
 
 def braced(source, index):
@@ -50,7 +63,7 @@ def spans(source, bold=None, italic=None, color=None, family=None):
                 if not re.fullmatch(r'#[0-9A-Fa-f]{6}',value):raise ValueError('Text color must be #RRGGBB')
                 inner,i=braced(source,i);result.extend(spans(inner,bold,italic,value.upper(),family));continue
             command=ALIASES.get(command,command)
-            if command not in COMMANDS:raise ValueError('Unsupported nested text command: '+command)
+            if not text_group(command):raise ValueError('Unsupported nested text command: '+command)
             inner,i=braced(source,i)
             b=False if command=='textnormal' else True if command=='textbf' else bold
             it=False if command in ('textnormal','textrm','texttt') else True if command=='textit' else italic
@@ -70,7 +83,7 @@ def prepare(source):
         match=re.match(r'\\([A-Za-z]+)',source[i:])
         if match is None:output.append(source[i:i+2]);i+=2;continue
         command=match[1]
-        if command not in COMMANDS:output.append(match[0]);i+=len(match[0]);continue
+        if not text_group(command):output.append(match[0]);i+=len(match[0]);continue
         inner,end=braced(source,i+len(match[0]))
         key=marker+str(len(replacements))
         replacements[key]=spans(inner,True if command=='textbf' else False if command=='textnormal' else None,

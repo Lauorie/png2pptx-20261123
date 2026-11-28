@@ -24,6 +24,7 @@ from .export import export, pattern
 from .live import publish
 from .native_stroke import NativeFitter, PROTOCOL as NATIVE_PROTOCOL
 from .width_limit import limit as limit_width
+from .stroke_fit import fit as fit_stroke
 
 SCHEDULING_PROTOCOL = 'semantic_then_native_fit_reviewed_commit.21'
 LINE_PROTOCOL = NATIVE_PROTOCOL
@@ -108,7 +109,14 @@ def commit_refinement(previous, proposed, checks, visibility_evidence=None):
                     'stroke_presence':('stroke','width_px','dash','dash_pattern_px'),
                     'stroke_color':('stroke',),'stroke_width':('width_px',),
                     'line_pattern':('dash','dash_pattern_px'),'occlusion':()}
+            presence_accepted=((old.get('stroke') is None)!=(proposed[key].get('stroke') is None)
+                               and 'stroke_presence' not in check['affected_fields'])
             for field in check['affected_fields']:
+                # An outline that was accepted as newly present or newly absent
+                # leaves the other style without a colour, width or pattern to
+                # return to: a present outline of the old width 0 is not a style.
+                if presence_accepted and field in ('stroke_color','stroke_width','line_pattern'):
+                    continue
                 # A confirmed category correction must not disappear because
                 # its new dash/gap lengths still need refinement. The old
                 # category's lengths cannot supply a valid numerical rollback.
@@ -642,6 +650,9 @@ def run_case(scene, source, folder, runtime, options, pool, render_slots, *, ass
             styles[key], capped = limit_width(styles[key], image.width, options)
             if capped:
                 records[key]['history'].append({'stage': 'maximum_stroke_width', 'revision': tag, **capped})
+            styles[key], dropped = fit_stroke(styles[key], geoms[key].bounds)
+            if dropped:
+                records[key]['history'].append({'stage': 'outline_wider_than_part', 'revision': tag, **dropped})
         relations.update(occlusion.order_internal_by_paint(scene, table, relations, styles, geoms,options['geometry_tolerance_px'],source=image))
         save(folder / 'occlusion.json', relations)
         snapshot = {'root': folder / 'snapshots' / f'snapshot_{len(snapshots):02d}_{tag}_{digest(styles)[:12]}',

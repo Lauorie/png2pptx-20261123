@@ -25,6 +25,14 @@ def main():
     p.add_argument('--api-base-url',default='http://35.220.164.252:3888/v1')
     p.add_argument('--api-model',default='glm-5.3-flash')
     p.add_argument('--force-reasoning-effort',choices=('low','medium','high'))
+    p.add_argument('--arrow-reasoning-effort',choices=('low','medium','high'),
+                   help='Reasoning effort for the arrow branch only; overrides --force-reasoning-effort there')
+    p.add_argument('--arrow-max-tokens',type=int,help='Output cap per arrow-branch request')
+    p.add_argument('--api-max-tokens',type=int,help='Output cap for every model request')
+    p.add_argument('--api-idle-timeout-seconds',type=float,
+                   help='Give up a model stream after this many silent seconds (gateway default: 300)')
+    p.add_argument('--api-hedge-after-seconds',type=float,
+                   help='Send a model request a second time when it is still unanswered after this long')
     p.add_argument('--critic-profile',choices=('full','lean'),default='full')
     p.add_argument('--api-budget-config',type=Path,help='Shared persistent task budget configuration')
     p.add_argument('--sam-url',default=SAM_BASE_URL)

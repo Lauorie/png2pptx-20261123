@@ -7,7 +7,7 @@ import shutil
 import time
 import urllib.request
 from .prepare import read,save,sha
-from .service_endpoints import sam_base,image_edit_base
+from .service_endpoints import sam_base,image_edit_base,sam_bases,same_sam_model
 
 
 def sam_profile(url):
@@ -61,7 +61,8 @@ def align_shape_limits(settings,config):
 
 def configure(project,args):
     run=args.run_dir.resolve()
-    selected_sam=sam_profile(args.sam_url)
+    sam_profiles=[sam_profile(address) for address in sam_bases(args.sam_url)]
+    selected_sam=same_sam_model(sam_profiles)
     sam_url=selected_sam['url']
     key_files=credential_sources(project,args)
     if args.api_concurrency<1:raise ValueError('Positive API concurrency required')
@@ -81,7 +82,7 @@ def configure(project,args):
         api_model='glm-5.3-flash',api_base_url=args.api_base_url.rstrip('/'),api_key_file=str(staged),api_key_files=staged_keys,
         api_credential_source_files=[str(p.resolve()) for p in key_files],
         api_gateway_port=18188,api_global_concurrency=args.api_concurrency,api_request_timeout_seconds=3600,
-        glm_request_timeout_seconds=3600,sam_url=sam_url,sam_urls=[sam_url],
+        glm_request_timeout_seconds=3600,sam_url=sam_url,sam_urls=[profile['url'] for profile in sam_profiles],
         external_sam_epoch=selected_sam['epoch'],external_sam_checkpoint_sha256=checkpoint,sam_cache_run=None,
         sam_checkpoint_sha256=checkpoint,
         sam_checkpoint=selected_sam['checkpoint_path'],sam_reuse_roots=[],
@@ -114,14 +115,24 @@ def configure(project,args):
                         fitting_workers=48,styling_workers=32)
     save(run/'settings.json',settings);save(run/'shape/settings.json',settings)
     text=read(run/'backends/text/config.json');text['expected_boyue_base_url']=('http://127.0.0.1:18190/v1' if settings.get('api_relays') else base)
+    from .text_parallel import with_request_limit
+    text=with_request_limit(text)
     save(run/'backends/text/config.json',text)
-    arrow=read(run/'arrows/config.json');arrow.update(base_url=('http://127.0.0.1:18189/v1' if settings.get('api_relays') else base),sam_url=args.sam_url.rstrip('/'),case_workers=8)
+    from .arrow_budget import arrow_base_url, to_settings as arrow_budget_settings
+    settings=arrow_budget_settings(settings,getattr(args,'arrow_reasoning_effort',None),
+                                   getattr(args,'arrow_max_tokens',None))
+    from .request_limits import to_settings as request_limit_settings
+    settings=request_limit_settings(settings,getattr(args,'api_max_tokens',None),
+                                    getattr(args,'api_idle_timeout_seconds',None),
+                                    getattr(args,'api_hedge_after_seconds',None))
+    arrow=read(run/'arrows/config.json');arrow.update(base_url=arrow_base_url('http://127.0.0.1:18189/v1' if settings.get('api_relays') else base),sam_url=sam_url,case_workers=8)
     save(run/'arrows/config.json',arrow)
     if settings.get('workflow_scope')=='fresh_full':
         if not external_arrows:
             from .fresh_arrow import configure as configure_arrow
             limits=next((r['api_global_concurrency'] for r in settings.get('api_relays',[]) if r['role']=='arrow'),args.api_concurrency)
-            configure_arrow(settings['fresh_arrow_root'],arrow['base_url'],settings['sam_url'],limits)
+            configure_arrow(settings['fresh_arrow_root'],arrow['base_url'],settings['sam_url'],limits,
+                            getattr(args,'case_workers',None))
         settings.update(text_workers=getattr(args,'text_workers',None) or 2,
                         case_workers=getattr(args,'case_workers',None) or 2,reuse_request_roots=[])
     shape_config=read(run/'shape/pipeline_config.json')

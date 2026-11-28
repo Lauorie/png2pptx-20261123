@@ -1,0 +1,47 @@
+{
+  "training_run": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu_bs32_ep10_min10_20261015",
+  "dataset_manifest": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_sam_ckpt_20261015/runs/full40_best_20261016_111338/dataset_manifest_snapshot.json",
+  "checkpoint_path": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_sam_ckpt_20261015/runs/full40_best_20261016_111338/weights/best.pt",
+  "checkpoint_sha256": "a9dc4a2a9752165feac412f961c6fa6e017f60fb8f178621d9caba93aa0276ed",
+  "checkpoint_name": "best.pt",
+  "categories": [
+    "line",
+    "block_arrow"
+  ],
+  "sam_threshold": 0.5,
+  "resolution": 1008,
+  "baseline_run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_partition_points_20261006/runs/sam_arrows40_20261009_1320",
+  "runtime_assets": {
+    "sam3/model_builder.py": {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu_bs32_ep10_min10_20261015/runtime/third_party/sam3/sam3/model_builder.py",
+      "sha256": "d71d6d3e485ec3eae48bbc2ba676f401b5853d65c4195a91d077b04da38121c2"
+    },
+    "sam3/model/sam3_image_processor.py": {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu_bs32_ep10_min10_20261015/runtime/third_party/sam3/sam3/model/sam3_image_processor.py",
+      "sha256": "d8738a0efb6138b01c0dc5deceffd29de9e675860a9a1ed3822b08766373333b"
+    },
+    "sam3/assets/bpe_simple_vocab_16e6.txt.gz": {
+      "path": "/mnt/shared-storage-user/intern7shared/yinjinhui/datasets/arxiv_paper/data/sam3_training_11classes_8gpu_bs32_ep10_min10_20261015/runtime/third_party/sam3/sam3/assets/bpe_simple_vocab_16e6.txt.gz",
+      "sha256": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a"
+    }
+  },
+  "best_metadata": {
+    "epoch": 7,
+    "metric": "coco_eval_segm_AP",
+    "value": 0.26540430839153833,
+    "checkpoint": "best.pt"
+  },
+  "expected_checkpoint_epoch": 7,
+  "comparison_runs": [
+    {
+      "label": "旧全局 SAM",
+      "key": "old_global",
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_partition_points_20261006/runs/sam_arrows40_20261009_1320"
+    },
+    {
+      "label": "上次 checkpoint.pt epoch=2",
+      "key": "previous_ckpt",
+      "run": "/mnt/shared-storage-user/intern7shared/yinjinhui/scifig_png2ppt/ref/png2pptx_geometry/experiments/arrow_sam_ckpt_20261015/runs/full40_checkpoint_20261015_213933"
+    }
+  ]
+}

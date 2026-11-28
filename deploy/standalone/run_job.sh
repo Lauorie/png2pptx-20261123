@@ -10,16 +10,25 @@
 # Required environment:
 #   PNG2PPTX_API_BASE_URL    OpenAI-compatible chat completions base URL
 #   PNG2PPTX_API_KEY_FILE    file holding the API key (mode 0600)
-#   PNG2PPTX_SAM_URL         SAM3 service, e.g. http://127.0.0.1:18103
-#   PNG2PPTX_IMAGE_EDIT_URL  SenseNova service, e.g. http://127.0.0.1:8091/v1
+#   PNG2PPTX_SAM_URL         SAM3 service, e.g. http://127.0.0.1:18103; several instances of the same
+#                            model separated by commas share the shape branch's requests
+#   PNG2PPTX_IMAGE_EDIT_URL  image edit service: the image adapter (http://127.0.0.1:18300/v1)
+#                            or SenseNova (http://127.0.0.1:8091/v1)
 # Optional environment:
-#   PNG2PPTX_API_MODEL         default z-ai/glm-5.3-flash
-#   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default high
+#   PNG2PPTX_API_MODEL         default openai/gpt-6-luna
+#   PNG2PPTX_REASONING_EFFORT  low | medium | high | none; default medium
+#   PNG2PPTX_ARROW_REASONING_EFFORT  low | medium | high for the arrow branch only; default: same as above
+#   PNG2PPTX_ARROW_MAX_TOKENS        output cap per arrow-branch request; default 32000, empty: backend's own
+#   PNG2PPTX_API_MAX_TOKENS          output cap for every model request; default 32000, empty: backends' own
+#   PNG2PPTX_API_IDLE_TIMEOUT_SECONDS  give up a silent model stream after this long; default: 300
+#   PNG2PPTX_API_HEDGE_AFTER_SECONDS   ask a request a second time when unanswered this long; default: never
+#   PNG2PPTX_CASE_WORKERS      images the shape and arrow branches each work on at once; default 6
+#   PNG2PPTX_TEXT_WORKERS      images the text branch works on at once; default 6
 #   PNG2PPTX_CPU_ENV           Python environment prefix; default /opt/shape-cpu
 set -euo pipefail
 
 if [ "$#" -ne 2 ]; then
-  sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//' >&2
+  sed -n '2,26p' "$0" | sed 's/^# \{0,1\}//' >&2
   exit 2
 fi
 : "${PNG2PPTX_API_BASE_URL:?set PNG2PPTX_API_BASE_URL}"
@@ -35,7 +44,12 @@ export PNG2PPTX_CPU_ENV="${PNG2PPTX_CPU_ENV:-/opt/shape-cpu}"
 export PATH="${PNG2PPTX_CPU_ENV}/bin:${PATH}"
 export SSL_CERT_FILE="${SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}"
 PYTHON="${PNG2PPTX_CPU_ENV}/bin/python"
-EFFORT="${PNG2PPTX_REASONING_EFFORT:-high}"
+EFFORT="${PNG2PPTX_REASONING_EFFORT:-medium}"
+# Unset means the measured default; set but empty means the backend's own value.
+PNG2PPTX_ARROW_MAX_TOKENS="${PNG2PPTX_ARROW_MAX_TOKENS-32000}"
+PNG2PPTX_API_MAX_TOKENS="${PNG2PPTX_API_MAX_TOKENS-32000}"
+PNG2PPTX_CASE_WORKERS="${PNG2PPTX_CASE_WORKERS:-6}"
+PNG2PPTX_TEXT_WORKERS="${PNG2PPTX_TEXT_WORKERS:-6}"
 
 if [ -e "$RUN_DIR" ] || [ -e "$CATALOG" ]; then
   echo "run directory or its .input catalog already exists: $RUN_DIR" >&2
@@ -47,12 +61,33 @@ fi
 PREPARE=("$PYTHON" -B "$REPO/scripts/prepare_forward.py"
   --input-root "$CATALOG" --run-dir "$RUN_DIR"
   --api-base-url "$PNG2PPTX_API_BASE_URL"
-  --api-model "${PNG2PPTX_API_MODEL:-z-ai/glm-5.3-flash}"
+  --api-model "${PNG2PPTX_API_MODEL:-openai/gpt-6-luna}"
   --api-key-file "$PNG2PPTX_API_KEY_FILE"
   --sam-url "$PNG2PPTX_SAM_URL"
   --image-edit-url "$PNG2PPTX_IMAGE_EDIT_URL")
 if [ "$EFFORT" != "none" ]; then
   PREPARE+=(--force-reasoning-effort "$EFFORT")
+fi
+if [ -n "${PNG2PPTX_ARROW_REASONING_EFFORT:-}" ]; then
+  PREPARE+=(--arrow-reasoning-effort "$PNG2PPTX_ARROW_REASONING_EFFORT")
+fi
+if [ -n "${PNG2PPTX_ARROW_MAX_TOKENS:-}" ]; then
+  PREPARE+=(--arrow-max-tokens "$PNG2PPTX_ARROW_MAX_TOKENS")
+fi
+if [ -n "${PNG2PPTX_API_MAX_TOKENS:-}" ]; then
+  PREPARE+=(--api-max-tokens "$PNG2PPTX_API_MAX_TOKENS")
+fi
+if [ -n "${PNG2PPTX_API_IDLE_TIMEOUT_SECONDS:-}" ]; then
+  PREPARE+=(--api-idle-timeout-seconds "$PNG2PPTX_API_IDLE_TIMEOUT_SECONDS")
+fi
+if [ -n "${PNG2PPTX_CASE_WORKERS:-}" ]; then
+  PREPARE+=(--case-workers "$PNG2PPTX_CASE_WORKERS")
+fi
+if [ -n "${PNG2PPTX_TEXT_WORKERS:-}" ]; then
+  PREPARE+=(--text-workers "$PNG2PPTX_TEXT_WORKERS")
+fi
+if [ -n "${PNG2PPTX_API_HEDGE_AFTER_SECONDS:-}" ]; then
+  PREPARE+=(--api-hedge-after-seconds "$PNG2PPTX_API_HEDGE_AFTER_SECONDS")
 fi
 "${PREPARE[@]}"
 

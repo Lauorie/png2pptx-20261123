@@ -32,7 +32,7 @@ def options(config):
         raise ValueError('Invalid text font/fit policy')
     if not 0 < out['duplicate_iou'] <= 1 or out['crop_scale'] <= 0 or out['render_timeout_seconds'] <= 0:
         raise ValueError('Invalid text sizing/dedup policy')
-    if out['geometry_reasoning_effort'] not in ('low','high','max'):
+    if out['geometry_reasoning_effort'] not in ('low','medium','high','max'):
         raise ValueError('Invalid geometry reasoning effort')
     if out['inventory_recall_max_regions'] > 8:
         raise ValueError('texts.inventory_recall_max_regions is bounded to 8')

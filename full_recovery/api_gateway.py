@@ -17,6 +17,10 @@ import urllib.request
 import hashlib
 import uuid
 from .api_budget import BudgetGuard, BudgetBusy, BudgetPaused
+from .arrow_budget import routed_body
+from .request_limits import capped
+from . import request_hedge
+from . import transport_retry
 
 
 def payload_for_api(body, model, force_effort=None, service_tier=None, image_detail=None):
@@ -41,7 +45,13 @@ def payload_for_api(body, model, force_effort=None, service_tier=None, image_det
         payload.setdefault('thinking', {'type': 'enabled'})
     if template.get('reasoning_effort') is not None:
         payload.setdefault('reasoning_effort', template['reasoning_effort'])
-    if force_effort is not None:
+    if template.get('pin_reasoning_effort'):
+        # A stage pinned its own effort (see arrow_budget); the run-wide force does not replace it.
+        if template.get('reasoning_effort') not in ('low', 'medium', 'high'):
+            raise ValueError('Invalid pinned reasoning effort')
+        payload['reasoning_effort'] = template['reasoning_effort']
+        payload['thinking'] = {'type': 'enabled'}
+    elif force_effort is not None:
         if force_effort not in ('low', 'medium', 'high'):
             raise ValueError('Invalid forced reasoning effort')
         payload['reasoning_effort'] = force_effort
@@ -183,7 +193,8 @@ class ApiRelay:
                 json.dumps(payload).encode(), {'Content-Type': 'application/json', 'Authorization': 'Bearer '+credential})
             opener = urllib.request.build_opener()
             # Retry only before any completion event has reached a consumer.
-            attempts = max(3, int(self.settings.get('api_rate_limit_attempts', 3)))
+            rate_attempts = max(3, int(self.settings.get('api_rate_limit_attempts', 3)))
+            attempts = transport_retry.attempts(rate_attempts)
             for attempt in range(attempts):
                 if cancelled.is_set():
                     raise IncompleteStream('API consumer disconnected')
@@ -277,19 +288,20 @@ class ApiRelay:
                     except (OSError,AttributeError):raw_error=''
                     field_hint=next((field for field in ('reasoning_effort','max_tokens','context_length') if field in raw_error),None)
                     exc.close()
+                    if transport_retry.refused(status, raw_error):
+                        raise IncompleteStream(transport_retry.REFUSED) from None
                     if status == 402 and self.budget:
                         self.budget.pause('Provider rejected billing/quota (HTTP 402); new requests disabled')
                     if status == 429:
                         self.stamp(upstream_rate_limited=1)
                         self.pacer.limited(retry_after)
-                    if (status not in (408, 429, 500, 502, 503, 504)
-                            or attempt >= (attempts - 1 if status == 429 else 2)):
+                    if transport_retry.gives_up(status, attempt, rate_attempts):
                         raise IncompleteStream('API HTTP '+str(status)) from None
-                    cancelled.wait(min(8, 2**attempt, max(0., deadline-time.monotonic())))
+                    cancelled.wait(min(transport_retry.wait_seconds(attempt), max(0., deadline-time.monotonic())))
                 except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
-                    if events or attempt >= 2:
+                    if events or transport_retry.gives_up(None, attempt, rate_attempts):
                         raise IncompleteStream('API network failure: '+type(exc).__name__) from None
-                    cancelled.wait(min(8, 2**attempt, max(0., deadline-time.monotonic())))
+                    cancelled.wait(min(transport_retry.wait_seconds(attempt), max(0., deadline-time.monotonic())))
                 finally:
                     if self.budget and not settled:
                         self.budget.settle(reservation)
@@ -344,10 +356,13 @@ class ApiRelay:
                 self.reply(200, relay.stamp())
 
             def do_POST(self):
-                if self.path != '/v1/chat/completions':
+                if routed_body(self.path, {}, {}) is None:
                     return self.reply(404, {'error': 'Unknown route'})
                 try:
                     body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                    # The arrow branch posts to its own route and may carry its own budget.
+                    body = routed_body(self.path, body, relay.settings)
+                    body = capped(body, relay.settings)
                 except (ValueError, TypeError, KeyError):
                     return self.reply(400, {'error': 'Invalid JSON request'})
                 streaming = bool(body.get('stream'))
@@ -362,7 +377,13 @@ class ApiRelay:
                         return self.reply(400, {'error': 'Invalid request deadline'})
                 messages = queue.Queue()
                 cancelled = threading.Event()
-                threading.Thread(target=relay.produce, args=(body, messages, request_timeout, cancelled), daemon=True).start()
+                hedge_after = request_hedge.delay(relay.settings)
+                if hedge_after is None:
+                    threading.Thread(target=relay.produce, args=(body, messages, request_timeout, cancelled), daemon=True).start()
+                else:
+                    # A request far behind is asked a second time; the first whole answer wins.
+                    threading.Thread(target=request_hedge.relay, args=(relay.produce, body, messages, request_timeout,
+                                     cancelled, hedge_after), daemon=True).start()
                 if streaming:
                     self.send_response(200)
                     self.send_header('Content-Type', 'text/event-stream')
@@ -391,7 +412,7 @@ class ApiRelay:
                             return
                         elif kind == 'failed':
                             if not streaming:
-                                self.reply(502, {'error': {'message': value}})
+                                self.reply(transport_retry.reply_status(value), {'error': {'message': value}})
                             # Incomplete SSE is rejected by the preserved clients.
                             return
                 except (BrokenPipeError, ConnectionResetError):

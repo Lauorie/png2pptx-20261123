@@ -23,6 +23,8 @@ def load_backend(root):
     from full_recovery.text_breaks import install
     install()
     from shape_integration import common
+    from full_recovery.request_reuse import install as install_request_reuse
+    install_request_reuse(common)
     original=common.ExperimentDetectorClient
     class LocalDetector(original):
         def request_parameters(self):
@@ -39,12 +41,21 @@ def load_backend(root):
     # like stacked text, shrinking native type to fit a tall unrotated frame.
     from full_recovery.text_inventory import install as install_inventory_review
     install_inventory_review()
+    # Some models drop the "text" key of a run; restore it instead of failing the image.
+    from full_recovery.text_json_repair import install as install_json_repair
+    install_json_repair()
+    # The audit regions and crop groups do not depend on each other: ask them together.
+    from full_recovery.text_parallel import install as install_parallel_requests
+    install_parallel_requests()
     from full_recovery.source_text_attributes import install as install_source_attributes
     install_source_attributes()
     from full_recovery.text_spacing import install as install_text_spacing
     install_text_spacing()
     from full_recovery.text_angle_transport import install as install_angle_transport
     install_angle_transport()
+    # Bold is judged against the rest of the figure; a magnified crop cannot overrule it.
+    from full_recovery.text_weight import install as install_text_weight
+    install_text_weight()
     from full_recovery.formula_text import install as install_formula_text
     install_formula_text()
     # LO's disposable DOCX preview interprets a literal <n> superscript as an
@@ -94,6 +105,8 @@ def main():
     p.add_argument('--source-image',type=Path);p.add_argument('--ownership-plan',type=Path)
     p.add_argument('--shape-scene',type=Path);p.add_argument('--shape-styles',type=Path)
     p.add_argument('--arrow-scene',type=Path)
+    p.add_argument('--reuse-output-root',type=Path,help='Run directory whose request folders mirror the reference runs')
+    p.add_argument('--reuse-request-root',type=Path,action='append',default=[],help='Finished run whose identical requests are answered from its replies')
     p.add_argument('--refit-formulas',action='store_true')
     p.add_argument('--repair-formula-text',action='store_true')
     p.add_argument('--repair-text-occurrences',action='store_true')
@@ -203,6 +216,8 @@ def main():
         config=read(root/'config.json')
         # Retry an incomplete/invalid response once; valid visual decisions stay cached.
         config.update(api_concurrency=8,shape_schema_retries=1,reasoning_effort='low',request_timeout_seconds=360)
+        if args.reuse_output_root and args.reuse_request_root:
+            config.update(reuse_output_root=str(args.reuse_output_root),reuse_request_roots=[str(r) for r in args.reuse_request_root])
         runtime=Runtime(config,config['expected_boyue_base_url'],'')
         from PIL import Image
         from full_recovery.text_coverage import candidates as coverage_candidates, observe as observe_text_coverage
@@ -220,7 +235,7 @@ def main():
         rows,grounded_aliases=reconcile_recalls(rows,clean)
         save(args.output/'source_occurrence_grounding.json',{'observations':grounding,
              'changed_ids':grounded_ids,'retired_recalls':grounded_aliases,'extra_model_stages':0})
-        extra=[];marks=[];coverage={'model_calls':0,'added_text':[]};native=None
+        extra=[];marks=[];coverage={'model_calls':0,'added_text':[]};native=None;region_rows=[];region_audit={'regions':0}
         if coverage_candidates(clean, rows):
             preview=render_native(args.paint_on_base,args.output/'source_coverage/base/native_render',scene['source_size'],180)
             with Image.open(preview) as opened:
@@ -229,6 +244,14 @@ def main():
             marks=recover_marks(clean,native,coverage_candidates(clean,rows,native))
             save(args.output/'source_coverage/source_marks.json',marks)
             known=[*rows,*[{'id':m['id'],'bbox_2d':m['bbox_2d'],'font':'Arial'} for m in marks]]
+            # Dense lettering nobody recovered: left out by the text branch as picture-internal, not kept as a picture.
+            from full_recovery.text_regions import observe as read_unowned_regions
+            region_rows,region_audit=read_unowned_regions(clean,coverage_candidates(clean,known,native),known,args.output/'source_regions',runtime,save)
+            if region_rows:
+                opt=text_options(config);opt['native_font_metrics']=True
+                region_rows,errors=fit_all(region_rows,args.output/'source_regions/native_layout',threading.Semaphore(1),opt)
+                region_audit['native_layout_errors']=errors
+                known=[*known,*region_rows]
             extra,coverage=observe_text_coverage(clean,native,known,args.output/'source_coverage',runtime,save)
             if extra:
                 opt=text_options(config);opt['native_font_metrics']=True
@@ -242,6 +265,7 @@ def main():
                     extra,verification=verify_glyphs(clean,opened,extra)
                 coverage['glyph_verification']=verification
                 coverage['added_text']=extra
+        extra=[*region_rows,*extra];coverage['unowned_regions']={k:v for k,v in region_audit.items() if k!='added_text'}
         original_ids={r['id'] for r in rows};extra_ids={r['id'] for r in extra}
         rows+=extra
         rows,new_aliases=reconcile_recalls(rows,clean)
