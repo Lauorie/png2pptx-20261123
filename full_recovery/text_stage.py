@@ -235,7 +235,7 @@ def main():
         rows,grounded_aliases=reconcile_recalls(rows,clean)
         save(args.output/'source_occurrence_grounding.json',{'observations':grounding,
              'changed_ids':grounded_ids,'retired_recalls':grounded_aliases,'extra_model_stages':0})
-        extra=[];marks=[];coverage={'model_calls':0,'added_text':[]};native=None
+        extra=[];marks=[];coverage={'model_calls':0,'added_text':[]};native=None;region_rows=[];region_audit={'regions':0}
         if coverage_candidates(clean, rows):
             preview=render_native(args.paint_on_base,args.output/'source_coverage/base/native_render',scene['source_size'],180)
             with Image.open(preview) as opened:
@@ -244,6 +244,14 @@ def main():
             marks=recover_marks(clean,native,coverage_candidates(clean,rows,native))
             save(args.output/'source_coverage/source_marks.json',marks)
             known=[*rows,*[{'id':m['id'],'bbox_2d':m['bbox_2d'],'font':'Arial'} for m in marks]]
+            # Dense lettering nobody recovered: left out by the text branch as picture-internal, not kept as a picture.
+            from full_recovery.text_regions import observe as read_unowned_regions
+            region_rows,region_audit=read_unowned_regions(clean,coverage_candidates(clean,known,native),known,args.output/'source_regions',runtime,save)
+            if region_rows:
+                opt=text_options(config);opt['native_font_metrics']=True
+                region_rows,errors=fit_all(region_rows,args.output/'source_regions/native_layout',threading.Semaphore(1),opt)
+                region_audit['native_layout_errors']=errors
+                known=[*known,*region_rows]
             extra,coverage=observe_text_coverage(clean,native,known,args.output/'source_coverage',runtime,save)
             if extra:
                 opt=text_options(config);opt['native_font_metrics']=True
@@ -257,6 +265,7 @@ def main():
                     extra,verification=verify_glyphs(clean,opened,extra)
                 coverage['glyph_verification']=verification
                 coverage['added_text']=extra
+        extra=[*region_rows,*extra];coverage['unowned_regions']={k:v for k,v in region_audit.items() if k!='added_text'}
         original_ids={r['id'] for r in rows};extra_ids={r['id'] for r in extra}
         rows+=extra
         rows,new_aliases=reconcile_recalls(rows,clean)

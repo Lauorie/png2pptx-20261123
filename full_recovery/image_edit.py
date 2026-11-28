@@ -85,6 +85,59 @@ def cleanup_mask(size,prompt):
     return mask
 
 
+# A pixel is lettering when it is this far, in RGB, from the colour around its label,
+# and the same lettering when it is this near to the label's own colour.
+LABEL_INK_DISTANCE = 60.
+# Share of a label's source lettering still present in the edited picture that means the label was not removed.
+LABEL_LEFT_SHARE = .5
+
+
+def clear_labels_left(source, patch, prompt):
+    """Remove from the edited picture every label the editor returned untouched.
+
+    The slide adds these labels as text of its own. The editor is asked to take
+    them out of the picture and sometimes leaves them, so the text ends up on
+    top of its own copy. Whether a label is still there is measured, not asked:
+    its lettering in the source must reappear, in its own colour and place,
+    after editing.
+
+    Args:
+        source: The source crop, RGBA.
+        patch: The edited picture aligned to the crop, RGBA.
+        prompt: The edit request; ``native_labels`` holds each label's box in crop pixels.
+
+    Returns:
+        The patch with those labels painted out from the source surroundings, and how many there were.
+    """
+    import cv2
+    before = np.asarray(source.convert('RGB')).astype(float); after = np.asarray(patch.convert('RGB')).astype(float)
+    height, width = before.shape[:2]
+    stale = np.zeros((height, width), 'uint8'); count = 0
+    for label in prompt.get('native_labels', []):
+        b = label['box']
+        x0, y0 = max(0, math.floor(b[0]-1)), max(0, math.floor(b[1]-1))
+        x1, y1 = min(width, math.ceil(b[2]+1)+1), min(height, math.ceil(b[3]+1)+1)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        ground = np.median(before[y0:y1, x0:x1].reshape(-1, 3), axis=0)
+        ink = np.linalg.norm(before[y0:y1, x0:x1]-ground, axis=2) > LABEL_INK_DISTANCE
+        if not ink.any():
+            continue
+        # The same lettering, not merely something drawn there: an editor that
+        # fills the place with the body's own colour has removed the label.
+        colour = np.median(before[y0:y1, x0:x1][ink], axis=0)
+        kept = (np.linalg.norm(after[y0:y1, x0:x1]-colour, axis=2) < LABEL_INK_DISTANCE).astype('uint8')
+        kept = cv2.dilate(kept, np.ones((3, 3), 'uint8')) > 0
+        if np.mean(kept[ink]) >= LABEL_LEFT_SHARE:
+            stale[y0:y1, x0:x1] = 255; count += 1
+    if not count:
+        return patch, 0
+    painted = cv2.inpaint(np.asarray(source.convert('RGB')), stale, 3., cv2.INPAINT_TELEA)
+    result = np.asarray(patch.convert('RGBA')).copy()
+    result[stale > 0, :3] = painted[stale > 0]; result[stale > 0, 3] = 255
+    return Image.fromarray(result, 'RGBA'), count
+
+
 def source_locked_icon(crop, edited, placement, prompt):
     """Apply cleanup only to explicit labels/overlays, in original pixels.
 
@@ -101,6 +154,9 @@ def source_locked_icon(crop, edited, placement, prompt):
         x, y, w, h = placement
         image = edited.convert('RGBA').resize((max(1, round(w)), max(1, round(h))), Image.Resampling.LANCZOS)
         patch.alpha_composite(image, (round(x), round(y)))
+    left = 0
+    if edited is not None:
+        patch, left = clear_labels_left(source, patch, prompt)
     result = Image.composite(patch, source, mask)
     # This is an original-image crop, not a generated canvas. Whole-image
     # colour keying after a local edit can flood through a cleaned boundary
@@ -108,7 +164,8 @@ def source_locked_icon(crop, edited, placement, prompt):
     # downstream ownership clipping alone controls the asset's spatial scope.
     return result, {'source_pixels_policy': 'explicit_cleanup_masks.1',
                     'source_pixels_preserved': True, 'edited_fraction': float(np.mean(np.asarray(mask) > 0)),
-                    'rgba_outside_cleanup_preserved': True, 'cleanup_fallback': edited is None}
+                    'rgba_outside_cleanup_preserved': True, 'cleanup_fallback': edited is None,
+                    'labels_left_by_editor': left}
 
 
 class Editor:
