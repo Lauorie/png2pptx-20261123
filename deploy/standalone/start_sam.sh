@@ -25,10 +25,12 @@ RUN_DIR=$(realpath -m "$1")
 # The cluster configuration starts an artificial GPU load when the service is
 # idle, to keep its allocation. Outside that cluster the load is only a cost.
 "$PNG2PPTX_SAM_PYTHON" -I - "$RUN_DIR/config.json" <<'PY'
-import json, sys
+import json, os, sys
 path = sys.argv[1]
 config = json.load(open(path))
 config["idle_resume_seconds"] = 10**9
+if os.environ.get("PNG2PPTX_SAM_PORT"):
+    config["port"] = int(os.environ["PNG2PPTX_SAM_PORT"])
 json.dump(config, open(path, "w"), indent=2)
 PY
 export POD_IP="${POD_IP:-127.0.0.1}"

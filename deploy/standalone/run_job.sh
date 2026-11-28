@@ -10,7 +10,8 @@
 # Required environment:
 #   PNG2PPTX_API_BASE_URL    OpenAI-compatible chat completions base URL
 #   PNG2PPTX_API_KEY_FILE    file holding the API key (mode 0600)
-#   PNG2PPTX_SAM_URL         SAM3 service, e.g. http://127.0.0.1:18103
+#   PNG2PPTX_SAM_URL         SAM3 service, e.g. http://127.0.0.1:18103; several instances of the same
+#                            model separated by commas share the shape branch's requests
 #   PNG2PPTX_IMAGE_EDIT_URL  image edit service: the image adapter (http://127.0.0.1:18300/v1)
 #                            or SenseNova (http://127.0.0.1:8091/v1)
 # Optional environment:

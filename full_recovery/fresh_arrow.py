@@ -46,11 +46,15 @@ def prepare(reference,root,items):
                   source_code_sha256={str(p.relative_to(reference)):sha(p)
                     for directory in ('code','geometry_code') for p in (reference/directory).rglob('*.py')},
                   adaptations=['resource limits','loopback API transport','disable prior mask reuse',
-                               'restore node naming in geometry replies (arrow_reply_repair)'])
+                               'restore node naming in geometry replies (arrow_reply_repair)',
+                               'retry the renderer version probe (arrow_renderer_probe)'])
     save(root/'provenance.json',record)
     # Keep replies whose only defect is unquoted or positional node naming.
     from .arrow_reply_repair import install as install_reply_repair
     install_reply_repair(root/'geometry_code')
+    # One slow renderer start must not fail every arrow of an image.
+    from .arrow_renderer_probe import install as install_probe_retry
+    install_probe_retry(root/'geometry_code')
     refresh(root)
 
 
