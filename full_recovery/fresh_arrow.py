@@ -66,14 +66,14 @@ def refresh(root):
     save(root/'manifest.json',manifest)
 
 
-def configure(root,base_url,sam_url,api_concurrency=8):
+def configure(root,base_url,sam_url,api_concurrency=8,images=None):
     root=Path(root)
     paths=[root/'config.json',root/'localization/config.json',root/'sam/missing/config.json',
            *sorted((root/'geometry/jobs').glob('*/config.json'))]
     for path in paths:
         data=read(path);data.update(base_url=base_url,sam_url=sam_url,
                                    api_concurrency=api_concurrency)
-        save(path,widened(data,api_concurrency))
+        save(path,widened(data,api_concurrency,images))
     manifest=root/'localization/manifest.json';data=read(manifest)
     data['files']={n:sha(root/'localization'/n) for n in data['files']};save(manifest,data)
     for job in (root/'geometry/jobs').iterdir():

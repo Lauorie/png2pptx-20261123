@@ -130,7 +130,8 @@ def configure(project,args):
         if not external_arrows:
             from .fresh_arrow import configure as configure_arrow
             limits=next((r['api_global_concurrency'] for r in settings.get('api_relays',[]) if r['role']=='arrow'),args.api_concurrency)
-            configure_arrow(settings['fresh_arrow_root'],arrow['base_url'],settings['sam_url'],limits)
+            configure_arrow(settings['fresh_arrow_root'],arrow['base_url'],settings['sam_url'],limits,
+                            getattr(args,'case_workers',None))
         settings.update(text_workers=getattr(args,'text_workers',None) or 2,
                         case_workers=getattr(args,'case_workers',None) or 2,reuse_request_roots=[])
     shape_config=read(run/'shape/pipeline_config.json')

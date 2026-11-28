@@ -21,7 +21,7 @@
 #   PNG2PPTX_API_MAX_TOKENS          output cap for every model request; default 32000, empty: backends' own
 #   PNG2PPTX_API_IDLE_TIMEOUT_SECONDS  give up a silent model stream after this long; default: 300
 #   PNG2PPTX_API_HEDGE_AFTER_SECONDS   ask a request a second time when unanswered this long; default: never
-#   PNG2PPTX_CASE_WORKERS      images the shape branch works on at once; default 6
+#   PNG2PPTX_CASE_WORKERS      images the shape and arrow branches each work on at once; default 6
 #   PNG2PPTX_TEXT_WORKERS      images the text branch works on at once; default 6
 #   PNG2PPTX_CPU_ENV           Python environment prefix; default /opt/shape-cpu
 set -euo pipefail
